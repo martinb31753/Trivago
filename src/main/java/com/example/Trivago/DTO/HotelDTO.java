@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HotelDTO {
-    private String hotelCode;
+    private String hotel_code;
     private String name;
     private String destination;
     private String room_type;

@@ -7,6 +7,4 @@ import java.util.List;
 public interface IHotelRepository {
     List<Hotel> getAll();
     Hotel getById(String hotelCode);
-    void save(Hotel hotel);
-
 }

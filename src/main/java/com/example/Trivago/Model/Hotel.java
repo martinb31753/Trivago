@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Hotel {
 
-    private String hotelCode;
+    private String hotel_code;
     private String name;
     private String destination;
     private String room_type;
