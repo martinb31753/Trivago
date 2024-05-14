@@ -1,5 +1,6 @@
 package com.example.Trivago.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,13 @@ public class HotelDTO {
     private String destination;
     private String room_type;
     private String price_per_night;
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate date_from;
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate date_to;
+
     private Boolean is_reserved;
 
 }
