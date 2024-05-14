@@ -9,9 +9,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class FlightRepositoryImpl implements IFlightRepository {
@@ -44,7 +46,19 @@ public class FlightRepositoryImpl implements IFlightRepository {
     }
 
     @Override
-    public Flight getById(String flightCode) {
-        return null;
+    public List<Flight> getFlightByDateFilter(LocalDate date_from, LocalDate date_to, String origin, String destination) {
+        return flightList.stream()
+                .filter(flight ->
+                        (origin == null || flight.getOrigin().equalsIgnoreCase(origin)) &&
+                                (destination == null || flight.getDestination().equalsIgnoreCase(destination)) &&
+                                (date_from == null || isWithinDateRange(flight.getDate_from(), date_from, date_to)) &&
+                                (date_to == null || isWithinDateRange(flight.getDate_to(), date_from, date_to))
+                )
+                .collect(Collectors.toList());
     }
+
+    private boolean isWithinDateRange(LocalDate date, LocalDate rangeStart, LocalDate rangeEnd) {
+        return !date.isBefore(rangeStart) && !date.isAfter(rangeEnd);
+    }
+
 }
