@@ -47,6 +47,17 @@ public class HotelRepositoryImpl implements IHotelRepository {
 
     @Override
     public Hotel getById(String hotelCode) {
-        return null;
+        return hotelsList.stream()
+                .filter(hotel -> hotel.getHotel_code().equals(hotelCode))
+                .findFirst()
+                .orElse(null);
     }
+
+    @Override
+    public void save(Hotel hotel) {
+        hotelsList.removeIf(existingHotel -> existingHotel.getHotel_code().equals(hotel.getHotel_code()));
+        hotelsList.add(hotel);
+    }
+
+
 }

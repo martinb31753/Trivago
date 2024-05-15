@@ -26,4 +26,5 @@ public class Hotel {
 
     private Boolean is_reserved;
 
+
 }

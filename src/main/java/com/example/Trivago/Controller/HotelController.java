@@ -35,4 +35,5 @@ public class HotelController {
             return new ResponseEntity<>("Error inesperadoq", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }
