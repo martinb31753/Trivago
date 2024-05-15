@@ -1,6 +1,7 @@
 package com.example.Trivago.Model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,25 +12,29 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Flight {
-
-    private String flight_number;
+    @JsonProperty("flight_number")
+    private String flightNumber;
     private String origin;
     private String destination;
-    private String seat_type;
-    private String price_per_person;
+    @JsonProperty("seat_type")
+    private String seatType;
+    @JsonProperty("price_per_person")
+    private String pricePerPerson;
 
+    @JsonProperty("date_from")
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate date_from;
+    private LocalDate dateFrom;
 
+    @JsonProperty("date_to")
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate date_to;
+    private LocalDate dateTo;
 
-    public String getFlight_number() {
-        return flight_number;
+    public String getFlightNumber() {
+        return flightNumber;
     }
 
-    public void setFlight_number(String flight_number) {
-        this.flight_number = flight_number;
+    public void setFlightNumber(String flightNumber) {
+        this.flightNumber = flightNumber;
     }
 
     public String getOrigin() {
@@ -48,35 +53,35 @@ public class Flight {
         this.destination = destination;
     }
 
-    public String getSeat_type() {
-        return seat_type;
+    public String getSeatType() {
+        return seatType;
     }
 
-    public void setSeat_type(String seat_type) {
-        this.seat_type = seat_type;
+    public void setSeatType(String seatType) {
+        this.seatType = seatType;
     }
 
-    public String getPrice_per_person() {
-        return price_per_person;
+    public String getPricePerPerson() {
+        return pricePerPerson;
     }
 
-    public void setPrice_per_person(String price_per_person) {
-        this.price_per_person = price_per_person;
+    public void setPricePerPerson(String pricePerPerson) {
+        this.pricePerPerson = pricePerPerson;
     }
 
-    public LocalDate getDate_from() {
-        return date_from;
+    public LocalDate getDateFrom() {
+        return dateFrom;
     }
 
-    public void setDate_from(LocalDate date_from) {
-        this.date_from = date_from;
+    public void setDateFrom(LocalDate dateFrom) {
+        this.dateFrom = dateFrom;
     }
 
-    public LocalDate getDate_to() {
-        return date_to;
+    public LocalDate getDateTo() {
+        return dateTo;
     }
 
-    public void setDate_to(LocalDate date_to) {
-        this.date_to = date_to;
+    public void setDateTo(LocalDate dateTo) {
+        this.dateTo = dateTo;
     }
 }

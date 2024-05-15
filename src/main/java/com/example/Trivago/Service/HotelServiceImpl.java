@@ -23,4 +23,6 @@ public class HotelServiceImpl implements IHotel {
         return hotelList.stream()
                 .map(hotel -> modelMapper.map(hotel, HotelDTO.class)).collect(java.util.stream.Collectors.toList());
     }
+
+
 }

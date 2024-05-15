@@ -45,20 +45,4 @@ public class FlightRepositoryImpl implements IFlightRepository {
         return flightList;
     }
 
-    @Override
-    public List<Flight> getFlightByDateFilter(LocalDate date_from, LocalDate date_to, String origin, String destination) {
-        return flightList.stream()
-                .filter(flight ->
-                        (origin == null || flight.getOrigin().equalsIgnoreCase(origin)) &&
-                                (destination == null || flight.getDestination().equalsIgnoreCase(destination)) &&
-                                (date_from == null || isWithinDateRange(flight.getDate_from(), date_from, date_to)) &&
-                                (date_to == null || isWithinDateRange(flight.getDate_to(), date_from, date_to))
-                )
-                .collect(Collectors.toList());
-    }
-
-    private boolean isWithinDateRange(LocalDate date, LocalDate rangeStart, LocalDate rangeEnd) {
-        return !date.isBefore(rangeStart) && !date.isAfter(rangeEnd);
-    }
-
 }

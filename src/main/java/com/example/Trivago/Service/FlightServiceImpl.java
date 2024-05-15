@@ -26,12 +26,20 @@ public class FlightServiceImpl implements IFlight {
     }
 
     @Override
-    public List<FlightDTO> getFlightByDate(LocalDate dateFrom, LocalDate dateTo, String origin, String destination) {
-        List<Flight> flights = flightRepository.getFlightByDateFilter(dateFrom, dateTo, origin, destination);
-
-        return flights.stream()
-                .map(flight -> modelMapper.map(flight, FlightDTO.class))
+    public List<Flight> getFlightByDate(LocalDate date_from, LocalDate date_to, String origin, String destination) {
+        List<Flight>flightList = flightRepository.getAll();
+        return flightList.stream()
+                .filter(flight ->
+                        (origin == null || flight.getOrigin().equalsIgnoreCase(origin)) &&
+                                (destination == null || flight.getDestination().equalsIgnoreCase(destination)) &&
+                                (date_from == null || isWithinDateRange(flight.getDateFrom(), date_from, date_to)) &&
+                                (date_to == null || isWithinDateRange(flight.getDateTo(), date_from, date_to))
+                )
                 .collect(Collectors.toList());
+    }
+
+    private boolean isWithinDateRange(LocalDate date, LocalDate rangeStart, LocalDate rangeEnd) {
+        return !date.isBefore(rangeStart) && !date.isAfter(rangeEnd);
     }
 
 }

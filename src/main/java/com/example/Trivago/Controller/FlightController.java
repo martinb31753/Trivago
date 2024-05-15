@@ -1,5 +1,6 @@
 package com.example.Trivago.Controller;
 import com.example.Trivago.DTO.FlightDTO;
+import com.example.Trivago.Model.Flight;
 import com.example.Trivago.Service.IFlight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -44,7 +45,7 @@ public class FlightController {
             @RequestParam(value = "origin", required = false) String origin,
             @RequestParam(value = "destination", required = false) String destination) {
         try {
-            List<FlightDTO> flights = flightService.getFlightByDate(date_from, date_to, origin, destination);
+            List<Flight> flights = flightService.getFlightByDate(date_from, date_to, origin, destination);
             return new ResponseEntity<>(flights, HttpStatus.OK);
         }
         catch (Exception e) {

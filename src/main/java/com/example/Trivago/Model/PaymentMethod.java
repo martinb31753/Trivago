@@ -1,5 +1,6 @@
 package com.example.Trivago.Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,8 @@ import lombok.NoArgsConstructor;
 public class PaymentMethod {
 
     private String type;
-    private String card_number;
+    @JsonProperty("card_number")
+    private String cardNumber;
     private Integer dues;
     private Double interest;
 }
