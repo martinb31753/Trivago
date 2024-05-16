@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class BookingRequestDTO {
     @JsonProperty("user_name")
     private String userName;
+    @JsonProperty("booking")
     private BookingRequestDetailDTO booking;
 
 

@@ -12,8 +12,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class BookingResponseDetailDTO {
+    @JsonProperty("amount")
     private double amount;
+    @JsonProperty("interest")
     private double interest;
+    @JsonProperty("total")
     private double total;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
