@@ -11,13 +11,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookingResponseDetailDTO {
-    @JsonProperty("amount")
-    private double amount;
-    @JsonProperty("interest")
-    private double interest;
-    @JsonProperty("total")
-    private double total;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("date_from")
@@ -27,14 +24,21 @@ public class BookingResponseDetailDTO {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateTo;
 
+    @JsonProperty("destination")
     private String destination;
+
     @JsonProperty("hotel_code")
     private String hotelCode;
+
     @JsonProperty("people_amount")
     private int peopleAmount;
+
     @JsonProperty("room_type")
     private String roomType;
+
+    @JsonProperty("people")
     private List<PersonDTO> people;
+
     @JsonProperty("payment_method")
     private PaymentMethodDTO paymentMethod;
 }
