@@ -15,27 +15,31 @@ import java.time.LocalDate;
 public class HotelBookingServiceImpl implements IHotelBookingService {
 
     @Autowired
-    private  IHotelRepository hotelRepository;
-
-
+    private IHotelRepository hotelRepository;
 
 
 
     @Override
-    public BookingResponseDTO bookHotel(BookingRequestDTO request) {
+    public BookingResponseDTO bookHotelresponse(BookingRequestDTO request) {
+        return null;
+    }
+
+    @Override
+    public BookingResponseDTO bookHotelresponse(BookingRequestDTO request) {
         LocalDate dateFrom = request.getDateFrom();
         LocalDate dateTo = request.getDateTo();
 
         // Encontrar el hotel por código
-        Hotel hotel = hotelRepository.getById(request.getHotel_code());
+        Hotel hotel = hotelRepository.getById(request.getHotelCode());
+        System.out.println(request.getHotelCode());
         if (hotel == null) {
             throw new RuntimeException("Hotel no encontrado");
+
         }
 
         if (hotel.getIs_reserved()) {
             throw new RuntimeException("El hotel ya está reservado");
         }
-
 
         // noche de la doble  $6300")
         double pricePerNight = Double.parseDouble(hotel.getPrice_per_night().replace("$", ""));
@@ -52,22 +56,18 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
         //  respuesta
         BookingResponseDTO response = new BookingResponseDTO();
-        response.setUser_name(request.getUser_name());
-        response.setAmount(amount);
-        response.setInterest(interest);
-        response.setTotal(total);
-        response.setDate_from(dateFrom);
-        response.setDateTo(dateTo);
-        response.setDestination(request.getDestination());
-        response.setHotel_code(request.getHotel_code());
-        response.setPeople_amount(request.getPeople_amount());
-        response.setRoom_type(request.getRoomType());
-        response.setPeople(request.getPeople());
+        response.setUserName(request.getUserName());
+
+        response.getBooking()
+        response.getBookingResponseDetailDTO().setInterest(interest);
+        response.getBookingResponseDetailDTO().setTotal(total);
+        response.getBookingResponseDetailDTO().setDate_from(dateFrom);
+        response.getBookingResponseDetailDTO().setDate_to(dateTo);
+        response.getBookingResponseDetailDTO().setDestination(request.getDestination());
+        response.getBookingResponseDetailDTO().setHotelCode(request.getHotelCode());
+        response.getBookingResponseDetailDTO().setPeopleAmount(request.getPeopleAmount());
+        response.getBookingResponseDetailDTO().setRoomType(request.getRoomType());
+        response.getBookingResponseDetailDTO().setPeople(request.getPeople());
 
 
-
-
-        return response;
     }
-
-}

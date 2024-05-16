@@ -30,6 +30,7 @@ public class HotelRepositoryImpl implements IHotelRepository {
                 .registerModule(new JavaTimeModule());
 
 
+
         try {
             file = ResourceUtils.getFile("classpath:hotel.json");
             loadedData = objectMapper.readValue(file, new TypeReference<>() {});
