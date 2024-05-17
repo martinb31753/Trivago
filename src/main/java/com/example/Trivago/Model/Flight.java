@@ -1,5 +1,7 @@
 package com.example.Trivago.Model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,12 +13,21 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Flight {
 
-    private String flight_number;
+    @JsonProperty("flight_number")
+    private String flightNumber;
+    @JsonProperty("origin")
     private String origin;
+    @JsonProperty("destination")
     private String destination;
-    private String seat_type;
-    private String price_per_person;
+    @JsonProperty("seat_type")
+    private String seatType;
+    @JsonProperty("price_per_person")
+    private String pricePerPerson;
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate date_from;
+
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate date_to;
 
 }

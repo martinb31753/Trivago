@@ -4,6 +4,7 @@ import com.example.Trivago.Model.Flight;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
@@ -24,18 +25,15 @@ public class FlightRepositoryImpl implements IFlightRepository {
         List<Flight> loadedData = null;
         File file;
 
-        ObjectMapper objectMapper = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
-
-        TypeReference<List<Flight>> typeRef = new TypeReference<>() {};
+        ObjectMapper objectMapper = new ObjectMapper()
+                .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
+                .registerModule(new JavaTimeModule());
         try {
             file = ResourceUtils.getFile("classpath:flight.json");
-            loadedData = objectMapper.readValue(file, typeRef);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Error al cargar Json");
+            loadedData = objectMapper.readValue(file, new TypeReference<>() {});
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Error");
+            System.out.println("Error al cargar Json aviones");
         }
         return loadedData;
     }
@@ -47,6 +45,6 @@ public class FlightRepositoryImpl implements IFlightRepository {
 
     @Override
     public Flight getById(String flightCode) {
-        return null;
+        return flightList.stream().filter(flight -> flight.getFlightNumber().equals(flightCode)).findFirst().orElse(null);
     }
 }
