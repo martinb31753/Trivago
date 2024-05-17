@@ -14,7 +14,9 @@ import java.time.LocalDate;
 public class Flight {
     @JsonProperty("flight_number")
     private String flightNumber;
+    @JsonProperty("origin")
     private String origin;
+    @JsonProperty("destination")
     private String destination;
     @JsonProperty("seat_type")
     private String seatType;

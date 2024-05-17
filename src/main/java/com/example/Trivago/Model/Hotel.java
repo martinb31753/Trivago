@@ -15,7 +15,9 @@ public class Hotel {
 
     @JsonProperty("hotel_code")
     private String hotelCode;
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("destination")
     private String destination;
     @JsonProperty("room_type")
     private String roomType;
@@ -32,4 +34,10 @@ public class Hotel {
 
     @JsonProperty("is_reserved")
     private Boolean isReserved;
+
 }
+
+
+
+
+

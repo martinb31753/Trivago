@@ -10,9 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PaymentMethod {
 
+    @JsonProperty("type")
     private String type;
-    @JsonProperty("card_number")
-    private String cardNumber;
+    @JsonProperty("number_card")
+    private String numberCard;
+    @JsonProperty("dues")
     private Integer dues;
-    private Double interest;
+   
 }

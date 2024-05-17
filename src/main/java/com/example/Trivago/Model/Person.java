@@ -12,12 +12,15 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Person {
 
+    @JsonProperty("dni")
     private String dni;
+    @JsonProperty("name")
     private String name;
     @JsonProperty("last_name")
     private String lastName;
     @JsonProperty("birth_date")
-    private LocalDate birthdate;
+    private LocalDate birthDate;
+    @JsonProperty("email")
     private String email;
 
 
