@@ -4,4 +4,5 @@ public class ResponseStatusDTO {
 
     private String status;
     private String message;
+
 }

@@ -32,6 +32,7 @@ public class HotelRepositoryImpl implements IHotelRepository {
                 .registerModule(new JavaTimeModule());
 
 
+
         try {
             file = ResourceUtils.getFile("classpath:hotel.json");
             loadedData = objectMapper.readValue(file, new TypeReference<>() {});
@@ -49,8 +50,18 @@ public class HotelRepositoryImpl implements IHotelRepository {
 
     @Override
     public Hotel getById(String hotelCode) {
-        return null;
+        return hotelsList.stream()
+                .filter(hotel -> hotel.getHotel_code().equals(hotelCode))
+                .findFirst()
+                .orElse(null);
     }
+
+    @Override
+    public void save(Hotel hotel) {
+        hotelsList.removeIf(existingHotel -> existingHotel.getHotel_code().equals(hotel.getHotel_code()));
+        hotelsList.add(hotel);
+    }
+
 
     @Override
     public List<Hotel> getHotelsAvailableFilter(LocalDate date_from, LocalDate date_to, String destination) {
@@ -66,4 +77,5 @@ public class HotelRepositoryImpl implements IHotelRepository {
     private boolean isWithinDateRange(LocalDate date, LocalDate rangeStart, LocalDate rangeEnd) {
         return !date.isBefore(rangeStart) && !date.isAfter(rangeEnd);
     }
+
 }

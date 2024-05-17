@@ -37,6 +37,7 @@ public class HotelController {
     }
 
 
+
         @GetMapping("/filterHotels")
         public ResponseEntity<?> getAvailableHotels(
                 @RequestParam(value = "date_from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_from,
@@ -50,5 +51,6 @@ public class HotelController {
             return new ResponseEntity<>("Error inesperado", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
 }
