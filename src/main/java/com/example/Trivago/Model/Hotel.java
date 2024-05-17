@@ -24,14 +24,20 @@ public class Hotel {
     @JsonProperty("price_per_night")
     private String pricePerNight;
 
+    @JsonProperty("date_from")
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate date_from;
+    private LocalDate dateFrom;
 
+    @JsonProperty("date_to")
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate date_to;
+    private LocalDate dateTo;
 
     @JsonProperty("is_reserved")
     private Boolean isReserved;
 
-
 }
+
+
+
+
+

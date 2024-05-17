@@ -25,6 +25,7 @@ public class HotelServiceImpl implements IHotel {
         return hotelList.stream()
                 .map(hotel -> modelMapper.map(hotel, HotelDTO.class)).collect(java.util.stream.Collectors.toList());
     }
+
     @Override
     public List<HotelDTO> getAvailableHotels(LocalDate dateFrom, LocalDate dateTo, String destination) {
          List<Hotel> hotels = hotelRepository.getHotelsAvailableFilter(dateFrom, dateTo, destination);
@@ -33,4 +34,5 @@ public class HotelServiceImpl implements IHotel {
                 .map(flight -> modelMapper.map(flight, HotelDTO.class))
                 .collect(Collectors.toList());
     }
+
 }

@@ -5,7 +5,10 @@ import com.example.Trivago.Repository.IFlightRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -21,4 +24,22 @@ public class FlightServiceImpl implements IFlight {
         return flightList.stream()
                 .map(flight -> modelMapper.map(flight, FlightDTO.class)).collect(java.util.stream.Collectors.toList());
     }
+
+    @Override
+    public List<Flight> getFlightByDate(LocalDate date_from, LocalDate date_to, String origin, String destination) {
+        List<Flight>flightList = flightRepository.getAll();
+        return flightList.stream()
+                .filter(flight ->
+                        (origin == null || flight.getOrigin().equalsIgnoreCase(origin)) &&
+                                (destination == null || flight.getDestination().equalsIgnoreCase(destination)) &&
+                                (date_from == null || isWithinDateRange(flight.getDateFrom(), date_from, date_to)) &&
+                                (date_to == null || isWithinDateRange(flight.getDateTo(), date_from, date_to))
+                )
+                .collect(Collectors.toList());
+    }
+
+    private boolean isWithinDateRange(LocalDate date, LocalDate rangeStart, LocalDate rangeEnd) {
+        return !date.isBefore(rangeStart) && !date.isAfter(rangeEnd);
+    }
+
 }

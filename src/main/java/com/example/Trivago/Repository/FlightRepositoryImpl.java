@@ -9,9 +9,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class FlightRepositoryImpl implements IFlightRepository {
@@ -43,8 +45,4 @@ public class FlightRepositoryImpl implements IFlightRepository {
         return flightList;
     }
 
-    @Override
-    public Flight getById(String flightCode) {
-        return null;
-    }
 }
