@@ -11,11 +11,12 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
-public class BookingResponseDetailDTO {
-    private double amount;
-    private double interest;
-    private double total;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 
+public class BookingResponseDetailDTO {
+    
     @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("date_from")
     private LocalDate dateFrom;
