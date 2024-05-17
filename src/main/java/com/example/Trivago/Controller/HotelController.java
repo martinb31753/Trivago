@@ -26,5 +26,4 @@ public class HotelController {
         List<HotelDTO> hotels = hotelService.getAll();
         return new ResponseEntity<>(hotels, HttpStatus.OK);
     }
-
 }

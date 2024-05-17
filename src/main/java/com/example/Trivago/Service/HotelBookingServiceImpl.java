@@ -77,7 +77,7 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         response.setBooking(bookingDetail);
         response.setStatus(status);
 
-        return response;
 
+        return response;
     }
 }
