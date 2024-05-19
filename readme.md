@@ -14,6 +14,18 @@ Melisa Vande Velde
 Descripción:
 Este proyecto consiste en el desarrollo de una API para una agencia de turismo que permitirá a los usuarios realizar consultas y reservas de hoteles y vuelos. La agencia desea una solución eficiente y escalable que pueda ser utilizada para futuras mejoras incrementales.
 
+Tecnologia utilizadas
+
+Lenguaje
+-Java
+ 
+Dependencias
+-Loombook
+-Jackson
+-Spring web
+-Spring Boot
+
+
 Resumen de Requerimientos Técnicos Funcionales:
 
 Hoteles:
@@ -37,3 +49,5 @@ Campos: Fecha Ida, Fecha Vuelta, Origen, Destino, Cantidad de Personas
 
 Definición consensuada con el equipo:
 Un usuario cuando reserve un hotel lo hará por el total de dias que el mismo esté disponible.
+
+
