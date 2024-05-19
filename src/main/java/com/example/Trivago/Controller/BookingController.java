@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/v2")
+@RequestMapping("/api/v1")
 public class BookingController {
 
    @Autowired
     private IHotelBookingService hotelService;
 
-    @PostMapping("/response")
+    @PostMapping("/booking")
     public ResponseEntity<?> bookHotel(@RequestBody BookingRequestDTO request){
         BookingResponseDTO hotelBooking = hotelService.bookHotelresponse(request);
         return ResponseEntity.ok(hotelBooking);
