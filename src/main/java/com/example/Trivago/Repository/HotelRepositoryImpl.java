@@ -1,5 +1,6 @@
 package com.example.Trivago.Repository;
 
+import com.example.Trivago.DTO.HotelDTO;
 import com.example.Trivago.Model.Hotel;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,6 +59,21 @@ public class HotelRepositoryImpl implements IHotelRepository {
     public void save(Hotel hotel) {
         hotelsList.removeIf(existingHotel -> existingHotel.getHotelCode().equals(hotel.getHotelCode()));
         hotelsList.add(hotel);
+    }
+
+    @Override
+    public Hotel save(HotelDTO newHotel) {
+        return null;
+    }
+
+    @Override
+    public Hotel update(String hotelCode, HotelDTO updateHotel) {
+        return null;
+    }
+
+    @Override
+    public Hotel remove(String hotelCode) {
+        return null;
     }
 
 

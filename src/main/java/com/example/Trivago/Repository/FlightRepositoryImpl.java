@@ -1,5 +1,6 @@
 package com.example.Trivago.Repository;
 
+import com.example.Trivago.DTO.FlightDTO;
 import com.example.Trivago.Model.Flight;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,7 +45,22 @@ public class FlightRepositoryImpl implements IFlightRepository {
     }
 
     @Override
-    public Flight getById(String flightCode) {
+    public Flight getByFlightNumber(String flightCode) {
         return flightList.stream().filter(flight -> flight.getFlightNumber().equals(flightCode)).findFirst().orElse(null);
+    }
+
+    @Override
+    public Flight save(FlightDTO flight) {
+        return null;
+    }
+
+    @Override
+    public Flight update(Long id, FlightDTO updateFlight) {
+        return null;
+    }
+
+    @Override
+    public Flight delete(Long id) {
+        return null;
     }
 }
