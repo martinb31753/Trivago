@@ -18,4 +18,6 @@ public interface IFlightRepository {
     Flight update(Long id, FlightDTO updateFlight);
 
     Flight delete(Long id);
+
+    Flight getById(String flightNumber);
 }

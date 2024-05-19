@@ -63,4 +63,9 @@ public class FlightRepositoryImpl implements IFlightRepository {
     public Flight delete(Long id) {
         return null;
     }
+
+    @Override
+    public Flight getById(String flightNumber) {
+        return null;
+    }
 }
