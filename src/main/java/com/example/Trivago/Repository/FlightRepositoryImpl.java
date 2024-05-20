@@ -1,5 +1,6 @@
 package com.example.Trivago.Repository;
 
+import com.example.Trivago.DTO.FlightDTO;
 import com.example.Trivago.Model.Flight;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,11 +10,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class FlightRepositoryImpl implements IFlightRepository {
@@ -46,8 +45,27 @@ public class FlightRepositoryImpl implements IFlightRepository {
     }
 
     @Override
-    public Flight getById(String id) {
-        return flightList.stream().filter(flight -> flight.getFlightNumber().equals(id)).findFirst().orElse(null);
+    public Flight getByFlightNumber(String flightCode) {
+        return flightList.stream().filter(flight -> flight.getFlightNumber().equals(flightCode)).findFirst().orElse(null);
     }
 
+    @Override
+    public Flight save(FlightDTO flight) {
+        return null;
+    }
+
+    @Override
+    public Flight update(Long id, FlightDTO updateFlight) {
+        return null;
+    }
+
+    @Override
+    public Flight delete(Long id) {
+        return null;
+    }
+
+    @Override
+    public Flight getById(String flightNumber) {
+        return null;
+    }
 }

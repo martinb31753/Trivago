@@ -54,7 +54,7 @@ public class FlightReservationService implements IFlightReservationService {
         FlightReservationResponseDetailDTO flightReservation = new FlightReservationResponseDetailDTO();
 
         if (dateFrom.isAfter(dateTo) || dateTo.isBefore(dateFrom) ||
-                (!dateFrom.isEqual(flight.getDateFrom()) || !dateTo.isEqual(flight.getDateTo()))) {
+                (!dateFrom.isEqual(flight.getDate_from()) || !dateTo.isEqual(flight.getDate_to()))) {
             throw new InvalidReservation("La fecha de llegada debe ser posterior a la fecha de salida o viceversa, " +
                     "y además debe coincidir con las de fechas del vuelo");
         }

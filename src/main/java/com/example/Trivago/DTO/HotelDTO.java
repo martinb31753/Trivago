@@ -1,4 +1,4 @@
-package com.example.Trivago.Model;
+package com.example.Trivago.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,23 +11,27 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Flight {
-
-    @JsonProperty("flight_number")
-    private String flightNumber;
-    @JsonProperty("origin")
-    private String origin;
+public class HotelDTO {
+    @JsonProperty("hotel_code")
+    private String hotelCode;
+    @JsonProperty("name")
+    private String name;
     @JsonProperty("destination")
     private String destination;
-    @JsonProperty("seat_type")
-    private String seatType;
-    @JsonProperty("price_per_person")
-    private String pricePerPerson;
+    @JsonProperty("room_type")
+    private String roomType;
+    @JsonProperty("price_per_night")
+    private String pricePerNight;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonProperty("date_to")
     private LocalDate date_from;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonProperty("date_to")
     private LocalDate date_to;
+
+    @JsonProperty("is_reserved")
+    private Boolean isReserved;
 
 }
