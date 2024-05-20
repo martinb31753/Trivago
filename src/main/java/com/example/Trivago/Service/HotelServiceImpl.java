@@ -8,7 +8,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelServiceImpl implements IHotel {
@@ -24,6 +26,14 @@ public class HotelServiceImpl implements IHotel {
         return hotelList.stream()
                 .map(hotel -> modelMapper.map(hotel, HotelDTO.class)).collect(java.util.stream.Collectors.toList());
     }
+  
+    @Override
+    public List<HotelDTO> getAvailableHotels(LocalDate dateFrom, LocalDate dateTo, String destination) {
+         List<Hotel> hotels = hotelRepository.getHotelsAvailableFilter(dateFrom, dateTo, destination);
+
+        return hotels.stream()
+                .map(flight -> modelMapper.map(flight, HotelDTO.class))
+                .collect(Collectors.toList());
 
     @Override
     public Hotel addNewHotel(HotelDTO newHotel) {
