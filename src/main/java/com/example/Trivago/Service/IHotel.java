@@ -14,7 +14,6 @@ public interface IHotel {
 
     List<HotelDTO> getAvailableHotels(LocalDate dateFrom, LocalDate dateTo, String destination);
 
-
     Hotel addNewHotel(HotelDTO newHotel);
 
     Hotel updateHotelById(String hotelCode, HotelDTO updateHotel);

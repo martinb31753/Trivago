@@ -28,8 +28,10 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
     public BookingResponseDTO bookHotelresponse(BookingRequestDTO request) {
         // Encontrar el hotel por código
 
+        System.out.println(request.getBooking().getHotelCode());
         Hotel hotel = hotelRepository.getById(request.getBooking().getHotelCode());
 
+        System.out.println(hotel);
         if (hotel == null) {
             throw new InvalidReservation("Hotel no encontrado");
         }
@@ -110,7 +112,7 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
 
         ResponseStatusDTO responseStatusDTO  = new ResponseStatusDTO();
-        responseStatusDTO.setStatus(201);
+        responseStatusDTO.setCode(201);
         responseStatusDTO.setMessage("El proceso termino satisfactoriamente");
 
 

@@ -24,8 +24,10 @@ public class FlightDTO {
     private String pricePerPerson;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate date_from;
+    @JsonProperty("date_from")
+    private LocalDate dateFrom;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate date_to;
+    @JsonProperty("date_to")
+    private LocalDate dateTo;
 }

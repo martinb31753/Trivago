@@ -68,6 +68,6 @@ public class FlightRepositoryImpl implements IFlightRepository {
 
     @Override
     public Flight getById(String flightNumber) {
-        return null;
+        return flightList.stream().filter(flight -> flight.getFlightNumber().equals(flightNumber)).findFirst().orElse(null);
     }
 }
