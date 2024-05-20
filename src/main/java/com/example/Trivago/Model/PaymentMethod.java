@@ -16,6 +16,5 @@ public class PaymentMethod {
     private String numberCard;
     @JsonProperty("dues")
     private Integer dues;
-    @JsonProperty("interest")
-    private Double interest;
+   
 }
