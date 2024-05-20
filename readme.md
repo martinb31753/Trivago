@@ -64,4 +64,3 @@ GET /api/v1/flights
 GET /api/v1/flightsByDate
 
 POST /api/v1/flight-reservation
-
