@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -24,18 +21,24 @@ public class FlightController {
 
 
     @GetMapping("/flights")
-    public ResponseEntity<?> getAllFlights() {
-        try {
-            List<FlightDTO> flights = flightService.getAll();
+    public ResponseEntity<?> getAllHotels() {
+        return new ResponseEntity<>(flightService.getAll(), HttpStatus.OK);
+    }
 
-            if (flights.isEmpty()) {
-                return new ResponseEntity<>("No existen vuelos", HttpStatus.NO_CONTENT);
-            } else {
-                return new ResponseEntity<>(flights, HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error inesperado en vuelos", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @PostMapping("/add-new-flight")
+    public ResponseEntity<?> addNewFlight(@RequestBody FlightDTO newFlight) {
+        return new ResponseEntity<>(flightService.addNewFlight(newFlight), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateFlightById(@PathVariable Long id, @RequestBody FlightDTO updateFlight) {
+        return new ResponseEntity<>(flightService.updateFlightById(id, updateFlight), HttpStatus.OK);
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteFlightById(@PathVariable Long id) {
+        return new ResponseEntity<>(flightService.deleteFlightById(id), HttpStatus.OK);
     }
 
     @GetMapping("/flightsByDate")
@@ -44,12 +47,7 @@ public class FlightController {
             @RequestParam(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,
             @RequestParam(value = "origin", required = false) String origin,
             @RequestParam(value = "destination", required = false) String destination) {
-        try {
-            List<Flight> flights = flightService.getFlightByDate(date_from, date_to, origin, destination);
-            return new ResponseEntity<>(flights, HttpStatus.OK);
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>("Error inesperado en vuelos", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<Flight> flights = flightService.getFlightByDate(date_from, date_to, origin, destination);
+        return new ResponseEntity<>(flights, HttpStatus.OK);
     }
 }

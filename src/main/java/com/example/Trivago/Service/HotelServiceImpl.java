@@ -35,4 +35,20 @@ public class HotelServiceImpl implements IHotel {
                 .collect(Collectors.toList());
     }
 
+
+    @Override
+    public Hotel addNewHotel(HotelDTO newHotel) {
+        return null;
+
+    }
+
+    @Override
+    public Hotel updateHotelById(String hotelCode, HotelDTO updateHotel) {
+        return null;
+    }
+
+    @Override
+    public Hotel deleteHotelById(String hotelCode) {
+        return null;
+    }
 }

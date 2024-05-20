@@ -17,6 +17,7 @@ public class FlightServiceImpl implements IFlight {
     private IFlightRepository flightRepository;
 
     ModelMapper modelMapper = new ModelMapper();
+
     @Override
     public List<FlightDTO> getAll() {
         List<Flight> flightList = flightRepository.getAll();
@@ -27,7 +28,7 @@ public class FlightServiceImpl implements IFlight {
 
     @Override
     public List<Flight> getFlightByDate(LocalDate date_from, LocalDate date_to, String origin, String destination) {
-        List<Flight>flightList = flightRepository.getAll();
+        List<Flight> flightList = flightRepository.getAll();
         return flightList.stream()
                 .filter(flight ->
                         (origin == null || flight.getOrigin().equalsIgnoreCase(origin)) &&
@@ -42,4 +43,26 @@ public class FlightServiceImpl implements IFlight {
         return !date.isBefore(rangeStart) && !date.isAfter(rangeEnd);
     }
 
+
+    @Override
+    public FlightDTO getByFlightNumber(String flightCode) {
+        return null;
+    }
+
+    @Override
+    public Flight addNewFlight(FlightDTO flight) {
+        return null;
+    }
+
+    @Override
+    public Flight updateFlightById(Long id, FlightDTO updateFlight) {
+        return null;
+    }
+
+    @Override
+    public Flight deleteFlightById(Long id) {
+        return null;
+    }
+
 }
+

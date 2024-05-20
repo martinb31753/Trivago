@@ -37,15 +37,13 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         LocalDate dateTo = request.getBooking().getDateTo();//getDateTo();
 
 
-        if (hotel.getIs_reserved()) {
+        if (hotel.getIsReserved()) {
             throw new InvalidReservation("El hotel ya está reservado");
         }
 
 
-
-
         // noche de la doble  $6300")
-        double pricePerNight = Double.parseDouble(hotel.getPrice_per_night().replace("$", ""));
+        double pricePerNight = Double.parseDouble(hotel.getPricePerNight().replace("$", ""));
         long numberOfNights = dateFrom.until(dateTo).getDays();
         double amount = pricePerNight * numberOfNights;
 
@@ -54,7 +52,7 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         double total = amount + (amount * interest / 100);
 
         // Marcar  reservada
-        hotel.setIs_reserved(true);
+        hotel.setIsReserved(true);
         hotelRepository.save(hotel);
 
 
@@ -62,7 +60,7 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
         BookingResponseDetailDTO bookingDetail = new BookingResponseDetailDTO();
         if(dateFrom.isAfter(dateTo) || dateTo.isBefore(dateFrom) ||
-                (!dateFrom.isEqual(hotel.getDate_from()) || !dateTo.isEqual(hotel.getDate_to()))){
+                (!dateFrom.isEqual(hotel.getDateFrom()) || !dateTo.isEqual(hotel.getDateTo()))){
             throw new InvalidReservation("Las fechas son erroneas");
         }
         bookingDetail.setDateFrom(dateFrom);

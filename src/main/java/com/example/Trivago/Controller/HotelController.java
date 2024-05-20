@@ -23,19 +23,25 @@ public class HotelController {
 
     @GetMapping("/hotels")
     public ResponseEntity<?> getAllHotels() {
-        try {
-            List<HotelDTO> hotels = hotelService.getAll();
-
-            if (hotels.isEmpty()) {
-                return new ResponseEntity<>("No existen hoteles", HttpStatus.NO_CONTENT);
-            } else {
-                return new ResponseEntity<>(hotels, HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error inesperadoq", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<HotelDTO> hotels = hotelService.getAll();
+        return new ResponseEntity<>(hotels, HttpStatus.OK);
     }
 
+    @PostMapping("/add-new-hotel")
+    public ResponseEntity<?> addNewHotel(@RequestBody HotelDTO newHotel) {
+        return new ResponseEntity<>( hotelService.addNewHotel(newHotel),HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{hotelCode}")
+    public ResponseEntity<?> updateHotelById(@PathVariable String hotelCode, @RequestBody HotelDTO updateHotel) {
+        return new ResponseEntity<>(hotelService.updateHotelById(hotelCode, updateHotel), HttpStatus.OK);
+
+    }
+
+    @DeleteMapping("/{hotelCode}")
+    public ResponseEntity<?> deleteHotelById(@PathVariable String hotelCode) {
+        return new ResponseEntity<>(hotelService.deleteHotelById(hotelCode), HttpStatus.OK);
+    }
 
 
         @GetMapping("/filterHotels")
@@ -43,13 +49,8 @@ public class HotelController {
                 @RequestParam(value = "date_from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_from,
                 @RequestParam(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,
                 @RequestParam(value = "destination", required = false) String destination) {
-
-        try {
             List<HotelDTO> filteredHotels = hotelService.getAvailableHotels(date_from, date_to, destination);
             return ResponseEntity.ok(filteredHotels);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error inesperado", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
 
