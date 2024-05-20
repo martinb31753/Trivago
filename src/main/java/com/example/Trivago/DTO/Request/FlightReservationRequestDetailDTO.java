@@ -1,4 +1,4 @@
-package com.example.Trivago.DTO.Response;
+package com.example.Trivago.DTO.Request;
 
 import com.example.Trivago.DTO.PaymentMethodDTO;
 import com.example.Trivago.DTO.PersonDTO;
@@ -12,10 +12,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class BookingResponseDetailDTO {
+@AllArgsConstructor
 
+public class FlightReservationRequestDetailDTO {
     @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("date_from")
     private LocalDate dateFrom;
@@ -24,17 +24,20 @@ public class BookingResponseDetailDTO {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateTo;
 
+    @JsonProperty("origin")
+    private String origin;
+
     @JsonProperty("destination")
     private String destination;
 
-    @JsonProperty("hotel_code")
-    private String hotelCode;
+    @JsonProperty("flight_number")
+    private String flightNumber;
 
-    @JsonProperty("people_amount")
-    private int peopleAmount;
+    @JsonProperty("seats")
+    private int seats;
 
-    @JsonProperty("room_type")
-    private String roomType;
+    @JsonProperty("seat_type")
+    private String seatType;
 
     @JsonProperty("people")
     private List<PersonDTO> people;
