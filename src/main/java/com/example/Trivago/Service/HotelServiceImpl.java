@@ -1,5 +1,6 @@
 package com.example.Trivago.Service;
 
+import com.example.Trivago.DTO.FlightDTO;
 import com.example.Trivago.DTO.HotelDTO;
 import com.example.Trivago.Model.Hotel;
 import com.example.Trivago.Repository.IHotelRepository;
@@ -22,5 +23,21 @@ public class HotelServiceImpl implements IHotel {
         List<Hotel> hotelList = hotelRepository.getAll();
         return hotelList.stream()
                 .map(hotel -> modelMapper.map(hotel, HotelDTO.class)).collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
+    public Hotel addNewHotel(HotelDTO newHotel) {
+        return null;
+
+    }
+
+    @Override
+    public Hotel updateHotelById(String hotelCode, HotelDTO updateHotel) {
+        return null;
+    }
+
+    @Override
+    public Hotel deleteHotelById(String hotelCode) {
+        return null;
     }
 }
