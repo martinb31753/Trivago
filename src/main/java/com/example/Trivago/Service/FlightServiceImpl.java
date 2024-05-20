@@ -25,8 +25,25 @@ public class FlightServiceImpl implements IFlight {
     }
 
     @Override
-    public FlightDTO getById(String flightCode) {
+    public FlightDTO getByFlightNumber(String flightCode) {
         return null;
     }
+
+    @Override
+    public Flight addNewFlight(FlightDTO flight) {
+        return null;
+    }
+
+    @Override
+    public Flight updateFlightById(Long id, FlightDTO updateFlight) {
+        return null;
+    }
+
+    @Override
+    public Flight deleteFlightById(Long id) {
+        return null;
+    }
+
+
 }
 
