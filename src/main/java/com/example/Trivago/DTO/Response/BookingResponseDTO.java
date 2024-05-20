@@ -12,6 +12,7 @@ import java.awt.*;
 public class BookingResponseDTO {
     @JsonProperty("user_name")
     private String userName;
+
     @JsonProperty("amount")
     private double amount;
 

@@ -12,8 +12,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookingDTO {
+    @JsonProperty("amount")
     private double amount;
+    @JsonProperty("interest")
     private double interest;
+    @JsonProperty("total")
     private double total;
 
     @JsonFormat(pattern = "dd-MM-yyyy")

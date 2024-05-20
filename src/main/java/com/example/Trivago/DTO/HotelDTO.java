@@ -14,11 +14,14 @@ import java.time.LocalDate;
 public class HotelDTO {
     @JsonProperty("hotel_code")
     private String hotelCode;
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("destination")
     private String destination;
     @JsonProperty("room_type")
     private String roomType;
-    private String price_per_night;
+    @JsonProperty("price_per_night")
+    private String pricePerNight;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("date_to")
