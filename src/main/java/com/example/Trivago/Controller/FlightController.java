@@ -25,17 +25,8 @@ public class FlightController {
 
     @GetMapping("/flights")
     public ResponseEntity<?> getAllFlights() {
-        try {
-            List<FlightDTO> flights = flightService.getAll();
-
-            if (flights.isEmpty()) {
-                return new ResponseEntity<>("No existen vuelos", HttpStatus.NO_CONTENT);
-            } else {
-                return new ResponseEntity<>(flights, HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error inesperado en vuelos", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<FlightDTO> flights = flightService.getAll();
+        return ResponseEntity.ok(flights);
     }
 
     @GetMapping("/flightsByDate")
@@ -44,12 +35,7 @@ public class FlightController {
             @RequestParam(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,
             @RequestParam(value = "origin", required = false) String origin,
             @RequestParam(value = "destination", required = false) String destination) {
-        try {
-            List<Flight> flights = flightService.getFlightByDate(date_from, date_to, origin, destination);
-            return new ResponseEntity<>(flights, HttpStatus.OK);
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>("Error inesperado en vuelos", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<Flight> flights = flightService.getFlightByDate(date_from, date_to, origin, destination);
+        return ResponseEntity.ok(flights);
     }
 }
