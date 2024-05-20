@@ -52,14 +52,14 @@ public class HotelRepositoryImpl implements IHotelRepository {
     @Override
     public Hotel getById(String hotelCode) {
         return hotelsList.stream()
-                .filter(hotel -> hotel.getHotel_code().equals(hotelCode))
+                .filter(hotel -> hotel.getHotelCode().equals(hotelCode))
                 .findFirst()
                 .orElse(null);
     }
 
     @Override
     public void save(Hotel hotel) {
-        hotelsList.removeIf(existingHotel -> existingHotel.getHotel_code().equals(hotel.getHotel_code()));
+        hotelsList.removeIf(existingHotel -> existingHotel.getHotelCode().equals(hotel.getHotelCode()));
         hotelsList.add(hotel);
     }
 
@@ -69,8 +69,8 @@ public class HotelRepositoryImpl implements IHotelRepository {
         return hotelsList.stream()
                 .filter(hotel ->
                                 (destination == null || hotel.getDestination().equalsIgnoreCase(destination)) &&
-                                (date_from == null || isWithinDateRange(hotel.getDate_from(), date_from, date_to)) &&
-                                (date_to == null || isWithinDateRange(hotel.getDate_to(), date_from, date_to))
+                                (date_from == null || isWithinDateRange(hotel.getDateFrom(), date_from, date_to)) &&
+                                (date_to == null || isWithinDateRange(hotel.getDateTo(), date_from, date_to))
                 )
                 .collect(Collectors.toList());
     }
