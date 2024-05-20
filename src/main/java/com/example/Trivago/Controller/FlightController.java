@@ -20,16 +20,7 @@ public class FlightController {
 
     @GetMapping("/flights")
     public ResponseEntity<?> getAllHotels() {
-        try {
-            List<FlightDTO> flights = flightService.getAll();
-
-            if (flights.isEmpty()) {
-                return new ResponseEntity<>("No existen vuelos", HttpStatus.NO_CONTENT);
-            } else {
-                return new ResponseEntity<>(flights, HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error inesperado en vuelos", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<FlightDTO> flights = flightService.getAll();
+        return ResponseEntity.ok(flights);
     }
 }
