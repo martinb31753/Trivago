@@ -23,7 +23,7 @@ public class HotelController {
     @GetMapping("/hotels")
     public ResponseEntity<?> getAllHotels() {
         List<HotelDTO> hotels = hotelService.getAll();
-        return new ResponseEntity<>(hotels, HttpStatus.OK);
+        return ResponseEntity.ok(hotels);
     }
 
     @PostMapping("/add-new-hotel")
