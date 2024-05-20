@@ -43,13 +43,8 @@ public class HotelController {
                 @RequestParam(value = "date_from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_from,
                 @RequestParam(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,
                 @RequestParam(value = "destination", required = false) String destination) {
-
-        try {
             List<HotelDTO> filteredHotels = hotelService.getAvailableHotels(date_from, date_to, destination);
             return ResponseEntity.ok(filteredHotels);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error inesperado", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
 
