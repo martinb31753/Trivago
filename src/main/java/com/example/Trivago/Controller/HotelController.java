@@ -23,16 +23,7 @@ public class HotelController {
 
     @GetMapping("/hotels")
     public ResponseEntity<?> getAllHotels() {
-        try {
-            List<HotelDTO> hotels = hotelService.getAll();
-
-            if (hotels.isEmpty()) {
-                return new ResponseEntity<>("No existen hoteles", HttpStatus.NO_CONTENT);
-            } else {
-                return new ResponseEntity<>(hotels, HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error inesperadoq", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<HotelDTO> hotels = hotelService.getAll();
+        return ResponseEntity.ok(hotels);
     }
 }
