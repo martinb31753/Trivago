@@ -18,8 +18,9 @@ public class FlightController {
 
 
     @GetMapping("/flights")
-    public ResponseEntity<?> getAllHotels() {
-        return new ResponseEntity<>(flightService.getAll(), HttpStatus.OK);
+    public ResponseEntity<?> getAll() {
+        List<FlightDTO> flights = flightService.getAll();
+        return ResponseEntity.ok(flights);
     }
 
     @PostMapping("/add-new-flight")
