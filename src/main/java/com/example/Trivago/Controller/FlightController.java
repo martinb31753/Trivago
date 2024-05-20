@@ -24,7 +24,7 @@ public class FlightController {
 
 
     @GetMapping("/flights")
-    public ResponseEntity<?> getAllFlights() {
+    public ResponseEntity<?> getAll() {
         List<FlightDTO> flights = flightService.getAll();
         return ResponseEntity.ok(flights);
     }
