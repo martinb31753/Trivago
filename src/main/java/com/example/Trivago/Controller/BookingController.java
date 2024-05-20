@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1")
 public class BookingController {
 
-   @Autowired
+    @Autowired
     private IHotelBookingService hotelService;
 
     @PostMapping("/booking")
@@ -21,6 +21,4 @@ public class BookingController {
         BookingResponseDTO hotelBooking = hotelService.bookHotelresponse(request);
         return ResponseEntity.ok(hotelBooking);
     }
-
-
 }

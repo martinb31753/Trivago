@@ -22,11 +22,16 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
     private IHotelRepository hotelRepository;
 
 
-
-
     @Override
     public BookingResponseDTO bookHotelresponse(BookingRequestDTO request) {
+        LocalDate dateFrom = request.getBooking().getDateFrom();
+        LocalDate dateTo = request.getBooking().getDateTo();
+
         // Encontrar el hotel por código
+        Hotel hotel = hotelRepository.getById(request.getBooking().getHotelCode());
+        System.out.println(request.getBooking().getHotelCode());
+        if (hotel == null) {
+            throw new RuntimeException("Hotel no encontrado");
 
         Hotel hotel = hotelRepository.getById(request.getBooking().getHotelCode());
 
@@ -39,6 +44,7 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
         if (hotel.getIsReserved()) {
             throw new InvalidReservation("El hotel ya está reservado");
+
         }
 
 
@@ -56,7 +62,6 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         // Marcar  reservada
         hotel.setIsReserved(true);
         hotelRepository.save(hotel);
-
 
         //  respuesta
 
@@ -117,16 +122,15 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
 
 
-
         BookingResponseDTO response = new BookingResponseDTO();
         response.setUserName(request.getUserName());
         response.setAmount(amount);
         response.setInterest(interest);
         response.setTotal(total);
         response.setBooking(bookingDetail);
-        response.setStatus(responseStatusDTO);
+
+        response.setStatus(status);
 
         return response;
-
     }
 }

@@ -12,8 +12,10 @@ public class PaymentMethodDTO {
 
     @JsonProperty("type")
     private String type;
+
     @JsonProperty("number_card")
     private String numberCard;
+
     @JsonProperty("dues")
     private Integer dues;
 }

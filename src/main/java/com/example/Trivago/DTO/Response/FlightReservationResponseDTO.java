@@ -1,15 +1,14 @@
 package com.example.Trivago.DTO.Response;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.awt.*;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookingResponseDTO {
+public class FlightReservationResponseDTO {
     @JsonProperty("user_name")
     private String userName;
 
@@ -22,15 +21,9 @@ public class BookingResponseDTO {
     @JsonProperty("total")
     private double total;
 
-    @JsonProperty("booking")
-    private BookingResponseDetailDTO booking;
+    @JsonProperty("flight_reservation")
+    private FlightReservationResponseDetailDTO flightReservationDTO;
 
     @JsonProperty("status_code")
     private ResponseStatusDTO status;
-
 }
-
-
-
-
-

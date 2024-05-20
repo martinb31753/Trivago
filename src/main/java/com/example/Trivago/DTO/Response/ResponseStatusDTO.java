@@ -10,9 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class ResponseStatusDTO {
-     @JsonProperty("code")
-    private Integer status;
-     @JsonProperty("message")
+
+    @JsonProperty("code")
+    private Integer code;
+  
+    @JsonProperty("message")
     private String message;
 
 }
