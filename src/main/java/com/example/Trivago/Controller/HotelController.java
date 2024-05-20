@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/v1")
 public class HotelController {
@@ -44,13 +45,13 @@ public class HotelController {
     }
 
 
-        @GetMapping("/filterHotels")
-        public ResponseEntity<?> getAvailableHotels(
-                @RequestParam(value = "date_from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_from,
-                @RequestParam(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,
-                @RequestParam(value = "destination", required = false) String destination) {
-            List<HotelDTO> filteredHotels = hotelService.getAvailableHotels(date_from, date_to, destination);
-            return ResponseEntity.ok(filteredHotels);
+    @GetMapping("/filterHotels")
+    public ResponseEntity<?> getAvailableHotels(
+            @RequestParam(value = "date_from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_from,
+            @RequestParam(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,
+            @RequestParam(value = "destination", required = false) String destination) {
+        List<HotelDTO> filteredHotels = hotelService.getAvailableHotels(date_from, date_to, destination);
+        return ResponseEntity.ok(filteredHotels);
     }
 
 

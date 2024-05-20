@@ -12,6 +12,7 @@ import com.example.Trivago.Repository.IHotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.time.LocalDate;
 
 @Service
@@ -40,7 +41,7 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
 
         if (hotel.getIsReserved()) {
-            throw new InvalidReservation("El hotel ya está reservado");
+            throw new InvalidReservation(hotel.getName() + " ya ha sido reservado, pruebe usando otro codigo de hotel");
         }
 
 
@@ -59,18 +60,18 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
 
         //  respuesta
-
         BookingResponseDetailDTO bookingDetail = new BookingResponseDetailDTO();
         if(dateFrom.isAfter(dateTo) || dateTo.isBefore(dateFrom) ||
                 (!dateFrom.isEqual(hotel.getDateFrom()) || !dateTo.isEqual(hotel.getDateTo()))){
             throw new InvalidReservation("Las fechas son erroneas");
         }
+
         bookingDetail.setDateFrom(dateFrom);
         bookingDetail.setDateTo(dateTo);
 
 
         if(!hotel.getDestination().equalsIgnoreCase(request.getBooking().getDestination()) ){
-            throw new InvalidReservation("El destino es incorrecto");
+            throw new InvalidReservation(hotel.getDestination() + " como destino es incorrecto");
         }
 
         bookingDetail.setDestination(request.getBooking().getDestination());
@@ -79,8 +80,8 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         if(request.getBooking().getPeopleAmount() > 5 ){
             throw new InvalidReservation("No pueden ingresar más de 5 personas ");
         }
-        bookingDetail.setPeopleAmount(request.getBooking().getPeopleAmount());
 
+        bookingDetail.setPeopleAmount(request.getBooking().getPeopleAmount());
 
         bookingDetail.setRoomType(request.getBooking().getRoomType());
         bookingDetail.setPeople(request.getBooking().getPeople());
@@ -116,8 +117,6 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         responseStatusDTO.setMessage("El proceso termino satisfactoriamente");
 
 
-
-
         BookingResponseDTO response = new BookingResponseDTO();
         response.setUserName(request.getUserName());
         response.setAmount(amount);
@@ -127,6 +126,5 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         response.setStatus(responseStatusDTO);
 
         return response;
-
     }
 }

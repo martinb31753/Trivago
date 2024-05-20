@@ -1,6 +1,7 @@
 package com.example.Trivago.Repository;
 
 import com.example.Trivago.DTO.HotelDTO;
+import com.example.Trivago.Exception.InvalidReservation;
 import com.example.Trivago.Model.Hotel;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,13 +33,11 @@ public class HotelRepositoryImpl implements IHotelRepository {
                 .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
                 .registerModule(new JavaTimeModule());
 
-
-
         try {
             file = ResourceUtils.getFile("classpath:hotel.json");
             loadedData = objectMapper.readValue(file, new TypeReference<>() {});
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
             System.out.println("Error al cargar Json hoteles");
         }
         return loadedData;

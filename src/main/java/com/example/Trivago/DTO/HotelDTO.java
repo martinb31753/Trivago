@@ -25,11 +25,11 @@ public class HotelDTO {
 
     @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("date_from")
-    private LocalDate date_from;
+    private LocalDate dateFrom;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("date_to")
-    private LocalDate date_to;
+    private LocalDate dateTo;
 
     @JsonProperty("is_reserved")
     private Boolean isReserved;
