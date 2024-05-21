@@ -1,6 +1,7 @@
 package com.example.Trivago.Service;
 
 
+import com.example.Trivago.DTO.ErrorDTO;
 import com.example.Trivago.DTO.PaymentMethodDTO;
 import com.example.Trivago.DTO.Request.BookingRequestDTO;
 import com.example.Trivago.DTO.Response.BookingResponseDTO;
@@ -9,8 +10,10 @@ import com.example.Trivago.DTO.Response.ResponseStatusDTO;
 import com.example.Trivago.Exception.InvalidReservation;
 import com.example.Trivago.Model.Hotel;
 import com.example.Trivago.Repository.IHotelRepository;
+import org.springframework.asm.Handle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.awt.*;
 import java.time.LocalDate;
@@ -22,9 +25,6 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
     @Autowired
     private IHotelRepository hotelRepository;
 
-
-
-
     @Override
     public BookingResponseDTO bookHotelresponse(BookingRequestDTO request) {
         // Encontrar el hotel por código
@@ -34,14 +34,14 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
         System.out.println(hotel);
         if (hotel == null) {
-            throw new InvalidReservation("Hotel no encontrado");
+            throw new InvalidReservation("El hotel con el codigo " + request.getBooking().getHotelCode() + " no existe");
         }
         LocalDate dateFrom = request.getBooking().getDateFrom();//request.getDateFrom();
         LocalDate dateTo = request.getBooking().getDateTo();//getDateTo();
 
 
         if (hotel.getIsReserved()) {
-            throw new InvalidReservation(hotel.getName() + " ya ha sido reservado, pruebe usando otro codigo de hotel");
+            throw new InvalidReservation(hotel.getName() + " el hotel ya fue reservado");
         }
 
 
@@ -53,10 +53,6 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         // Interes
         double interest = 5.5;
         double total = amount + (amount * interest / 100);
-
-        // Marcar  reservada
-        hotel.setIsReserved(true);
-        hotelRepository.save(hotel);
 
 
         //  respuesta
@@ -78,7 +74,7 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
         bookingDetail.setHotelCode(request.getBooking().getHotelCode());
         if(request.getBooking().getPeopleAmount() > 5 ){
-            throw new InvalidReservation("No pueden ingresar más de 5 personas ");
+            throw new InvalidReservation(hotel.getRoomType() + " No admite más de 5 personas ");
         }
 
         bookingDetail.setPeopleAmount(request.getBooking().getPeopleAmount());
@@ -124,6 +120,10 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         response.setTotal(total);
         response.setBooking(bookingDetail);
         response.setStatus(responseStatusDTO);
+
+        // Marcar  reservada
+        hotel.setIsReserved(true);
+        hotelRepository.save(hotel);
 
         return response;
     }

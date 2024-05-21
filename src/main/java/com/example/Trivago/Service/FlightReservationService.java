@@ -35,7 +35,7 @@ public class FlightReservationService implements IFlightReservationService {
         // Encontrar el hotel por código
         Flight flight = flightRepository.getById(request.getFlightReservationDTO().getFlightNumber());
         if (flight == null) {
-            throw new InvalidReservation("El numero de vuelo no existe");
+            throw new InvalidReservation(flight.getFlightNumber() + " vuelo no existe");
         }
 
 
