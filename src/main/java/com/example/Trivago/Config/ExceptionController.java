@@ -14,7 +14,7 @@ public class ExceptionController {
     @ExceptionHandler(InvalidReservation.class)
     public ResponseEntity<ErrorDTO> handleInvalidReservation(InvalidReservation ex) {
         ErrorDTO errorDTO = new ErrorDTO(ex.getMessage(), 404);
-        return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDTO,HttpStatus.NOT_FOUND);
     }
 
 }
