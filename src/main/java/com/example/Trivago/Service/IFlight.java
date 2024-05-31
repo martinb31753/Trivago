@@ -8,8 +8,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface IFlight {
+
     List<FlightDTO> getAll();
-    List<Flight> getFlightByDate(LocalDate date_from, LocalDate date_to, String origin, String destination);
+    List<FlightDTO> getFlightByDate(LocalDate date_from, LocalDate date_to, String origin, String destination);
 
     FlightDTO getByFlightNumber(String flightCode);
 

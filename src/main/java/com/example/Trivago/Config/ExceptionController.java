@@ -13,7 +13,7 @@ public class ExceptionController {
 
     @ExceptionHandler(InvalidReservation.class)
     public ResponseEntity<ErrorDTO> handleInvalidReservation(InvalidReservation ex) {
-        ErrorDTO errorDTO = new ErrorDTO(ex.getMessage(), 404);
+        ErrorDTO errorDTO = new ErrorDTO(ex.getMessage(), HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
     }
 

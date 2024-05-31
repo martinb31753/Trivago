@@ -36,6 +36,7 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         if (hotel == null) {
             throw new InvalidReservation("El hotel con el codigo " + request.getBooking().getHotelCode() + " no existe");
         }
+
         LocalDate dateFrom = request.getBooking().getDateFrom();//request.getDateFrom();
         LocalDate dateTo = request.getBooking().getDateTo();//getDateTo();
 

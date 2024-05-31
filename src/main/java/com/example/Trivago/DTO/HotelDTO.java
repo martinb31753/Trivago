@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HotelDTO {
+
     @JsonProperty("hotel_code")
     private String hotelCode;
 
@@ -26,6 +27,7 @@ public class HotelDTO {
 
     @JsonProperty("price_per_night")
     private String pricePerNight;
+
 
     @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("date_from")

@@ -11,7 +11,6 @@ import java.util.List;
 public interface IHotel {
 
     List<HotelDTO> getAll();
-
     List<HotelDTO> getAvailableHotels(LocalDate dateFrom, LocalDate dateTo, String destination);
 
     Hotel addNewHotel(HotelDTO newHotel);

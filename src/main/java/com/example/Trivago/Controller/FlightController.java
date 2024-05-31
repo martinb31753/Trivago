@@ -19,10 +19,14 @@ public class FlightController {
     @Autowired
     IFlight flightService;
 
-
     @GetMapping("/flights")
-    public ResponseEntity<?> getAllHotels() {
-        return new ResponseEntity<>(flightService.getAll(), HttpStatus.OK);
+    public ResponseEntity<?> getAvailableFlights(
+            @RequestParam(value = "date_from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_from,
+            @RequestParam(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,
+            @RequestParam(value = "origin", required = false) String origin,
+            @RequestParam(value = "destination", required = false) String destination){
+        List<FlightDTO> filteredFlights = flightService.getFlightByDate(date_from, date_to, origin, destination);
+        return ResponseEntity.ok(filteredFlights);
     }
 
     @PostMapping("/add-new-flight")
@@ -41,13 +45,5 @@ public class FlightController {
         return new ResponseEntity<>(flightService.deleteFlightById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/flights?date_from={date_from}&date_to={date_to}&origin={origin}&destination={destination}")
-    public ResponseEntity<?> getFlights(
-            @PathVariable(value = "date_from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_from,
-            @PathVariable(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,
-            @PathVariable(value = "origin", required = false) String origin,
-            @PathVariable(value = "destination", required = false) String destination) {
-        List<Flight> flights = flightService.getFlightByDate(date_from, date_to, origin, destination);
-        return new ResponseEntity<>(flights, HttpStatus.OK);
-    }
+
 }

@@ -17,23 +17,34 @@ public class HotelServiceImpl implements IHotel {
     @Autowired
     private IHotelRepository hotelRepository;
 
+    private List<HotelDTO> hotelList;
     ModelMapper modelMapper = new ModelMapper();
+
 
     @Override
     public List<HotelDTO> getAll() {
-        List<Hotel> hotelList = hotelRepository.getAll();
-        return hotelList.stream()
-                .map(hotel -> modelMapper.map(hotel, HotelDTO.class)).toList();
+        return hotelRepository.getAll()
+                .stream()
+                .map(hotel -> modelMapper.map(hotel, HotelDTO.class))
+                .toList();
     }
 
     @Override
     public List<HotelDTO> getAvailableHotels(LocalDate dateFrom, LocalDate dateTo, String destination) {
-         List<Hotel> hotels = hotelRepository.getHotelsAvailableFilter(dateFrom, dateTo, destination);
-
-        return hotels.stream()
-                .map(flight -> modelMapper.map(flight, HotelDTO.class)).toList();
+        hotelList = getAll();
+        if (destination == null && dateFrom == null && dateTo == null) {
+            return hotelList;
+        }
+        return hotelList.stream().filter(hotel ->
+                (destination == null || hotel.getDestination().equalsIgnoreCase(destination)) &&
+                        (dateFrom == null || isWithinDateRange(hotel.getDateFrom(), dateFrom, dateTo)) &&
+                        (dateTo == null || isWithinDateRange(hotel.getDateTo(), dateFrom, dateTo)))
+                .toList();
     }
 
+    private boolean isWithinDateRange(LocalDate date, LocalDate rangeStart, LocalDate rangeEnd) {
+        return !date.isBefore(rangeStart) && !date.isAfter(rangeEnd);
+    }
 
     @Override
     public Hotel addNewHotel(HotelDTO newHotel) {

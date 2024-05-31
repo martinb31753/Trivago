@@ -16,19 +16,21 @@ public class FlightServiceImpl implements IFlight {
     @Autowired
     private IFlightRepository flightRepository;
 
+    private List<FlightDTO> flightList;
     ModelMapper modelMapper = new ModelMapper();
 
     @Override
     public List<FlightDTO> getAll() {
-        List<Flight> flightList = flightRepository.getAll();
-
-        return flightList.stream()
+        return flightRepository.getAll().stream()
                 .map(flight -> modelMapper.map(flight, FlightDTO.class)).toList();
     }
 
     @Override
-    public List<Flight> getFlightByDate(LocalDate date_from, LocalDate date_to, String origin, String destination) {
-        List<Flight> flightList = flightRepository.getAll();
+    public List<FlightDTO> getFlightByDate(LocalDate date_from, LocalDate date_to, String origin, String destination) {
+        flightList = getAll();
+        if (origin == null && destination == null && date_from == null && date_to == null) {
+            return flightList;
+        }
         return flightList.stream()
                 .filter(flight ->
                         (origin == null || flight.getOrigin().equalsIgnoreCase(origin)) &&

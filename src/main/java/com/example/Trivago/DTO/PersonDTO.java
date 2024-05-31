@@ -23,5 +23,4 @@ public class PersonDTO {
     private LocalDate birthDate;
     @JsonProperty("email")
     private String email;
-
 }
