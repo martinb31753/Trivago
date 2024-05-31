@@ -1,5 +1,6 @@
 package com.example.Trivago.DTO.Request;
 
+import com.example.Trivago.DTO.PaymentMethodDTO;
 import com.example.Trivago.DTO.Response.BookingResponseDetailDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,4 @@ public class BookingRequestDTO {
     private String userName;
     @JsonProperty("booking")
     private BookingRequestDetailDTO booking;
-
-
 }

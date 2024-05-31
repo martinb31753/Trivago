@@ -45,11 +45,11 @@ public class HotelController {
     }
 
 
-    @GetMapping("/filterHotels")
+    @GetMapping("/hotels?date_from={date_from}&date_to={date_to}&destination={destination}")
     public ResponseEntity<?> getAvailableHotels(
-            @RequestParam(value = "date_from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_from,
-            @RequestParam(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,
-            @RequestParam(value = "destination", required = false) String destination) {
+            @PathVariable(value = "date_from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_from,
+            @PathVariable(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,
+            @PathVariable(value = "destination", required = false) String destination) {
         List<HotelDTO> filteredHotels = hotelService.getAvailableHotels(date_from, date_to, destination);
         return ResponseEntity.ok(filteredHotels);
     }

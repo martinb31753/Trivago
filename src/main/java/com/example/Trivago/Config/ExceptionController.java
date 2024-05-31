@@ -17,4 +17,6 @@ public class ExceptionController {
         return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
     }
 
+    //Agregar otras excepciones
+
 }

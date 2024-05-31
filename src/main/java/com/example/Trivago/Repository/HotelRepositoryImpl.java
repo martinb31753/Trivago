@@ -87,7 +87,7 @@ public class HotelRepositoryImpl implements IHotelRepository {
                                 (date_from == null || isWithinDateRange(hotel.getDateFrom(), date_from, date_to)) &&
                                 (date_to == null || isWithinDateRange(hotel.getDateTo(), date_from, date_to))
                 )
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private boolean isWithinDateRange(LocalDate date, LocalDate rangeStart, LocalDate rangeEnd) {

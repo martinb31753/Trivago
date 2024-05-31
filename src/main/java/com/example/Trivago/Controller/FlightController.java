@@ -41,12 +41,12 @@ public class FlightController {
         return new ResponseEntity<>(flightService.deleteFlightById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/flightsByDate")
+    @GetMapping("/flights?date_from={date_from}&date_to={date_to}&origin={origin}&destination={destination}")
     public ResponseEntity<?> getFlights(
-            @RequestParam(value = "date_from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_from,
-            @RequestParam(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,
-            @RequestParam(value = "origin", required = false) String origin,
-            @RequestParam(value = "destination", required = false) String destination) {
+            @PathVariable(value = "date_from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_from,
+            @PathVariable(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,
+            @PathVariable(value = "origin", required = false) String origin,
+            @PathVariable(value = "destination", required = false) String destination) {
         List<Flight> flights = flightService.getFlightByDate(date_from, date_to, origin, destination);
         return new ResponseEntity<>(flights, HttpStatus.OK);
     }

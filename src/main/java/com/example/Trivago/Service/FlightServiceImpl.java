@@ -23,7 +23,7 @@ public class FlightServiceImpl implements IFlight {
         List<Flight> flightList = flightRepository.getAll();
 
         return flightList.stream()
-                .map(flight -> modelMapper.map(flight, FlightDTO.class)).collect(java.util.stream.Collectors.toList());
+                .map(flight -> modelMapper.map(flight, FlightDTO.class)).toList();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class FlightServiceImpl implements IFlight {
                                 (date_from == null || isWithinDateRange(flight.getDateFrom(), date_from, date_to)) &&
                                 (date_to == null || isWithinDateRange(flight.getDateTo(), date_from, date_to))
                 )
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private boolean isWithinDateRange(LocalDate date, LocalDate rangeStart, LocalDate rangeEnd) {

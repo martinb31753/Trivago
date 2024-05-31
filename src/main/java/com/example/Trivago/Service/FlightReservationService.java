@@ -78,25 +78,6 @@ public class FlightReservationService implements IFlightReservationService {
         flightReservation.setSeatType(request.getFlightReservationDTO().getSeatType());
         flightReservation.setPeople(request.getFlightReservationDTO().getPeople());
 
-        PaymentMethodDTO paymentMethod = new PaymentMethodDTO();
-        if (!request.getFlightReservationDTO().getPaymentMethod().getType().equalsIgnoreCase("CREDIT")) {
-            throw new InvalidReservation("El tipo de pago no coincide con el tipo de pago del vuelo");
-        }
-        paymentMethod.setType(request.getFlightReservationDTO().getPaymentMethod().getType());
-
-        System.out.println(request.getFlightReservationDTO().getPaymentMethod().getNumberCard().length());
-        if (request.getFlightReservationDTO().getPaymentMethod().getNumberCard().length() < 16) {
-            throw new InvalidReservation("El numero de tarjeta debe ser de 16 digitos");
-        }
-        paymentMethod.setNumberCard(request.getFlightReservationDTO().getPaymentMethod().getNumberCard());
-
-        if (request.getFlightReservationDTO().getPaymentMethod().getDues() < 1 ||
-                request.getFlightReservationDTO().getPaymentMethod().getDues() > 12) {
-            throw new InvalidReservation("El valor de la cuota debe estar entre 1 y 12");
-        }
-
-        paymentMethod.setDues(request.getFlightReservationDTO().getPaymentMethod().getDues());
-        flightReservation.setPaymentMethod(paymentMethod);
 
         ResponseStatusDTO status = new ResponseStatusDTO();
         status.setCode(201);

@@ -82,32 +82,6 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         bookingDetail.setRoomType(request.getBooking().getRoomType());
         bookingDetail.setPeople(request.getBooking().getPeople());
 
-
-        PaymentMethodDTO paymentMethodDTO = new PaymentMethodDTO();
-
-        if(!request.getBooking().getPaymentMethod().getType().equals("CREDIT")){
-            throw new InvalidReservation("Su metodo de pago tiene que ser tarjeta de credito");
-        }
-        paymentMethodDTO.setType(request.getBooking().getPaymentMethod().getType());
-
-        if (request.getBooking().getPaymentMethod().getNumberCard().length() < 16) {
-            throw new InvalidReservation("tiene que tener por lo menos 16 dígitos");
-        }
-
-        paymentMethodDTO.setNumberCard(request.getBooking().getPaymentMethod().getNumberCard());
-
-
-
-        if(request.getBooking().getPaymentMethod().getDues() < 1 ||
-                request.getBooking().getPaymentMethod().getDues() > 12){
-            throw new InvalidReservation("El valor de la cuota debe ser entre 1 y 12");
-        }
-
-        paymentMethodDTO.setDues(request.getBooking().getPaymentMethod().getDues());
-
-        bookingDetail.setPaymentMethod(paymentMethodDTO);
-
-
         ResponseStatusDTO responseStatusDTO  = new ResponseStatusDTO();
         responseStatusDTO.setCode(201);
         responseStatusDTO.setMessage("El proceso termino satisfactoriamente");
