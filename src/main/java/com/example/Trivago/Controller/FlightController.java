@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.xpath.XPath;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -34,15 +35,15 @@ public class FlightController {
         return new ResponseEntity<>(flightService.addNewFlight(newFlight), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateFlightById(@PathVariable Long id, @RequestBody FlightDTO updateFlight) {
-        return new ResponseEntity<>(flightService.updateFlightById(id, updateFlight), HttpStatus.OK);
+    @PutMapping("/update-flight/{flightNumber}")
+    public ResponseEntity<?> updateFlight(@RequestBody FlightDTO updateFlight, @PathVariable String flightNumber) {
+        return new ResponseEntity<>(flightService.updateFlight(updateFlight), HttpStatus.OK);
 
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteFlightById(@PathVariable Long id) {
-        return new ResponseEntity<>(flightService.deleteFlightById(id), HttpStatus.OK);
+    @DeleteMapping("/remove-flight/{flightNumber}")
+    public ResponseEntity<?> deleteFlightById(@PathVariable String flightNumber) {
+        return new ResponseEntity<>(flightService.deleteFlightById(flightNumber), HttpStatus.OK);
     }
 
 

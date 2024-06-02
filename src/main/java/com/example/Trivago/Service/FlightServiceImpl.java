@@ -1,5 +1,6 @@
 package com.example.Trivago.Service;
 import com.example.Trivago.DTO.FlightDTO;
+import com.example.Trivago.DTO.Response.RespuestaDTO;
 import com.example.Trivago.Model.Flight;
 import com.example.Trivago.Repository.IFlightRepository;
 import org.modelmapper.ModelMapper;
@@ -52,18 +53,33 @@ public class FlightServiceImpl implements IFlight {
     }
 
     @Override
-    public Flight addNewFlight(FlightDTO flight) {
-        return null;
+    public RespuestaDTO addNewFlight(FlightDTO flightDTO) {
+        Flight flight = new Flight();
+
+        modelMapper.map(flightDTO, flight);
+
+        flightRepository.save(flight);
+
+        return new RespuestaDTO("El vuelo ha sido creado con éxito");
+    }
+
+
+    @Override
+    public RespuestaDTO updateFlight(FlightDTO updateFlight) {
+        Flight flight = new Flight();
+        modelMapper.map(updateFlight, flight);
+
+        flightRepository.update(flight);
+
+        return new RespuestaDTO("El vuelo ha sido actualizado con éxito");
     }
 
     @Override
-    public Flight updateFlightById(Long id, FlightDTO updateFlight) {
-        return null;
-    }
+    public RespuestaDTO deleteFlightById(String flightNumber) {
 
-    @Override
-    public Flight deleteFlightById(Long id) {
-        return null;
+        flightRepository.delete(flightNumber);
+
+        return new RespuestaDTO ("El vuelo ha sido eliminado con exito");
     }
 
 }

@@ -4,7 +4,7 @@ import com.example.Trivago.DTO.HotelDTO;
 import com.example.Trivago.DTO.Response.ResponseStatusDTO;
 import com.example.Trivago.Model.Hotel;
 import com.example.Trivago.Service.IHotel;
-import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -42,13 +42,13 @@ public class HotelController {
         return new ResponseEntity<>( hotelService.addNewHotel(newHotel),HttpStatus.CREATED);
     }
 
-    @PutMapping("/{hotelCode}")
-    public ResponseEntity<?> updateHotelById(@PathVariable String hotelCode, @RequestBody HotelDTO updateHotel) {
-        return new ResponseEntity<>(hotelService.updateHotelById(hotelCode, updateHotel), HttpStatus.OK);
+    @PutMapping("/update-hotel/{hotelCode}")
+    public ResponseEntity<?> updateHotelById(@RequestBody HotelDTO updateHotel, @PathVariable String hotelCode) {
+        return new ResponseEntity<>(hotelService.updateHotelById(updateHotel), HttpStatus.OK);
 
     }
 
-    @DeleteMapping("/{hotelCode}")
+    @DeleteMapping("/remove-hotel/{hotelCode}")
     public ResponseEntity<?> deleteHotelById(@PathVariable String hotelCode) {
         return new ResponseEntity<>(hotelService.deleteHotelById(hotelCode), HttpStatus.OK);
     }

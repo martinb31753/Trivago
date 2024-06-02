@@ -1,6 +1,7 @@
 package com.example.Trivago.Service;
 
 import com.example.Trivago.DTO.HotelDTO;
+import com.example.Trivago.DTO.Response.RespuestaDTO;
 import com.example.Trivago.Model.Hotel;
 import com.example.Trivago.Repository.IHotelRepository;
 import org.modelmapper.ModelMapper;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class HotelServiceImpl implements IHotel {
@@ -47,18 +47,35 @@ public class HotelServiceImpl implements IHotel {
     }
 
     @Override
-    public Hotel addNewHotel(HotelDTO newHotel) {
-        return null;
+    public RespuestaDTO addNewHotel(HotelDTO newHotel) {
+
+        Hotel hotel = new Hotel();
+
+        modelMapper.map(newHotel, hotel);
+
+        hotelRepository.save(hotel);
+
+        return new RespuestaDTO("El hotel ha sido agregado con exito");
 
     }
 
     @Override
-    public Hotel updateHotelById(String hotelCode, HotelDTO updateHotel) {
-        return null;
+    public RespuestaDTO updateHotelById(HotelDTO updateHotel) {
+
+        Hotel hotel= new Hotel();
+
+        modelMapper.map(updateHotel, hotel);
+
+        hotelRepository.update(hotel);
+
+        return new RespuestaDTO("El Hotel se actualizó con éxito");
     }
 
     @Override
-    public Hotel deleteHotelById(String hotelCode) {
-        return null;
+    public RespuestaDTO deleteHotelById(String hotelCode) {
+
+        hotelRepository.delete(hotelCode);
+
+        return new RespuestaDTO ("El Hotel se eliminó con éxito");
     }
 }

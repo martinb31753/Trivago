@@ -32,8 +32,8 @@ public class FlightReservationService implements IFlightReservationService {
         LocalDate dateFrom = request.getFlightReservationDTO().getDateFrom();
         LocalDate dateTo = request.getFlightReservationDTO().getDateTo();
 
-        // Encontrar el hotel por código
-        Flight flight = flightRepository.getById(request.getFlightReservationDTO().getFlightNumber());
+        // Encontrar el hotel por código //acá modifique el metodo del repo al que se llama
+        Flight flight = flightRepository.getByFlightNumber(request.getFlightReservationDTO().getFlightNumber());
         if (flight == null) {
             throw new InvalidReservation(flight.getFlightNumber() + " vuelo no existe");
         }

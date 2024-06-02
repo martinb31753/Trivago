@@ -56,24 +56,27 @@ public class HotelRepositoryImpl implements IHotelRepository {
     }
 
     @Override
-    public void save(Hotel hotel) {
+    public boolean save(Hotel hotel) {
         hotelsList.removeIf(existingHotel -> existingHotel.getHotelCode().equals(hotel.getHotelCode()));
-        hotelsList.add(hotel);
+
+        return hotelsList.add(hotel);
     }
 
     @Override
-    public Hotel save(HotelDTO newHotel) {
-        return null;
+    public boolean update(Hotel hotel) {
+        Hotel foundHotel = getById(hotel.getHotelCode());
+
+        hotelsList.remove(foundHotel);
+
+        return hotelsList.add(hotel);
     }
 
     @Override
-    public Hotel update(String hotelCode, HotelDTO updateHotel) {
-        return null;
-    }
+    public boolean delete(String hotelCode) {
 
-    @Override
-    public Hotel remove(String hotelCode) {
-        return null;
+        Hotel foundHotel = getById(hotelCode);
+
+        return hotelsList.remove(foundHotel);
     }
 
 
