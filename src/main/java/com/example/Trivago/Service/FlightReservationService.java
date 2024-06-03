@@ -1,11 +1,12 @@
 package com.example.Trivago.Service;
 
-import com.example.Trivago.DTO.PaymentMethodDTO;
 import com.example.Trivago.DTO.Request.FlightReservationRequestDTO;
 import com.example.Trivago.DTO.Response.FlightReservationResponseDTO;
 import com.example.Trivago.DTO.Response.FlightReservationResponseDetailDTO;
 import com.example.Trivago.DTO.Response.ResponseStatusDTO;
-import com.example.Trivago.Exception.InvalidReservation;
+import com.example.Trivago.Exception.FlightNotFound;
+import com.example.Trivago.Exception.InvalidDate;
+import com.example.Trivago.Exception.InvalidReservationFlight;
 import com.example.Trivago.Model.Flight;
 import com.example.Trivago.Repository.IFlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class FlightReservationService implements IFlightReservationService {
     public FlightReservationResponseDTO flightReservation(FlightReservationRequestDTO request) {
 
         if (flightReserved.containsKey(request.getFlightReservationDTO().getFlightNumber())) {
-            throw new InvalidReservation("El vuelo ya fue reservado");
+            throw new InvalidReservationFlight("El vuelo ya fue reservado");
         }
 
         LocalDate dateFrom = request.getFlightReservationDTO().getDateFrom();
@@ -35,14 +36,14 @@ public class FlightReservationService implements IFlightReservationService {
         // Encontrar el hotel por código //acá modifique el metodo del repo al que se llama
         Flight flight = flightRepository.getByFlightNumber(request.getFlightReservationDTO().getFlightNumber());
         if (flight == null) {
-            throw new InvalidReservation(flight.getFlightNumber() + " vuelo no existe");
+            throw new FlightNotFound(flight.getFlightNumber() + " vuelo no existe");
         }
 
 
         double pricePerPerson = Double.parseDouble(flight.getPricePerPerson().replace("$", "").replace(",", ""));
 
         if (request.getFlightReservationDTO().getPeople().size() == 0) {
-            throw new InvalidReservation("No hay pasajeros existentes");
+            throw new InvalidReservationFlight("No hay pasajeros existentes");
         }
 
         double amount = pricePerPerson * request.getFlightReservationDTO().getPeople().size();
@@ -55,7 +56,7 @@ public class FlightReservationService implements IFlightReservationService {
 
         if (dateFrom.isAfter(dateTo) || dateTo.isBefore(dateFrom) ||
                 (!dateFrom.isEqual(flight.getDateFrom()) || !dateTo.isEqual(flight.getDateTo()))) {
-            throw new InvalidReservation("La fecha de llegada debe ser posterior a la fecha de salida o viceversa, " +
+            throw new InvalidDate("La fecha de llegada debe ser posterior a la fecha de salida o viceversa, " +
                     "y además debe coincidir con las de fechas del vuelo");
         }
 
@@ -64,7 +65,7 @@ public class FlightReservationService implements IFlightReservationService {
 
         if (!flight.getOrigin().equalsIgnoreCase(request.getFlightReservationDTO().getOrigin()) ||
                 !flight.getDestination().equalsIgnoreCase(request.getFlightReservationDTO().getDestination())) {
-            throw new InvalidReservation("El origen y destino no coinciden con un vuelo existente");
+            throw new InvalidDate("El origen y destino no coinciden con un vuelo existente");
         }
 
         flightReservation.setOrigin(request.getFlightReservationDTO().getOrigin());
@@ -73,7 +74,7 @@ public class FlightReservationService implements IFlightReservationService {
         flightReservation.setSeats(request.getFlightReservationDTO().getSeats());
 
         if (!flight.getSeatType().equalsIgnoreCase(request.getFlightReservationDTO().getSeatType())) {
-            throw new InvalidReservation("El tipo de asiento no coincide con el tipo de asiento del vuelo");
+            throw new InvalidReservationFlight("El tipo de asiento no coincide con el tipo de asiento del vuelo");
         }
         flightReservation.setSeatType(request.getFlightReservationDTO().getSeatType());
         flightReservation.setPeople(request.getFlightReservationDTO().getPeople());

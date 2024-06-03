@@ -1,6 +1,7 @@
 package com.example.Trivago.Service;
 import com.example.Trivago.DTO.FlightDTO;
 import com.example.Trivago.DTO.Response.RespuestaDTO;
+import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Model.Flight;
 import com.example.Trivago.Repository.IFlightRepository;
 import org.modelmapper.ModelMapper;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -56,6 +56,11 @@ public class FlightServiceImpl implements IFlight {
     public RespuestaDTO addNewFlight(FlightDTO flightDTO) {
         Flight flight = new Flight();
 
+        if (flightDTO.getDateFrom().isAfter(flightDTO.getDateTo()) || flightDTO.getDateTo().isBefore(flightDTO.getDateFrom()) ||
+                (!flightDTO.getDateFrom().isEqual(flightDTO.getDateTo()) || !flightDTO.getDateTo().isEqual(flightDTO.getDateFrom()))) {
+            throw new InvalidDate("La fecha de llegada debe ser posterior a la fecha de salida o viceversa, " +
+                    "y además debe coincidir con las de fechas del vuelo");
+        }
         modelMapper.map(flightDTO, flight);
 
         flightRepository.save(flight);
@@ -67,6 +72,7 @@ public class FlightServiceImpl implements IFlight {
     @Override
     public RespuestaDTO updateFlight(FlightDTO updateFlight) {
         Flight flight = new Flight();
+
         modelMapper.map(updateFlight, flight);
 
         flightRepository.update(flight);

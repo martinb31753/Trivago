@@ -1,21 +1,18 @@
 package com.example.Trivago.Service;
 
 
-import com.example.Trivago.DTO.ErrorDTO;
-import com.example.Trivago.DTO.PaymentMethodDTO;
 import com.example.Trivago.DTO.Request.BookingRequestDTO;
 import com.example.Trivago.DTO.Response.BookingResponseDTO;
 import com.example.Trivago.DTO.Response.BookingResponseDetailDTO;
 import com.example.Trivago.DTO.Response.ResponseStatusDTO;
-import com.example.Trivago.Exception.InvalidReservation;
+import com.example.Trivago.Exception.InvalidBookingHotel;
+import com.example.Trivago.Exception.InvalidDate;
+import com.example.Trivago.Exception.InvalidReservationFlight;
 import com.example.Trivago.Model.Hotel;
 import com.example.Trivago.Repository.IHotelRepository;
-import org.springframework.asm.Handle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
-import java.awt.*;
 import java.time.LocalDate;
 
 @Service
@@ -34,7 +31,7 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
         System.out.println(hotel);
         if (hotel == null) {
-            throw new InvalidReservation("El hotel con el codigo " + request.getBooking().getHotelCode() + " no existe");
+            throw new InvalidReservationFlight("El hotel con el codigo " + request.getBooking().getHotelCode() + " no existe");
         }
 
         LocalDate dateFrom = request.getBooking().getDateFrom();//request.getDateFrom();
@@ -42,7 +39,7 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
 
         if (hotel.getIsReserved()) {
-            throw new InvalidReservation(hotel.getName() + " el hotel ya fue reservado");
+            throw new InvalidReservationFlight(hotel.getName() + " el hotel ya fue reservado");
         }
 
 
@@ -60,7 +57,8 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         BookingResponseDetailDTO bookingDetail = new BookingResponseDetailDTO();
         if(dateFrom.isAfter(dateTo) || dateTo.isBefore(dateFrom) ||
                 (!dateFrom.isEqual(hotel.getDateFrom()) || !dateTo.isEqual(hotel.getDateTo()))){
-            throw new InvalidReservation("Las fechas son erroneas");
+            throw new InvalidDate("La fecha de llegada debe ser posterior a la fecha de salida " +
+                    "o viceversa y además debe coincidir con las fechas disponibles del hotel");
         }
 
         bookingDetail.setDateFrom(dateFrom);
@@ -68,14 +66,14 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
 
         if(!hotel.getDestination().equalsIgnoreCase(request.getBooking().getDestination()) ){
-            throw new InvalidReservation(hotel.getDestination() + " como destino es incorrecto");
+            throw new InvalidDate(hotel.getDestination() + " como destino es incorrecto");
         }
 
         bookingDetail.setDestination(request.getBooking().getDestination());
 
         bookingDetail.setHotelCode(request.getBooking().getHotelCode());
         if(request.getBooking().getPeopleAmount() > 5 ){
-            throw new InvalidReservation(hotel.getRoomType() + " No admite más de 5 personas ");
+            throw new InvalidBookingHotel(hotel.getRoomType() + " No admite más de 5 personas ");
         }
 
         bookingDetail.setPeopleAmount(request.getBooking().getPeopleAmount());
