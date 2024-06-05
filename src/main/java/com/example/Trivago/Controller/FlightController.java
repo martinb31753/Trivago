@@ -31,7 +31,7 @@ public class FlightController {
             @RequestParam(value = "date_from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_from,
             @RequestParam(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,
             @RequestParam (value = "origin", required = false) String origin,
-            @RequestParam (value = "destination", required = false) @NotBlank(message = "El campo destino no debe ser nulo ni vacío") @Size(min = 3, max = 30, message= "La localidad debe tener más tres caracteres y menos de treinta") String destination){
+            @RequestParam (value = "destination", required = false) String destination){
         List<FlightDTO> filteredFlights = flightService.getFlightByDate(date_from, date_to, origin, destination);
         return ResponseEntity.ok(filteredFlights);
     }

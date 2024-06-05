@@ -52,6 +52,16 @@ public class FlightReservationService implements IFlightReservationService {
         double interest = 5.5;
         double total = amount + (amount * interest / 100);
 
+        //Validación para tipo de tarjeta - cuotas y % de interés-
+        //En caso que la tarjeta sea de crédito verificar recargo de intereses.
+        // Ej: hasta 3 cuotas 5%, de 3 a 6 10%, etc.
+        // En caso que sea tarjeta de débito verificar que no se incorporen intereses y que permita
+        // el pago en una sola cuota,
+        // Tarjeta de crédito: Devolver porcentaje y monto de interés (recargo).
+        // Tarjeta de débito: Informar que se ha ingresado una cantidad de cuotas diferente a 1.
+
+
+
         FlightReservationResponseDetailDTO flightReservation = new FlightReservationResponseDetailDTO();
 
         if (dateFrom.isAfter(dateTo) || dateTo.isBefore(dateFrom) ||
