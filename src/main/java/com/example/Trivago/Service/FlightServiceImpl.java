@@ -56,8 +56,7 @@ public class FlightServiceImpl implements IFlight {
     public RespuestaDTO addNewFlight(FlightDTO flightDTO) {
         Flight flight = new Flight();
 
-        if (flightDTO.getDateFrom().isAfter(flightDTO.getDateTo()) || flightDTO.getDateTo().isBefore(flightDTO.getDateFrom()) ||
-                (!flightDTO.getDateFrom().isEqual(flightDTO.getDateTo()) || !flightDTO.getDateTo().isEqual(flightDTO.getDateFrom()))) {
+        if (flightDTO.getDateFrom().isAfter(flightDTO.getDateTo()) || flightDTO.getDateFrom().isEqual(flightDTO.getDateTo())) {
             throw new InvalidDate("La fecha de llegada debe ser posterior a la fecha de salida o viceversa, " +
                     "y además debe coincidir con las de fechas del vuelo");
         }
