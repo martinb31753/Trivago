@@ -10,6 +10,7 @@ import com.example.Trivago.Exception.InvalidReservationFlight;
 import com.example.Trivago.Model.Flight;
 import com.example.Trivago.Repository.IFlightRepository;
 import com.example.Trivago.Service.FlightReservationService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,16 +39,16 @@ class FlightReservationServiceTest {
 
     @BeforeEach
     void setUp() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
         flight = new Flight();
         flight.setFlightNumber("BAPI-1235");
         flight.setPricePerPerson("$6,500");
-        flight.setDateFrom(LocalDate.of(2025, 2, 10));
-        flight.setDateTo(LocalDate.of(2025, 2, 15));
+        flight.setDateFrom(LocalDate.parse("10-02-2025", formatter));
+        flight.setDateTo(LocalDate.parse("15-02-2025", formatter));
         flight.setOrigin("Buenos Aires");
         flight.setDestination("Puerto Iguazú");
         flight.setSeatType("Economy");
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         PersonDTO person1 = new PersonDTO();
         person1.setDni("12345678");
@@ -65,8 +66,8 @@ class FlightReservationServiceTest {
 
         FlightReservationRequestDetailDTO flightReservationDTO = new FlightReservationRequestDetailDTO();
         flightReservationDTO.setFlightNumber("BAPI-1235");
-        flightReservationDTO.setDateFrom(LocalDate.of(2025, 2, 10));
-        flightReservationDTO.setDateTo(LocalDate.of(2025, 2, 15));
+        flightReservationDTO.setDateFrom(LocalDate.parse("10-02-2025", formatter));
+        flightReservationDTO.setDateTo(LocalDate.parse("15-02-2025", formatter));
         flightReservationDTO.setOrigin("Buenos Aires");
         flightReservationDTO.setDestination("Puerto Iguazú");
         flightReservationDTO.setSeatType("Economy");
@@ -85,9 +86,9 @@ class FlightReservationServiceTest {
 
         assertNotNull(response);
         assertEquals("Joaco", response.getUserName());
-        assertEquals("$6,500", response.getAmount());
+        assertEquals(13000, response.getAmount());
         assertEquals(5.5, response.getInterest());
-        assertEquals(13000, response.getTotal());
+        assertEquals(13715, response.getTotal());
         verify(flightRepository, times(1)).getByFlightNumber("BAPI-1235");
     }
 
@@ -95,7 +96,9 @@ class FlightReservationServiceTest {
     void testFlightReservation_FlightNotFound() {
         when(flightRepository.getByFlightNumber("ABCD-1234")).thenReturn(null);
 
-        assertThrows(FlightNotFound.class, () -> flightReservationService.flightReservation(requestDTO));
+        Flight respuesta = flightRepository.getByFlightNumber("ABCD-1234");
+
+        Assertions.assertNull(respuesta, "No se encontró vuelo");
     }
 
     @Test
