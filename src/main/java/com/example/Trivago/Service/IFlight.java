@@ -1,7 +1,7 @@
 package com.example.Trivago.Service;
 
 import com.example.Trivago.DTO.FlightDTO;
-import com.example.Trivago.Model.Flight;
+import com.example.Trivago.DTO.Response.RespuestaDTO;
 
 
 import java.time.LocalDate;
@@ -14,9 +14,9 @@ public interface IFlight {
 
     FlightDTO getByFlightNumber(String flightCode);
 
-    Flight addNewFlight(FlightDTO flight);
+    RespuestaDTO addNewFlight(FlightDTO flightDTO);
 
-    Flight updateFlightById(Long id, FlightDTO updateFlight);
+    RespuestaDTO updateFlight(FlightDTO updateFlight);
 
-    Flight deleteFlightById(Long id);
+    RespuestaDTO deleteFlightById(String flightNumber);
 }

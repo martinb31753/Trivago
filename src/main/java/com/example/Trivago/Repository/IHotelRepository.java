@@ -12,11 +12,9 @@ public interface IHotelRepository  {
     Hotel getById(String hotelCode);
     List<Hotel> getHotelsAvailableFilter(LocalDate date_from, LocalDate date_to, String destination);
 
-    void save(Hotel hotel);
+   boolean save(Hotel hotel);
 
-    Hotel save(HotelDTO newHotel);
+    boolean update(Hotel hotel);
 
-    Hotel update(String hotelCode, HotelDTO updateHotel);
-
-    Hotel remove(String hotelCode);
+    boolean delete (String hotelCode);
 }

@@ -1,9 +1,7 @@
 package com.example.Trivago.Service;
 
-import com.example.Trivago.DTO.FlightDTO;
 import com.example.Trivago.DTO.HotelDTO;
-import com.example.Trivago.Model.Flight;
-import com.example.Trivago.Model.Hotel;
+import com.example.Trivago.DTO.Response.RespuestaDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,11 +9,12 @@ import java.util.List;
 public interface IHotel {
 
     List<HotelDTO> getAll();
+
     List<HotelDTO> getAvailableHotels(LocalDate dateFrom, LocalDate dateTo, String destination);
 
-    Hotel addNewHotel(HotelDTO newHotel);
+    RespuestaDTO addNewHotel(HotelDTO newHotel);
 
-    Hotel updateHotelById(String hotelCode, HotelDTO updateHotel);
+    RespuestaDTO updateHotelById(HotelDTO updateHotel);
 
-    Hotel deleteHotelById(String hotelCode);
+    RespuestaDTO deleteHotelById(String hotelCode);
 }

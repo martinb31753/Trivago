@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "ff783a1e-2bc2-4ee7-8dea-ee1b717785a1",
+		"_postman_id": "01327136-5534-402d-b598-65f043adae62",
 		"name": "Trivago",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-		"_exporter_id": "34146914"
+		"_exporter_id": "32121370"
 	},
 	"item": [
 		{
@@ -129,6 +129,96 @@
 						}
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar hotel",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"hotel_code\": \"HP-0001\",\r\n    \"name\": \"Hotel Plaza\",\r\n    \"destination\": \"Rafaela\",\r\n    \"room_type\": \"Double\",\r\n    \"price_per_night\": \"$5500\",\r\n    \"date_from\": \"10-02-2025\",\r\n    \"date_to\": \"20-03-2025\",\r\n    \"is_reserved\": false\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/v1/add-new-hotel"
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar hotel",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"hotel_code\": \"CH-0002\",\r\n    \"name\": \"Cataratas Hotel\",\r\n    \"destination\": \"Puerto Iguazú\",\r\n    \"room_type\": \"Double\",\r\n    \"price_per_night\": \"$10000\",\r\n    \"date_from\": \"10-02-2025\",\r\n    \"date_to\": \"20-03-2025\",\r\n    \"is_reserved\": false\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/v1/update-hotel/CH-0002"
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar Hotel",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/api/v1/remove-hotel/HP-0001"
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar Vuelo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"flight_number\": \"ROCOR-0001\",\r\n    \"origin\": \"Rosario\",\r\n    \"destination\": \"Córdoba\",\r\n    \"seat_type\": \"Economy\",\r\n    \"price_per_person\": \"$2,500\",\r\n    \"date_from\": \"10-02-2025\",\r\n    \"date_to\": \"17-02-2025\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/v1/add-new-flight"
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar Vuelo",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"flight_number\": \"TUPI-3369\",\r\n    \"origin\": \"Tucumán\",\r\n    \"destination\": \"Puerto Iguazú\",\r\n    \"seat_type\": \"Business\",\r\n    \"price_per_person\": \"$6,700\",\r\n    \"date_from\": \"02-01-2025\",\r\n    \"date_to\": \"16-01-2025\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/v1/update-flight/TUPI-3369"
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar Vuelo",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/api/v1/remove-flight/ROCOR-0001"
 			},
 			"response": []
 		}
