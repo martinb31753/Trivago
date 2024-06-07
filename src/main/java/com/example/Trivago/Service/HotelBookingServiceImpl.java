@@ -83,6 +83,32 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
             throw new InvalidBookingHotel(hotel.getRoomType() + " No admite más de 5 personas ");
         }
 
+
+
+
+        int maxCapacity = 0;
+        switch (hotel.getRoomType().toLowerCase()) {
+            case "single":
+                maxCapacity = 1;
+                break;
+            case "double":
+                maxCapacity = 2;
+                break;
+            case "triple":
+                maxCapacity = 3;
+                break;
+            default:
+                throw new InvalidBookingHotel("Tipo de habitación desconocido: " + hotel.getRoomType());
+        }
+
+        if (request.getBooking().getPeopleAmount() > maxCapacity) {
+            throw new InvalidBookingHotel(hotel.getRoomType() + " no admite más de " + maxCapacity + " personas.");
+        }
+
+
+
+
+
         bookingDetail.setPeopleAmount(request.getBooking().getPeopleAmount());
 
         //Validar! Tipo de Habitación
