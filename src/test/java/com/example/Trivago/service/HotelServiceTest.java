@@ -1,6 +1,8 @@
 package com.example.Trivago.service;
 
 import com.example.Trivago.DTO.HotelDTO;
+import com.example.Trivago.Exception.InvalidDate;
+import com.example.Trivago.Exception.InvalidDestination;
 import com.example.Trivago.Model.Hotel;
 import com.example.Trivago.Repository.HotelRepositoryImpl;
 import com.example.Trivago.Service.HotelServiceImpl;
@@ -41,6 +43,8 @@ public class HotelServiceTest {
         when(hotelRepository.getAll()).thenReturn(hotels);
         when(modelMapper.map(hotels.get(0), HotelDTO.class)).thenReturn(hotelsDTO.get(0));
         when(modelMapper.map(hotels.get(1), HotelDTO.class)).thenReturn(hotelsDTO.get(1));
+        when(modelMapper.map(hotels.get(2), HotelDTO.class)).thenReturn(hotelsDTO.get(2));
+        when(modelMapper.map(hotels.get(3), HotelDTO.class)).thenReturn(hotelsDTO.get(3));
     }
 
     private List<Hotel> createHotelList() {
@@ -62,7 +66,25 @@ public class HotelServiceTest {
                 LocalDate.of(2025, 3, 23),
                 false);
 
-        return List.of(hotel1, hotel2);
+        Hotel hotel3 = new Hotel("CH-0004",
+                "Cataratas Hotel 3",
+                "Puerto Iguazú",
+                "Triple",
+                "$8200",
+                LocalDate.of(2025, 2, 10),
+                LocalDate.of(2025, 3, 23),
+                false);
+
+        Hotel hotel4 = new Hotel("CH-0005",
+                "Cataratas Hotel 4",
+                "Puerto Iguazú",
+                "Triple",
+                "$8200",
+                LocalDate.of(2025, 2, 10),
+                LocalDate.of(2025, 3, 23),
+                false);
+
+        return List.of(hotel1, hotel2, hotel3, hotel4);
     }
 
     private List<HotelDTO> createHotelDTOList() {
@@ -84,8 +106,27 @@ public class HotelServiceTest {
                 LocalDate.of(2025, 3, 23),
                 false);
 
-        return List.of(hotelDTO1, hotelDTO2);
+        HotelDTO hotelDTO3 = new HotelDTO("CH-0004",
+                "Cataratas Hotel 3",
+                "Puerto Iguazú",
+                "Triple",
+                "$8200",
+                LocalDate.of(2025, 2, 10),
+                LocalDate.of(2025, 3, 23),
+                false);
+
+        HotelDTO hotelDTO4 = new HotelDTO("CH-0005",
+                "Cataratas Hotel 4",
+                "Puerto Iguazú",
+                "Triple",
+                "$8200",
+                LocalDate.of(2025, 2, 10),
+                LocalDate.of(2025, 3, 23),
+                false);
+
+        return List.of(hotelDTO1, hotelDTO2, hotelDTO3, hotelDTO4);
     }
+
 
 
     @Test
@@ -94,40 +135,56 @@ public class HotelServiceTest {
 
         List<HotelDTO> result = hotelService.getAll();
 
-        assertEquals(hotels.size(), result.size(), "The number of hotels returned is not as expected");
+        assertEquals(hotelsDTO, result, "La lista de hoteles no coincide con la esperada");
     }
 
     @Test
-    public void testGetAvailableHotels() {
-        List<HotelDTO> result = hotelService.getAvailableHotels(LocalDate.of(2025, 2, 10), LocalDate.of(2025, 3, 20), null);
+    public void testGetAvailableHotelsByDate() {
 
-
-//        assertTrue(result.contains(hotelsDTO.get(0)));
-
-        verify(hotelRepository, times(1)).getAll();
-    }
-
-    @Test
-    public void testGetAvailableHotelsII() {
         LocalDate dateFrom = LocalDate.of(2025, 2, 10);
         LocalDate dateTo = LocalDate.of(2025, 3, 20);
         String destination = "Puerto Iguazú";
 
+        List<HotelDTO> hotelsDTOFiltrados = hotelService.getAvailableHotels(dateFrom, dateTo, destination);
+
         List<HotelDTO> result = hotelService.getAvailableHotels(dateFrom, dateTo, destination);
 
-        System.out.println(result);
-        // Verificar que las fechas de los hoteles en los resultados coinciden con las fechas ingresadas
-        for (HotelDTO hotelDTO : result) {
-            assertEquals(dateFrom, hotelDTO.getDateFrom(), "La fecha de inicio del hotel no coincide con la fecha de inicio ingresada");
-            assertEquals(dateTo, hotelDTO.getDateTo(), "La fecha de fin del hotel no coincide con la fecha de fin ingresada");
+        for (HotelDTO hotelsDTODTO : result) {
+            System.out.println(hotelsDTODTO);
         }
 
-        verify(hotelRepository, times(1)).getAll();
+        assertEquals(hotelsDTOFiltrados, result, "La lista de hoteles no coincide con la esperada");
+
     }
 
+    @Test
+    public void testGetAvailableHotelsFail() {
+        LocalDate dateFrom = LocalDate.of(2025, 2, 11);
+        LocalDate dateTo = LocalDate.of(2025, 3, 20);
+        String destination = "Puerto Iguazú";
 
+        String expectedErrorMessage = "No hay hoteles disponibles para las fechas proporcionadas.";
 
+        assertEquals(expectedErrorMessage, assertThrows(RuntimeException.class, () -> {
+            List<HotelDTO> result = hotelService.getAvailableHotels(dateFrom, dateTo, destination);
+        }).getMessage());
 
+        assertThrows(InvalidDate.class, () -> hotelService.getAvailableHotels(dateFrom, dateTo, destination));
+    }
 
+    @Test
+    public void testGetAvailableHotelsDestinationFail() {
+        LocalDate dateFrom = LocalDate.of(2025, 2, 10);
+        LocalDate dateTo = LocalDate.of(2025, 3, 20);
+        String destination = "America";
+
+        String expectedErrorMessage = destination+" no es un destino existente";
+
+        assertEquals(expectedErrorMessage, assertThrows(RuntimeException.class, () -> {
+            List<HotelDTO> result = hotelService.getAvailableHotels(dateFrom, dateTo, destination);
+        }).getMessage());
+
+        assertThrows(InvalidDestination.class, () -> hotelService.getAvailableHotels(dateFrom, dateTo, destination));
+    }
 
 }
