@@ -141,43 +141,43 @@ public class HotelBookingServiceTest {
 
     }
 
-//    @Test
-//    public void bookHotelResponseInvalidPeopleAmount() {
-//        // Crear una solicitud con más de 5 personas
-//        BookingRequestDTO requestDTO = new BookingRequestDTO(
-//                "juanperez@gmail.com",
-//                new BookingRequestDetailDTO(
-//                        LocalDate.parse("10-02-2025", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
-//                        LocalDate.parse("20-03-2025", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
-//                        "Puerto Iguazú",
-//                        "CH-0002",
-//                        6, // Más de 5 personas
-//                        "DOUBLE",
-//                        List.of(
-//                                new PersonDTO("12345678", "Juan", "Perez", LocalDate.parse("10-11-1982", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "juanperez@gmail.com"),
-//                                new PersonDTO("87654321", "Maria", "Lopez", LocalDate.parse("01-05-1985", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "marialopez@gmail.com")
-//                        ),
-//                        new PaymentMethodDTO("CREDIT", "1234-1234-1234-1234", 6)
-//                )
-//        );
-//
-//        // Configurar el mock del repositorio para devolver un hotel válido
-//        Hotel hotel = new Hotel(
-//                "CH-0002",
-//                "Cataratas Hotel",
-//                "Puerto Iguazú",
-//                "Double",
-//                "$6300.00",
-//                LocalDate.parse("10-02-2025", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
-//                LocalDate.parse("20-03-2025", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
-//                false
-//        );
-//        when(hotelRepository.getById(requestDTO.getBooking().getHotelCode())).thenReturn(hotel);
-//
-//        // Verificar que se lance la excepción InvalidBookingHotel
-//        Assertions.assertThrows(InvalidBookingHotel.class, () -> hotelBookingService.bookHotelresponse(requestDTO));
-//    }
-//
-//
-}
+    @Test
+    public void testInvalidBookingHotelExceptionSingleRoom() {
+        // mas de 1 persona
+        BookingRequestDTO requestDTO = new BookingRequestDTO(
+                "Juan@gmail.com",
+                new BookingRequestDetailDTO(
+                        LocalDate.parse("10-02-2025", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                        LocalDate.parse("20-02-2025", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                        "Test Destination",
+                        "HOTEL-001",
+                        2, // 2personas
+                        "single",
+                        List.of(
+                                new PersonDTO("12345678", "Juan", "Perez", LocalDate.parse("10-11-1990", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "juan@gmail.com"),
+                                new PersonDTO("87654321", "Lujan", "Lopez", LocalDate.parse("01-05-1991", DateTimeFormatter.ofPattern("dd-MM-yyyy")), "Lujan@hotmail.com")
+                        ),
+                        new PaymentMethodDTO("CREDIT", "1234-5678-9876-5432", 1)
+                )
+        );
+
+        Hotel hotel = new Hotel(
+                "HOTEL-001",
+                "Test Hotel",
+                "Test Destination",
+                "single",
+                "$100.00",
+                LocalDate.parse("10-02-2025", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                LocalDate.parse("20-02-2025", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                false
+        );
+
+        when(hotelRepository.getById("HOTEL-001")).thenReturn(hotel);
+
+        // Verificar que se lanza la excepción InvalidBookingHotel
+        Assertions.assertThrows(InvalidBookingHotel.class, () -> {
+            hotelBookingService.bookHotelresponse(requestDTO);
+        });
+
+}}
 
