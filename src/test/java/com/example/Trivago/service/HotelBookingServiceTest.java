@@ -149,8 +149,8 @@ public class HotelBookingServiceTest {
                 new BookingRequestDetailDTO(
                         LocalDate.parse("10-02-2025", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
                         LocalDate.parse("20-02-2025", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
-                        "Test Destination",
-                        "HOTEL-001",
+                        "Puerto Iguazú",
+                        "CH-0002",
                         2, // 2personas
                         "single",
                         List.of(
@@ -162,17 +162,17 @@ public class HotelBookingServiceTest {
         );
 
         Hotel hotel = new Hotel(
-                "HOTEL-001",
-                "Test Hotel",
-                "Test Destination",
+                "CH-0002",
+                "Cataratas Hotel",
+                "Puerto Iguazú",
                 "single",
-                "$100.00",
+                "$6300.00",
                 LocalDate.parse("10-02-2025", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
                 LocalDate.parse("20-02-2025", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
                 false
         );
 
-        when(hotelRepository.getById("HOTEL-001")).thenReturn(hotel);
+        when(hotelRepository.getById("CH-0002")).thenReturn(hotel);
 
         // Verificar que se lanza la excepción InvalidBookingHotel
         Assertions.assertThrows(InvalidBookingHotel.class, () -> {
