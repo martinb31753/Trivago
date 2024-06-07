@@ -36,17 +36,27 @@ public class HotelServiceImpl implements IHotel {
         if (destination == null && dateFrom == null && dateTo == null) {
             return hotelList;
         }
-        //validamos que el destino exista - validación - US0002
-        if (!hotelList.stream().anyMatch(hotel -> hotel.getDestination().equalsIgnoreCase(destination))) {
 
+        //validamos que el destino exista - validación - US0002
+        if (destination != null && hotelList.stream().noneMatch(hotel -> hotel.getDestination().equalsIgnoreCase(destination))) {
             throw new InvalidDate(destination + " no es un destino existente");
         }
-        return hotelList.stream().filter(hotel ->
+
+        List<HotelDTO> availableHotels = hotelList.stream().filter(hotel ->
                 (destination == null || hotel.getDestination().equalsIgnoreCase(destination)) &&
                         (dateFrom == null || isWithinDateRange(hotel.getDateFrom(), dateFrom, dateTo)) &&
                         (dateTo == null || isWithinDateRange(hotel.getDateTo(), dateFrom, dateTo)))
                 .toList();
+        if (availableHotels.isEmpty()) {
+            throw new InvalidDate("No hay hoteles disponibles para las fechas proporcionadas.");
+        }
+
+        return availableHotels;
+
+
     }
+
+
 
     private boolean isWithinDateRange(LocalDate date, LocalDate rangeStart, LocalDate rangeEnd) {
         return !date.isBefore(rangeStart) && !date.isAfter(rangeEnd);
