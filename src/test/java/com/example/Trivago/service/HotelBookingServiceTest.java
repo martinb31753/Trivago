@@ -77,8 +77,8 @@ public class HotelBookingServiceTest {
     private static final BookingResponseDTO bookingResponseDTO1 = new BookingResponseDTO(
             "juanperez@gmail.com", // userName
             63000.0, // amount
-            5.5, // interest
-            66465.0, // total
+            10.0, // interest
+            69300.0, // total
             new BookingResponseDetailDTO(
 
                     LocalDate.parse("10-02-2025", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
@@ -120,25 +120,17 @@ public class HotelBookingServiceTest {
             LocalDate.parse("20-03-2025", DateTimeFormatter.ofPattern("dd-MM-yyyy")),
             false );
 
-    public static final PaymentMethodDTO paymentMethodDTODebitoOK = new PaymentMethodDTO("DEBIT", "1234-1234-1234-1234", 1);
-    public static final PaymentMethodDTO paymentMethodDTOCreditoOK = new PaymentMethodDTO("CREDIT", "1234-1234-1234-1234", 6);
-    public static final PaymentMethodDTO paymentMethodDTOCreditoOK2 = new PaymentMethodDTO("CREDIT", "1234-1234-1234-1234", 16);
-    public static final PaymentMethodDTO paymentMethodDTOTestNOK = new PaymentMethodDTO("CREDITX", "1234-1234-1234-1234", 6);
-
 
     @Test
-    public void BookHotelResposeOk(){
+    public void BookHotelResponseOk(){
         when(hotelRepository.getById(hotel1.getHotelCode())).thenReturn(hotel1);
         BookingResponseDTO obtenido = hotelBookingService.bookHotelresponse(bookinRequest);
         assertEquals (bookingResponseDTO1, obtenido);
     }
     @Test
-    public void BookHotelResposeFail(){
+    public void BookHotelResponseFail(){
         when(hotelRepository.getById(hotel2.getHotelCode())).thenReturn(hotel2);
-        Assertions.assertThrows(RuntimeException.class, () -> hotelBookingService.bookHotelresponse(bookinRequest));
-
-
-
+        Assertions.assertThrows(RuntimeException.class, () -> hotelBookingService.bookHotelresponse(bookinRequestDTO2));
     }
 
     @Test

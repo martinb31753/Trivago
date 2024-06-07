@@ -7,6 +7,7 @@ import com.example.Trivago.DTO.Response.BookingResponseDetailDTO;
 import com.example.Trivago.DTO.Response.ResponseStatusDTO;
 import com.example.Trivago.Exception.InvalidBookingHotel;
 import com.example.Trivago.Exception.InvalidDate;
+import com.example.Trivago.Exception.InvalidDestination;
 import com.example.Trivago.Exception.InvalidReservationFlight;
 import com.example.Trivago.Model.Hotel;
 import com.example.Trivago.Repository.IHotelRepository;
@@ -31,7 +32,7 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
         System.out.println(hotel);
         if (hotel == null) {
-            throw new InvalidReservationFlight("El hotel con el codigo " + request.getBooking().getHotelCode() + " no existe");
+            throw new InvalidBookingHotel("El hotel con el codigo " + request.getBooking().getHotelCode() + " no existe");
         }
 
         LocalDate dateFrom = request.getBooking().getDateFrom();//request.getDateFrom();
@@ -39,7 +40,7 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
 
         if (hotel.getIsReserved()) {
-            throw new InvalidReservationFlight(hotel.getName() + " el hotel ya fue reservado");
+            throw new InvalidBookingHotel(hotel.getName() + " el hotel ya fue reservado");
         }
 
 
@@ -49,8 +50,9 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         double amount = pricePerNight * numberOfNights;
 
         // Interes
-        double interest = 5.5;
-        double total = amount + (amount * interest / 100);
+        double interest = 0.0;
+        double total = amount;
+
         //Validacion!
         //Intereses
         //En caso que la tarjeta sea de crédito verificar recargo de intereses.
@@ -60,10 +62,29 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         //Tarjeta de crédito: Devolver porcentaje y monto de interés (recargo).
         //Tarjeta de débito: Informar que se ha ingresado una cantidad de cuotas diferente a 1.
 
+        if (request.getBooking().getPaymentMethod().getType().equalsIgnoreCase("CREDIT")) {
+            if (request.getBooking().getPaymentMethod().getDues() <= 3) {
+                interest = 5;
+                total = amount + (amount * interest / 100);
+            } else if (request.getBooking().getPaymentMethod().getDues() <= 6) {
+                interest = 10;
+                total = amount + (amount * interest / 100);
+            } else if (request.getBooking().getPaymentMethod().getDues() <= 12) {
+                interest = 15;
+                total = amount + (amount * interest / 100);
+            }
+        }
+
+        if (request.getBooking().getPaymentMethod().getType().equalsIgnoreCase("DEBIT") &&
+                request.getBooking().getPaymentMethod().getDues() != 1) {
+            throw new InvalidBookingHotel("La tarjeta de crédito solo acepta una cuota");
+        }
+
         //  respuesta
         BookingResponseDetailDTO bookingDetail = new BookingResponseDetailDTO();
-        if(dateFrom.isAfter(dateTo) || dateTo.isBefore(dateFrom) ||
-                (!dateFrom.isEqual(hotel.getDateFrom()) || !dateTo.isEqual(hotel.getDateTo()))){
+        if(dateFrom.isAfter(dateTo) ||
+                !dateTo.isEqual(hotel.getDateTo()) ||
+                !dateFrom.isEqual(hotel.getDateFrom())) {
             throw new InvalidDate("La fecha de llegada debe ser posterior a la fecha de salida " +
                     "o viceversa y además debe coincidir con las fechas disponibles del hotel");
         }
@@ -71,9 +92,8 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         bookingDetail.setDateFrom(dateFrom);
         bookingDetail.setDateTo(dateTo);
 
-
-        if(!hotel.getDestination().equalsIgnoreCase(request.getBooking().getDestination()) ){
-            throw new InvalidDate(hotel.getDestination() + " como destino es incorrecto");
+        if(!hotel.getDestination().equalsIgnoreCase(request.getBooking().getDestination())  ){
+            throw new InvalidDestination(request.getBooking().getDestination() + " como destino es incorrecto");
         }
 
         bookingDetail.setDestination(request.getBooking().getDestination());
@@ -82,8 +102,6 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         if(request.getBooking().getPeopleAmount() > 5 ){
             throw new InvalidBookingHotel(hotel.getRoomType() + " No admite más de 5 personas ");
         }
-
-
 
 
         int maxCapacity = 0;
@@ -97,6 +115,9 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
             case "triple":
                 maxCapacity = 3;
                 break;
+            case "multiple":
+                maxCapacity = 4;
+                break;
             default:
                 throw new InvalidBookingHotel("Tipo de habitación desconocido: " + hotel.getRoomType());
         }
@@ -106,15 +127,25 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         }
 
 
-
-
-
         bookingDetail.setPeopleAmount(request.getBooking().getPeopleAmount());
 
-        //Validar! Tipo de Habitación
-        //Que coincida con la cantidad de personas
-        //mensaje de error: El tipo de habitación seleccionada no coincide con la cantidad de
-        // personas que se alojarán en ella.
+        switch (request.getBooking().getRoomType().toLowerCase()) {
+            case "single":
+                bookingDetail.setRoomType("Single");
+                break;
+            case "double":
+                bookingDetail.setRoomType("Double");
+                break;
+            case "triple":
+                bookingDetail.setRoomType("Triple");
+                break;
+            case "multiple":
+                bookingDetail.setRoomType("Multiple");
+                break;
+            default:
+                throw new InvalidBookingHotel("Tipo de habitación desconocido: " + request.getBooking().getRoomType());
+        }
+
 
         bookingDetail.setRoomType(request.getBooking().getRoomType());
         bookingDetail.setPeople(request.getBooking().getPeople());

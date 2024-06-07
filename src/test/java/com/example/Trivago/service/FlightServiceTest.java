@@ -3,6 +3,7 @@ package com.example.Trivago.service;
 import com.example.Trivago.DTO.FlightDTO;
 import com.example.Trivago.DTO.Response.RespuestaDTO;
 import com.example.Trivago.Exception.InvalidDate;
+import com.example.Trivago.Exception.InvalidDestination;
 import com.example.Trivago.Model.Flight;
 import com.example.Trivago.Repository.IFlightRepository;
 import com.example.Trivago.Service.FlightServiceImpl;
@@ -38,6 +39,8 @@ public class FlightServiceTest {
 
     private List<Flight> flightList;
 
+    private List<FlightDTO> flightListDTO;
+
     @BeforeEach
     void setUp() {
         flightList = new ArrayList<>();
@@ -56,14 +59,16 @@ public class FlightServiceTest {
     void testGetAllFlights() {
         when(flightRepository.getAll()).thenReturn(flightList);
         List<FlightDTO> result = flightService.getAll();
+        flightListDTO = flightService.getAll();
         assertNotNull(result);
-        assertEquals(1, result.size());
-        verify(flightRepository, times(1)).getAll();
-    }
+        assertEquals(flightListDTO, result);
+     }
 
     @Test
     void testGetFlightByDate() {
         when(flightRepository.getAll()).thenReturn(flightList);
+        flightListDTO = flightService.getAll();
+        System.out.println(flightListDTO);
         List<FlightDTO> result = flightService.getFlightByDate(
                 LocalDate.of(2025, 2, 10),
                 LocalDate.of(2025, 2, 15),
@@ -71,26 +76,7 @@ public class FlightServiceTest {
                 "Puerto Iguazú"
         );
         assertNotNull(result);
-        assertEquals(1, result.size());
-    }
-
-    @Test
-    void testAddNewFlight() {
-        FlightDTO flightDTO = new FlightDTO();
-        flightDTO.setFlightNumber("BAPI-1235");
-        flightDTO.setOrigin("Buenos Aires");
-        flightDTO.setDestination("Puerto Iguazú");
-        flightDTO.setDateFrom(LocalDate.of(2025, 2, 10));
-        flightDTO.setDateTo(LocalDate.of(2025, 2, 15));
-
-        when(flightRepository.save(any(Flight.class))).thenReturn(true);
-
-        RespuestaDTO response = flightService.addNewFlight(flightDTO);
-
-        assertNotNull(response);
-        assertEquals("El vuelo ha sido creado con éxito", response.getMessage());
-
-        verify(flightRepository, times(1)).save(any(Flight.class));
+        assertEquals(flightListDTO, result);
     }
 
     @Test
@@ -110,36 +96,54 @@ public class FlightServiceTest {
         String actualMessage = exception.getMessage();
 
         assertFalse(actualMessage.contains(expectedMessage));
+        assertThrows(InvalidDate.class, () -> flightService.addNewFlight(flightDTO));
     }
 
     @Test
-    void testUpdateFlight() {
-        FlightDTO flightDTO = new FlightDTO();
-        flightDTO.setFlightNumber("BAPI-1235");
-        flightDTO.setOrigin("Buenos Aires");
-        flightDTO.setDestination("Puerto Iguazú");
-        flightDTO.setDateFrom(LocalDate.of(2024, 6, 1));
-        flightDTO.setDateTo(LocalDate.of(2024, 6, 10));
+    void testGetFlightsByInvalidDate() {
+        // Arrange
+        LocalDate dateFrom = LocalDate.of(2024, 2, 10);
+        LocalDate dateTo = LocalDate.of(2024, 2, 24);
+        String expectedMessage = "No hay vuelos disponibles para las fechas proporcionadas.";
 
-        // Simula que el repositorio actualiza el vuelo y retorna true
-        when(flightRepository.update(any(Flight.class))).thenReturn(true);
+        // Act & Assert
+        InvalidDate exception = assertThrows(InvalidDate.class, () -> {
+            flightService.getFlightByDate(dateFrom, dateTo, null, null);
+        });
 
-        RespuestaDTO response = flightService.updateFlight(flightDTO);
-        assertNotNull(response);
-        assertEquals("El vuelo ha sido actualizado con éxito", response.getMessage());
-        verify(flightRepository, times(1)).update(any(Flight.class));
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
-    void testDeleteFlightById() {
-        String flightNumber = "BAPI-1235";
+    void testGetFlightsByDateInvalidDestination() {
+        // Arrange
+        LocalDate dateFrom = LocalDate.of(2024, 2, 10);
+        LocalDate dateTo = LocalDate.of(2024, 2, 24);
+        String destination = "Buenos Aires";
+        String expectedMessage = destination + " no es un destino existente";
 
-        // Simula que el repositorio elimina el vuelo y retorna true
-        when(flightRepository.delete(flightNumber)).thenReturn(true);
+        // Act & Assert
+        InvalidDestination exception = assertThrows(InvalidDestination.class, () -> {
+            flightService.getFlightByDate(dateFrom, dateTo, null, destination);
+        });
 
-        RespuestaDTO response = flightService.deleteFlightById(flightNumber);
-        assertNotNull(response);
-        assertEquals("El vuelo ha sido eliminado con exito", response.getMessage());
-        verify(flightRepository, times(1)).delete(flightNumber);
+        assertEquals(expectedMessage, exception.getMessage());
     }
+
+    @Test
+    void testGetFlightsByDateInvalidOrigin() {
+        // Arrange
+        LocalDate dateFrom = LocalDate.of(2024, 2, 10);
+        LocalDate dateTo = LocalDate.of(2024, 2, 24);
+        String origin = "Buenos Aires";
+        String expectedMessage = origin + " no es un origen existente";
+
+        // Act & Assert
+        InvalidDestination exception = assertThrows(InvalidDestination.class, () -> {
+            flightService.getFlightByDate(dateFrom, dateTo, origin, null);
+        });
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
 }

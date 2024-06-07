@@ -3,6 +3,7 @@ package com.example.Trivago.Service;
 import com.example.Trivago.DTO.HotelDTO;
 import com.example.Trivago.DTO.Response.RespuestaDTO;
 import com.example.Trivago.Exception.InvalidDate;
+import com.example.Trivago.Exception.InvalidDestination;
 import com.example.Trivago.Model.Hotel;
 import com.example.Trivago.Repository.IHotelRepository;
 import org.modelmapper.ModelMapper;
@@ -39,7 +40,7 @@ public class HotelServiceImpl implements IHotel {
 
         //validamos que el destino exista - validación - US0002
         if (destination != null && hotelList.stream().noneMatch(hotel -> hotel.getDestination().equalsIgnoreCase(destination))) {
-            throw new InvalidDate(destination + " no es un destino existente");
+            throw new InvalidDestination(destination + " no es un destino existente");
         }
 
         List<HotelDTO> availableHotels = hotelList.stream().filter(hotel ->
@@ -52,8 +53,6 @@ public class HotelServiceImpl implements IHotel {
         }
 
         return availableHotels;
-
-
     }
 
 
