@@ -2,9 +2,13 @@ package com.example.Trivago.Controller;
 
 import com.example.Trivago.DTO.HotelDTO;
 import com.example.Trivago.DTO.Response.ResponseStatusDTO;
+import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Model.Hotel;
 import com.example.Trivago.Service.IHotel;
+
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -27,11 +31,8 @@ public class HotelController {
 
     @GetMapping("/hotels")
     public ResponseEntity<?> getAvailableHotels(
-
-            @RequestParam(value = "date_from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_from,
-
+            @RequestParam(value="date_from", required = false) @DateTimeFormat(pattern="dd-MM-yyyy")  LocalDate date_from,
             @RequestParam(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,
-
             @RequestParam(value = "destination", required = false) String destination) {
         List<HotelDTO> filteredHotels = hotelService.getAvailableHotels(date_from, date_to, destination);
         return ResponseEntity.ok(filteredHotels);
@@ -42,13 +43,13 @@ public class HotelController {
         return new ResponseEntity<>( hotelService.addNewHotel(newHotel),HttpStatus.CREATED);
     }
 
-    @PutMapping("/{hotelCode}")
-    public ResponseEntity<?> updateHotelById(@PathVariable String hotelCode, @RequestBody HotelDTO updateHotel) {
-        return new ResponseEntity<>(hotelService.updateHotelById(hotelCode, updateHotel), HttpStatus.OK);
+    @PutMapping("/update-hotel/{hotelCode}")
+    public ResponseEntity<?> updateHotelById(@RequestBody HotelDTO updateHotel, @PathVariable String hotelCode) {
+        return new ResponseEntity<>(hotelService.updateHotelById(updateHotel), HttpStatus.OK);
 
     }
 
-    @DeleteMapping("/{hotelCode}")
+    @DeleteMapping("/remove-hotel/{hotelCode}")
     public ResponseEntity<?> deleteHotelById(@PathVariable String hotelCode) {
         return new ResponseEntity<>(hotelService.deleteHotelById(hotelCode), HttpStatus.OK);
     }
