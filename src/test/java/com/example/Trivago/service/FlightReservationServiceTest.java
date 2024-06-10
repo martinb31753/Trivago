@@ -1,5 +1,6 @@
 package com.example.Trivago.service;
 
+import com.example.Trivago.DTO.PaymentMethodDTO;
 import com.example.Trivago.DTO.PersonDTO;
 import com.example.Trivago.DTO.Request.FlightReservationRequestDTO;
 import com.example.Trivago.DTO.Request.FlightReservationRequestDetailDTO;
@@ -76,6 +77,7 @@ class FlightReservationServiceTest {
         flightReservationDTO.setSeats(2);
         flightReservationDTO.setSeatType("Economy");
         flightReservationDTO.setPeople(Arrays.asList(person1, person2));
+        flightReservationDTO.setPaymentMethod(new PaymentMethodDTO("CREDIT", "1234-1234-1234-1234", 3));
 
         requestDTO = new FlightReservationRequestDTO();
         requestDTO.setUserName("juanperez@gmail.com");
@@ -88,8 +90,8 @@ class FlightReservationServiceTest {
         FlightReservationResponseDTO flightReservationResponseDTO = new FlightReservationResponseDTO();
         flightReservationResponseDTO.setUserName("juanperez@gmail.com");
         flightReservationResponseDTO.setAmount(13000.0);
-        flightReservationResponseDTO.setInterest(5.5);
-        flightReservationResponseDTO.setTotal(13715.0);
+        flightReservationResponseDTO.setInterest(5.0);
+        flightReservationResponseDTO.setTotal(13650.0);
         flightReservationResponseDTO.setFlightReservationDTO(new FlightReservationResponseDetailDTO(
                 LocalDate.of(2025, 02, 10),
                 LocalDate.of(2025, 02, 15),
