@@ -1,6 +1,8 @@
 package com.example.Trivago.Repository;
 
+import com.example.Trivago.DTO.FlightDTO;
 import com.example.Trivago.Model.Flight;
+import com.example.Trivago.Model.Hotel;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -10,10 +12,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class FlightRepositoryImpl implements IFlightRepository {
@@ -45,4 +44,49 @@ public class FlightRepositoryImpl implements IFlightRepository {
         return flightList;
     }
 
+    @Override
+    public Flight getByFlightNumber(String flightCode) {
+
+        return flightList.stream().filter(flight -> flight.getFlightNumber()
+                .equals(flightCode))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public boolean save(Flight flight) {
+        flightList.removeIf(existingFlight -> existingFlight.getFlightNumber().equals(flight.getFlightNumber()));
+
+        return flightList.add(flight);
+
+    }
+
+
+    @Override
+    public boolean update(Flight flight) {
+
+        Flight foundFlight = getByFlightNumber(flight.getFlightNumber());
+
+        flightList.remove(foundFlight);
+
+        return flightList.add(flight);
+
+    }
+
+
+
+    @Override
+    public boolean delete(String flightNumber) {
+
+        Flight foundFlight = getByFlightNumber(flightNumber);
+
+        return flightList.remove(foundFlight);
+    }
+
+//    @Override
+//    public Flight getById(String flightNumber) {
+//        return flightList.stream().filter(flight -> flight.getFlightNumber()
+//                .equals(flightNumber))
+//                .findFirst().orElse(null);
+//    }
 }

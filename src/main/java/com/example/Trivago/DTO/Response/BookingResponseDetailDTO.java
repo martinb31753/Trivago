@@ -13,10 +13,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({"date_from", "date_to", "origin", "destination", "flight_number", "seats", "seat_type", "people"})
-public class FlightReservationResponseDetailDTO {
+@NoArgsConstructor
+@JsonPropertyOrder({"date_from", "date_to", "destination", "hotel_code", "people_amount", "room_type", "people"})
+public class BookingResponseDetailDTO {
+    
     @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("date_from")
     private LocalDate dateFrom;
@@ -25,21 +26,16 @@ public class FlightReservationResponseDetailDTO {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateTo;
 
-    @JsonProperty("origin")
-    private String origin;
-
-    @JsonProperty("destination")
     private String destination;
 
-    @JsonProperty("flight_number")
-    private String flightNumber;
+    @JsonProperty("hotel_code")
+    private String hotelCode;
 
-    @JsonProperty("seats")
-    private int seats;
+    @JsonProperty("people_amount")
+    private int peopleAmount;
 
-    @JsonProperty("seat_type")
-    private String seatType;
+    @JsonProperty("room_type")
+    private String roomType;
 
-    @JsonProperty("people")
     private List<PersonDTO> people;
 }

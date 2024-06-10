@@ -14,10 +14,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+public class BookingRequestDetailDTO {
 
-public class FlightReservationRequestDetailDTO {
     @NotNull(message = "La fecha 'date_from' no puede ser nula")
     @FutureOrPresent(message = "La fecha 'date_from' debe ser en el presente o en el futuro")
     @JsonFormat(pattern = "dd-MM-yyyy")
@@ -26,37 +26,31 @@ public class FlightReservationRequestDetailDTO {
 
     @NotNull(message = "La fecha 'date_to' no puede ser nula")
     @FutureOrPresent(message = "La fecha 'date_to' debe ser en el presente o en el futuro")
-    @JsonProperty("date_to")
     @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonProperty("date_to")
     private LocalDate dateTo;
 
-    @JsonProperty("origin")
-    private String origin;
-
     @NotBlank(message = "El destino no puede estar en blanco")
-    @JsonProperty("destination")
     private String destination;
 
-    @NotBlank(message = "El codigo de vuelo no puede estar en blanco")
-    @Size(min = 3, max = 10, message = "El código de vuelo debe tener entre 3 y 10 caracteres")
-    @JsonProperty("flight_number")
-    private String flightNumber;
+    @NotBlank(message = "El código de hotel no puede estar en blanco")
+    @Size(min = 3, max = 10, message = "El código de hotel debe tener entre 3 y 10 caracteres")
+    @JsonProperty("hotel_code")
+    private String hotelCode;
 
     //falta validación- con mensaje "La cantidad de personas debe ser un valor numérico"
     @Positive(message = "La cantidad de personas debe ser mayor que cero")
-    @NotNull(message = "La cantidad de personas no puede ser nula")
-    @Min(value = 1, message = "La cantidad de personas no puede ser menor a 1")
-    @Max(value = 10, message = "La cantidad de personas no puede ser mayor a 10")
-    @JsonProperty("seats")
-    private int seats;
+    @Min(value = 1, message = "La cantidad de personas debe ser mayor que cero")
+    @Max(value = 4, message = "La cantidad de personas debe ser menor o igual a 4")
+    @JsonProperty("people_amount")
+    private int peopleAmount;
 
     @NotBlank(message = "El tipo de habitación no puede estar en blanco")
-    @JsonProperty("seat_type")
-    private String seatType;
+    @JsonProperty("room_type")
+    private String roomType;
 
     @NotNull(message = "La lista de personas no puede ser nula")
     @Size(min = 1, message = "Debe haber al menos una persona especificada")
-    @JsonProperty("people")
     private List<@Valid PersonDTO> people;
 
     @NotNull(message = "El método de pago no puede ser nulo")
@@ -64,3 +58,4 @@ public class FlightReservationRequestDetailDTO {
     @JsonProperty("payment_method")
     private PaymentMethodDTO paymentMethod;
 }
+

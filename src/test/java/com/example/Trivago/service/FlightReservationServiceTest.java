@@ -62,6 +62,7 @@ class FlightReservationServiceTest {
         person1.setEmail("juanperez@gmail.com");
 
         PersonDTO person2 = new PersonDTO();
+
         person2.setDni("87654321");
         person2.setName("Maria");
         person2.setLastName("Lopez");

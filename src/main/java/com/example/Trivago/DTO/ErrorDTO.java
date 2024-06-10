@@ -1,18 +1,18 @@
-package com.example.Trivago.DTO.Response;
+package com.example.Trivago.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class ResponseStatusDTO {
-     @JsonProperty("code")
-    private Integer code;
-     @JsonProperty("message")
-    private String message;
+public class ErrorDTO {
+    private String description;
+    @JsonProperty("messages_list")
+    private List<String> messagesList;
 
 }
