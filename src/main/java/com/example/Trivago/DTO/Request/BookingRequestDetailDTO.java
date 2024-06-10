@@ -40,6 +40,8 @@ public class BookingRequestDetailDTO {
 
     //falta validación- con mensaje "La cantidad de personas debe ser un valor numérico"
     @Positive(message = "La cantidad de personas debe ser mayor que cero")
+    @Min(value = 1, message = "La cantidad de personas debe ser mayor que cero")
+    @Max(value = 4, message = "La cantidad de personas debe ser menor o igual a 4")
     @JsonProperty("people_amount")
     private int peopleAmount;
 
