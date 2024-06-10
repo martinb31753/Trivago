@@ -2,6 +2,7 @@ package com.example.Trivago.Service;
 import com.example.Trivago.DTO.FlightDTO;
 import com.example.Trivago.DTO.Response.RespuestaDTO;
 import com.example.Trivago.Exception.InvalidDate;
+import com.example.Trivago.Exception.InvalidDestination;
 import com.example.Trivago.Model.Flight;
 import com.example.Trivago.Repository.IFlightRepository;
 import org.modelmapper.ModelMapper;
@@ -32,14 +33,29 @@ public class FlightServiceImpl implements IFlight {
         if (origin == null && destination == null && date_from == null && date_to == null) {
             return flightList;
         }
-        return flightList.stream()
-                .filter(flight ->
-                        (origin == null || flight.getOrigin().equalsIgnoreCase(origin)) &&
-                                (destination == null || flight.getDestination().equalsIgnoreCase(destination)) &&
-                                (date_from == null || isWithinDateRange(flight.getDateFrom(), date_from, date_to)) &&
-                                (date_to == null || isWithinDateRange(flight.getDateTo(), date_from, date_to))
-                )
+
+        //validamos que el origen exista - validación - US0005
+        if (origin != null && flightList.stream()
+                .noneMatch(flight -> flight.getOrigin().equalsIgnoreCase(origin))) {
+            throw new InvalidDestination(origin + " no es un origen existente");
+        }
+
+        //validamos que el destino exista - validación - US0005
+        if (destination != null && flightList.stream()
+                .noneMatch(flight -> flight.getDestination().equalsIgnoreCase(destination))) {
+            throw new InvalidDestination(destination + " no es un destino existente");
+        }
+
+        List<FlightDTO> availableFlights = flightList.stream().filter(flight ->
+                (origin == null || flight.getOrigin().equalsIgnoreCase(origin)) &&
+                        (destination == null || flight.getDestination().equalsIgnoreCase(destination)) &&
+                        (date_from == null || isWithinDateRange(flight.getDateFrom(), date_from, date_to)) &&
+                        (date_to == null || isWithinDateRange(flight.getDateTo(), date_from, date_to)))
                 .toList();
+        if (availableFlights.isEmpty()) {
+            throw new InvalidDate("No hay vuelos disponibles para las fechas proporcionadas.");
+        }
+        return availableFlights;
     }
 
     private boolean isWithinDateRange(LocalDate date, LocalDate rangeStart, LocalDate rangeEnd) {

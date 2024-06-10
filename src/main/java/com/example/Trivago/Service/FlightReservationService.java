@@ -5,6 +5,7 @@ import com.example.Trivago.DTO.Response.FlightReservationResponseDTO;
 import com.example.Trivago.DTO.Response.FlightReservationResponseDetailDTO;
 import com.example.Trivago.DTO.Response.ResponseStatusDTO;
 import com.example.Trivago.Exception.FlightNotFound;
+import com.example.Trivago.Exception.InvalidBookingHotel;
 import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidReservationFlight;
 import com.example.Trivago.Model.Flight;
@@ -45,12 +46,35 @@ public class FlightReservationService implements IFlightReservationService {
         if (request.getFlightReservationDTO().getPeople().size() == 0) {
             throw new InvalidReservationFlight("No hay pasajeros existentes");
         }
+        if (
+                request.getFlightReservationDTO().getSeats() != request.getFlightReservationDTO().getPeople().size()){
+            throw new InvalidReservationFlight("La cantidad de pasajeros no coincide con la cantidad de asientos "
+                    + request.getFlightReservationDTO().getSeats() + " contra " + request.getFlightReservationDTO().getPeople().size());
+        }
 
         double amount = pricePerPerson * request.getFlightReservationDTO().getPeople().size();
 
         // Interes
-        double interest = 5.5;
-        double total = amount + (amount * interest / 100);
+        double interest = 0.0;
+        double total = amount;
+
+        if (request.getFlightReservationDTO().getPaymentMethod().getType().equalsIgnoreCase("CREDIT")) {
+            if (request.getFlightReservationDTO().getPaymentMethod().getDues() <= 3) {
+                interest = 5;
+                total = amount + (amount * interest / 100);
+            } else if (request.getFlightReservationDTO().getPaymentMethod().getDues() <= 6) {
+                interest = 10;
+                total = amount + (amount * interest / 100);
+            } else if (request.getFlightReservationDTO().getPaymentMethod().getDues() <= 12) {
+                interest = 15;
+                total = amount + (amount * interest / 100);
+            }
+        }
+
+        if (request.getFlightReservationDTO().getPaymentMethod().getType().equalsIgnoreCase("DEBIT") &&
+                request.getFlightReservationDTO().getPaymentMethod().getDues() != 1) {
+            throw new InvalidBookingHotel("La tarjeta de crédito solo acepta una cuota");
+        }
 
         //Validación para tipo de tarjeta - cuotas y % de interés-
         //En caso que la tarjeta sea de crédito verificar recargo de intereses.

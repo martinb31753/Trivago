@@ -3,6 +3,7 @@ package com.example.Trivago.Config;
 import com.example.Trivago.DTO.ErrorDTO;
 import com.example.Trivago.DTO.ExceptionDTO;
 import com.example.Trivago.Exception.*;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -49,6 +50,19 @@ public class ExceptionController {
     @ExceptionHandler(InvalidDate.class)
     public ResponseEntity<ExceptionDTO> handleInvalidDate(InvalidDate ex) {
         ExceptionDTO exceptionDTO = new ExceptionDTO(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<>(exceptionDTO, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidDestination.class)
+    public ResponseEntity<ExceptionDTO> handleInvalidDestination(InvalidDestination ex) {
+        ExceptionDTO exceptionDTO = new ExceptionDTO(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<>(exceptionDTO, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidFormatException.class)
+    public ResponseEntity<ExceptionDTO> handleInvalidPerson(InvalidFormatException ex) {
+        ExceptionDTO exceptionDTO = new ExceptionDTO("La cantidad de personas debe ser un número entero",
+                HttpStatus.BAD_REQUEST.value());
         return new ResponseEntity<>(exceptionDTO, HttpStatus.BAD_REQUEST);
     }
 
