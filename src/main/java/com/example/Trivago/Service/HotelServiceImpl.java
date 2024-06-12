@@ -1,13 +1,15 @@
 package com.example.Trivago.Service;
 
-import com.example.Trivago.DTO.FlightDTO;
 import com.example.Trivago.DTO.HotelDTO;
+import com.example.Trivago.DTO.Response.RespuestaDTO;
+import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Model.Hotel;
 import com.example.Trivago.Repository.IHotelRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -16,28 +18,70 @@ public class HotelServiceImpl implements IHotel {
     @Autowired
     private IHotelRepository hotelRepository;
 
+    private List<HotelDTO> hotelList;
     ModelMapper modelMapper = new ModelMapper();
+
 
     @Override
     public List<HotelDTO> getAll() {
-        List<Hotel> hotelList = hotelRepository.getAll();
-        return hotelList.stream()
-                .map(hotel -> modelMapper.map(hotel, HotelDTO.class)).collect(java.util.stream.Collectors.toList());
+        return hotelRepository.getAll()
+                .stream()
+                .map(hotel -> modelMapper.map(hotel, HotelDTO.class))
+                .toList();
     }
 
     @Override
-    public Hotel addNewHotel(HotelDTO newHotel) {
-        return null;
+    public List<HotelDTO> getAvailableHotels(LocalDate dateFrom, LocalDate dateTo, String destination) {
+        hotelList = getAll();
+        if (destination == null && dateFrom == null && dateTo == null) {
+            return hotelList;
+        }
+        //validamos que el destino exista - validación - US0002
+        if (!hotelList.stream().anyMatch(hotel -> hotel.getDestination().equalsIgnoreCase(destination))) {
+
+            throw new InvalidDate(destination + " no es un destino existente");
+        }
+        return hotelList.stream().filter(hotel ->
+                (destination == null || hotel.getDestination().equalsIgnoreCase(destination)) &&
+                        (dateFrom == null || isWithinDateRange(hotel.getDateFrom(), dateFrom, dateTo)) &&
+                        (dateTo == null || isWithinDateRange(hotel.getDateTo(), dateFrom, dateTo)))
+                .toList();
+    }
+
+    private boolean isWithinDateRange(LocalDate date, LocalDate rangeStart, LocalDate rangeEnd) {
+        return !date.isBefore(rangeStart) && !date.isAfter(rangeEnd);
+    }
+
+    @Override
+    public RespuestaDTO addNewHotel(HotelDTO newHotel) {
+
+        Hotel hotel = new Hotel();
+
+        modelMapper.map(newHotel, hotel);
+
+        hotelRepository.save(hotel);
+
+        return new RespuestaDTO("El hotel ha sido agregado con exito");
 
     }
 
     @Override
-    public Hotel updateHotelById(String hotelCode, HotelDTO updateHotel) {
-        return null;
+    public RespuestaDTO updateHotelById(HotelDTO updateHotel) {
+
+        Hotel hotel= new Hotel();
+
+        modelMapper.map(updateHotel, hotel);
+
+        hotelRepository.update(hotel);
+
+        return new RespuestaDTO("El Hotel se actualizó con éxito");
     }
 
     @Override
-    public Hotel deleteHotelById(String hotelCode) {
-        return null;
+    public RespuestaDTO deleteHotelById(String hotelCode) {
+
+        hotelRepository.delete(hotelCode);
+
+        return new RespuestaDTO ("El Hotel se eliminó con éxito");
     }
 }

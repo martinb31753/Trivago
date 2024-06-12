@@ -12,10 +12,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookingDTO {
+
     @JsonProperty("amount")
     private double amount;
+
     @JsonProperty("interest")
     private double interest;
+
     @JsonProperty("total")
     private double total;
 
@@ -28,13 +31,17 @@ public class BookingDTO {
     private LocalDate dateTo;
 
     private String destination;
+
     @JsonProperty("hotel_code")
     private String hotelCode;
+
     @JsonProperty("people_amount")
     private int peopleAmount;
+
     @JsonProperty("room_type")
     private String roomType;
     private List<PersonDTO> people;
+
     @JsonProperty("payment_method")
     private PaymentMethodDTO paymentMethod;
 }

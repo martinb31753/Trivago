@@ -11,6 +11,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -30,13 +31,11 @@ public class HotelRepositoryImpl implements IHotelRepository {
                 .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
                 .registerModule(new JavaTimeModule());
 
-
-
         try {
             file = ResourceUtils.getFile("classpath:hotel.json");
             loadedData = objectMapper.readValue(file, new TypeReference<>() {});
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
             System.out.println("Error al cargar Json hoteles");
         }
         return loadedData;
@@ -47,6 +46,7 @@ public class HotelRepositoryImpl implements IHotelRepository {
         return hotelsList;
     }
 
+
     @Override
     public Hotel getById(String hotelCode) {
         return hotelsList.stream()
@@ -56,25 +56,43 @@ public class HotelRepositoryImpl implements IHotelRepository {
     }
 
     @Override
-    public void save(Hotel hotel) {
+    public boolean save(Hotel hotel) {
         hotelsList.removeIf(existingHotel -> existingHotel.getHotelCode().equals(hotel.getHotelCode()));
-        hotelsList.add(hotel);
+
+        return hotelsList.add(hotel);
     }
 
     @Override
-    public Hotel save(HotelDTO newHotel) {
-        return null;
+    public boolean update(Hotel hotel) {
+        Hotel foundHotel = getById(hotel.getHotelCode());
+
+        hotelsList.remove(foundHotel);
+
+        return hotelsList.add(hotel);
     }
 
     @Override
-    public Hotel update(String hotelCode, HotelDTO updateHotel) {
-        return null;
+    public boolean delete(String hotelCode) {
+
+        Hotel foundHotel = getById(hotelCode);
+
+        return hotelsList.remove(foundHotel);
     }
+
 
     @Override
-    public Hotel remove(String hotelCode) {
-        return null;
+    public List<Hotel> getHotelsAvailableFilter(LocalDate date_from, LocalDate date_to, String destination) {
+        return hotelsList.stream()
+                .filter(hotel ->
+                                (destination == null || hotel.getDestination().equalsIgnoreCase(destination)) &&
+                                (date_from == null || isWithinDateRange(hotel.getDateFrom(), date_from, date_to)) &&
+                                (date_to == null || isWithinDateRange(hotel.getDateTo(), date_from, date_to))
+                )
+                .toList();
     }
 
+    private boolean isWithinDateRange(LocalDate date, LocalDate rangeStart, LocalDate rangeEnd) {
+        return !date.isBefore(rangeStart) && !date.isAfter(rangeEnd);
+    }
 
 }

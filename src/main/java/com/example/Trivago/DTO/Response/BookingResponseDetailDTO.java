@@ -4,6 +4,7 @@ import com.example.Trivago.DTO.PaymentMethodDTO;
 import com.example.Trivago.DTO.PersonDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonPropertyOrder({"date_from", "date_to", "destination", "hotel_code", "people_amount", "room_type", "people"})
 public class BookingResponseDetailDTO {
-
+    
     @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("date_from")
     private LocalDate dateFrom;
@@ -24,7 +26,6 @@ public class BookingResponseDetailDTO {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateTo;
 
-    @JsonProperty("destination")
     private String destination;
 
     @JsonProperty("hotel_code")
@@ -36,9 +37,5 @@ public class BookingResponseDetailDTO {
     @JsonProperty("room_type")
     private String roomType;
 
-    @JsonProperty("people")
     private List<PersonDTO> people;
-
-    @JsonProperty("payment_method")
-    private PaymentMethodDTO paymentMethod;
 }

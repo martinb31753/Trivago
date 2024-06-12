@@ -1,8 +1,6 @@
 package com.example.Trivago.Repository;
 
 import com.example.Trivago.DTO.FlightDTO;
-import com.example.Trivago.DTO.Request.FlightReservationRequestDTO;
-import com.example.Trivago.DTO.Response.FlightReservationResponseDTO;
 import com.example.Trivago.Model.Flight;
 
 import java.util.List;
@@ -13,11 +11,11 @@ public interface IFlightRepository {
 
     Flight getByFlightNumber(String flightCode);
 
-    Flight save(FlightDTO flight);
+    boolean save(Flight flight);
 
-    Flight update(Long id, FlightDTO updateFlight);
+    boolean update(Flight flight);
 
-    Flight delete(Long id);
+    boolean delete(String flightNumber);
 
-    Flight getById(String flightNumber);
+//    Flight getById(String flightNumber); tiene la mism lógica que getByFlightNumber
 }

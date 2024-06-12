@@ -2,6 +2,7 @@ package com.example.Trivago.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,6 @@ public class PersonDTO {
     @JsonProperty("birth_date")
     private LocalDate birthDate;
     @JsonProperty("email")
+    @Email(message = "El email de la persona debe tener un formato valido, usuario@gmail.com.ar")
     private String email;
-
 }
