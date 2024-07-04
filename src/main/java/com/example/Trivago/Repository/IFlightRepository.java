@@ -2,15 +2,17 @@ package com.example.Trivago.Repository;
 
 import com.example.Trivago.Entity.Flight;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.List;
 
-public interface IFlightRepository {
+public interface IFlightRepository extends JpaRepository<Flight,Long> {
 
     List<Flight> getAll();
 
     Flight getByFlightNumber(String flightCode);
 
-    boolean save(Flight flight);
+    Flight save(Flight flight);
 
     boolean update(Flight flight);
 

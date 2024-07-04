@@ -42,6 +42,9 @@ public class Hotel {
     @Column(name = "is_reserved")
     private Boolean isReserved;
 
+    @Column(name = "is_active")
+    private boolean isActive;
+
     // Relación uno a uno con HotelBooking
     @OneToOne
     @JoinColumn(name = "hotel_booking_id")

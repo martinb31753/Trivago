@@ -39,6 +39,9 @@ public class Flight {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateTo;
 
+    @Column(name = "is_active")
+    private boolean isActive;
+
     //un vuelo puede estar asociado con muchas reservas de vuelo.
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
     private List<FlightBooking> flightBookings;

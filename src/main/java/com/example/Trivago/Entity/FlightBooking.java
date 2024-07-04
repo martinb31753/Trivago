@@ -43,6 +43,9 @@ public class FlightBooking {
         @Column(name = "seat_type")
         private String seatType;
 
+        @Column(name = "is_active")
+        private boolean isActive;
+
         //cada reserva pertenece a un solo cliente
         @ManyToOne
         @JoinColumn(name = "customer_id")
