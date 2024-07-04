@@ -1,7 +1,8 @@
-package com.example.Trivago.Model;
+package com.example.Trivago.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,29 +12,42 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
+@Entity
+@Table(name = "hotels")
 public class Hotel {
 
-    @JsonProperty("hotel_code")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long hotelId;
+    @Column(name = "hotel_code")
     private String hotelCode;
-    @JsonProperty("name")
+    @Column(name = "name")
     private String name;
-    @JsonProperty("destination")
+    @Column(name = "destination")
     private String destination;
-    @JsonProperty("room_type")
+    @Column(name = "room_type")
     private String roomType;
-    @JsonProperty("price_per_night")
+    @Column(name ="price_per_night")
     private String pricePerNight;
 
-    @JsonProperty("date_from")
+    @Column(name = "date_from")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateFrom;
 
-    @JsonProperty("date_to")
+    @Column(name = "date_to")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateTo;
 
-    @JsonProperty("is_reserved")
+    @Column(name = "is_reserved")
     private Boolean isReserved;
+
+    // Relación uno a uno con HotelBooking
+    @OneToOne
+    @JoinColumn(name = "hotel_booking_id")
+    private HotelBooking hotelBooking;
+
+
 
 }
 

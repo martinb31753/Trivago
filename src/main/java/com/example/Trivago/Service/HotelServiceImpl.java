@@ -4,7 +4,7 @@ import com.example.Trivago.DTO.HotelDTO;
 import com.example.Trivago.DTO.Response.RespuestaDTO;
 import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidDestination;
-import com.example.Trivago.Model.Hotel;
+import com.example.Trivago.Entity.Hotel;
 import com.example.Trivago.Repository.IHotelRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

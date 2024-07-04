@@ -1,11 +1,7 @@
 package com.example.Trivago.Controller;
 import com.example.Trivago.DTO.FlightDTO;
-import com.example.Trivago.Model.Flight;
 import com.example.Trivago.Service.IFlight;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -15,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @RestController

@@ -8,7 +8,7 @@ import com.example.Trivago.Exception.FlightNotFound;
 import com.example.Trivago.Exception.InvalidBookingHotel;
 import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidReservationFlight;
-import com.example.Trivago.Model.Flight;
+import com.example.Trivago.Entity.Flight;
 import com.example.Trivago.Repository.IFlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

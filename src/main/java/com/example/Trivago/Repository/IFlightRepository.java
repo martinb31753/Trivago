@@ -1,7 +1,6 @@
 package com.example.Trivago.Repository;
 
-import com.example.Trivago.DTO.FlightDTO;
-import com.example.Trivago.Model.Flight;
+import com.example.Trivago.Entity.Flight;
 
 import java.util.List;
 

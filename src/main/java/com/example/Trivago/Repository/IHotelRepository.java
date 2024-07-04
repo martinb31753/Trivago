@@ -1,7 +1,6 @@
 package com.example.Trivago.Repository;
 
-import com.example.Trivago.DTO.HotelDTO;
-import com.example.Trivago.Model.Hotel;
+import com.example.Trivago.Entity.Hotel;
 
 import java.time.LocalDate;
 import java.util.List;

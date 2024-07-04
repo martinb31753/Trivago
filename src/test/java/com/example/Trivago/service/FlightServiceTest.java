@@ -1,10 +1,9 @@
 package com.example.Trivago.service;
 
 import com.example.Trivago.DTO.FlightDTO;
-import com.example.Trivago.DTO.Response.RespuestaDTO;
 import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidDestination;
-import com.example.Trivago.Model.Flight;
+import com.example.Trivago.Entity.Flight;
 import com.example.Trivago.Repository.IFlightRepository;
 import com.example.Trivago.Service.FlightServiceImpl;
 import org.junit.jupiter.api.BeforeEach;

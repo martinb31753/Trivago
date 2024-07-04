@@ -1,35 +1,48 @@
-package com.example.Trivago.Model;
+package com.example.Trivago.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
+@Entity
+@Table(name="flights")
 public class Flight {
-    @JsonProperty("flight_number")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "flight_number")
     private String flightNumber;
-    @JsonProperty("origin")
+    @Column(name = "origin")
     private String origin;
-    @JsonProperty("destination")
+    @Column(name = "destination")
     private String destination;
-    @JsonProperty("seat_type")
+    @Column(name = "seat_type")
     private String seatType;
-    @JsonProperty("price_per_person")
+    @Column(name = "price_per_person")
     private String pricePerPerson;
 
-    @JsonProperty("date_from")
+    @Column(name = "date_from")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateFrom;
 
-    @JsonProperty("date_to")
+    @Column(name = "date_to")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateTo;
+
+    //un vuelo puede estar asociado con muchas reservas de vuelo.
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
+    private List<FlightBooking> flightBookings;
+
 
     public String getFlightNumber() {
         return flightNumber;

@@ -3,7 +3,7 @@ package com.example.Trivago.service;
 import com.example.Trivago.DTO.HotelDTO;
 import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidDestination;
-import com.example.Trivago.Model.Hotel;
+import com.example.Trivago.Entity.Hotel;
 import com.example.Trivago.Repository.HotelRepositoryImpl;
 import com.example.Trivago.Service.HotelServiceImpl;
 import org.junit.jupiter.api.BeforeEach;

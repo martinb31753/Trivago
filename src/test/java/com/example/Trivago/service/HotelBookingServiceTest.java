@@ -2,7 +2,6 @@ package com.example.Trivago.service;
 
 
 
-import com.example.Trivago.DTO.HotelDTO;
 import com.example.Trivago.DTO.PaymentMethodDTO;
 import com.example.Trivago.DTO.PersonDTO;
 import com.example.Trivago.DTO.Request.BookingRequestDTO;
@@ -11,7 +10,7 @@ import com.example.Trivago.DTO.Response.BookingResponseDTO;
 import com.example.Trivago.DTO.Response.BookingResponseDetailDTO;
 import com.example.Trivago.DTO.Response.ResponseStatusDTO;
 import com.example.Trivago.Exception.InvalidBookingHotel;
-import com.example.Trivago.Model.Hotel;
+import com.example.Trivago.Entity.Hotel;
 import com.example.Trivago.Repository.HotelRepositoryImpl;
 import com.example.Trivago.Service.HotelBookingServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -19,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
