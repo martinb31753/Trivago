@@ -42,9 +42,10 @@ public class FlightController {
 
     }
 
-    @DeleteMapping("/remove-flight/{flightNumber}")
-    public ResponseEntity<?> deleteFlightById(@PathVariable String flightNumber) {
-        return new ResponseEntity<>(flightService.deleteFlightById(flightNumber), HttpStatus.OK);
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteFlight(@RequestParam("flightNumber") String flightNumber) {
+        flightService.deleteFlightByCode(flightNumber);
+        return ResponseEntity.ok("Vuelo No. " + flightNumber + " eliminado");
     }
 
 

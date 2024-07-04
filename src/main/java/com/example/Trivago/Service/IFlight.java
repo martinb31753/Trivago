@@ -18,5 +18,7 @@ public interface IFlight {
 
     RespuestaDTO updateFlight(FlightDTO updateFlight);
 
-    RespuestaDTO deleteFlightById(String flightNumber);
+    RespuestaDTO deleteFlightByCode(String flightNumber);
+
+    FlightDTO getFlightByCode(String flightCode);
 }

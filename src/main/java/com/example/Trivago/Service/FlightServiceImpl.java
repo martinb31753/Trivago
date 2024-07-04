@@ -1,6 +1,8 @@
 package com.example.Trivago.Service;
 import com.example.Trivago.DTO.FlightDTO;
+import com.example.Trivago.DTO.HotelDTO;
 import com.example.Trivago.DTO.Response.RespuestaDTO;
+import com.example.Trivago.Entity.Hotel;
 import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidDestination;
 import com.example.Trivago.Entity.Flight;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -96,11 +99,21 @@ public class FlightServiceImpl implements IFlight {
     }
 
     @Override
-    public RespuestaDTO deleteFlightById(String flightNumber) {
+    public RespuestaDTO deleteFlightByCode(String flightCode) {
+        Optional<Flight> optionalFlight = flightRepository.getByCode(flightCode);
+        if (optionalFlight.isPresent()) {
+            Flight flight = optionalFlight.get();
+            flight.setActive(false);
+            flightRepository.save(flight);
 
-        flightRepository.delete(flightNumber);
+            return new RespuestaDTO("El vuelo se eliminó con exito");
+        }
+        return new RespuestaDTO ("No se encontro el vuelo");
+    }
 
-        return new RespuestaDTO ("El vuelo ha sido eliminado con exito");
+    @Override
+    public FlightDTO getFlightByCode(String flightCode) {
+        return modelMapper.map(flightRepository.getByCode(flightCode), FlightDTO.class);
     }
 
 }

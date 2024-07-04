@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HotelServiceImpl implements IHotel {
@@ -87,10 +88,20 @@ public class HotelServiceImpl implements IHotel {
     }
 
     @Override
-    public RespuestaDTO deleteHotelById(String hotelCode) {
+    public RespuestaDTO deleteHotelByCode(String hotelCode) {
+        Optional<Hotel> optionalHotel = hotelRepository.getByCode(hotelCode);
+        if (optionalHotel.isPresent()) {
+            Hotel hotel = optionalHotel.get();
+            hotel.setActive(false);
+            hotelRepository.save(hotel);
+            return new RespuestaDTO("El Hotel se eliminó con exito");
+        }
 
-        hotelRepository.delete(hotelCode);
+        return new RespuestaDTO("No se encontro el Hotel");
+    }
 
-        return new RespuestaDTO ("El Hotel se eliminó con éxito");
+    @Override
+    public HotelDTO getHotelByCode(String hotelCode) {
+        return modelMapper.map(hotelRepository.getByCode(hotelCode), HotelDTO.class);
     }
 }

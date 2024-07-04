@@ -4,23 +4,30 @@ import com.example.Trivago.DTO.Request.FlightReservationRequestDTO;
 import com.example.Trivago.DTO.Response.FlightReservationResponseDTO;
 import com.example.Trivago.DTO.Response.FlightReservationResponseDetailDTO;
 import com.example.Trivago.DTO.Response.ResponseStatusDTO;
+import com.example.Trivago.DTO.Response.RespuestaDTO;
+import com.example.Trivago.Entity.FlightBooking;
 import com.example.Trivago.Exception.FlightNotFound;
 import com.example.Trivago.Exception.InvalidBookingHotel;
 import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidReservationFlight;
 import com.example.Trivago.Entity.Flight;
+import com.example.Trivago.Repository.IFlightBookingRepository;
 import com.example.Trivago.Repository.IFlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Optional;
 
 @Service
 public class FlightReservationService implements IFlightReservationService {
 
     @Autowired
     private IFlightRepository flightRepository;
+
+    @Autowired
+    private IFlightBookingRepository flightBookingRepository;
 
     HashMap<String, FlightReservationResponseDTO>  flightReserved = new HashMap<>();
 
@@ -133,5 +140,18 @@ public class FlightReservationService implements IFlightReservationService {
         }
 
         return response;
+    }
+
+
+    public RespuestaDTO cancelFlight(Long id) {
+        Optional<FlightBooking> optionalFlightReservation = flightBookingRepository.findById(id);
+        if (optionalFlightReservation.isPresent()) {
+            FlightBooking flightReservation = optionalFlightReservation.get();
+            flightReservation.setActive(false);
+            flightBookingRepository.save(flightReservation);
+
+            return new RespuestaDTO("El vuelo ha sido cancelado con exito");
+        }
+        return new RespuestaDTO("No se encontro el vuelo");
     }
 }

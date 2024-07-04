@@ -23,4 +23,10 @@ public class FlightReservationController {
         FlightReservationResponseDTO response = flightService.flightReservation(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteFlightReservation(@RequestParam("id") Long id) {
+        flightService.cancelFlight(id);
+        return ResponseEntity.ok("Vuelo No. " + id + " eliminado con exito");
+    }
 }

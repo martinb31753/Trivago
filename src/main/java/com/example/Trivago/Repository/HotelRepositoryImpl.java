@@ -14,7 +14,7 @@
 //import java.util.List;
 //
 //@Repository
-//public class HotelRepositoryImpl implements IHotelRepository {
+//public class HotelRepositoryImpl {
 //
 //    private List<Hotel> hotelsList;
 //
@@ -68,14 +68,6 @@
 //        hotelsList.remove(foundHotel);
 //
 //        return hotelsList.add(hotel);
-//    }
-//
-//    @Override
-//    public boolean delete(String hotelCode) {
-//
-//        Hotel foundHotel = getById(hotelCode);
-//
-//        return hotelsList.remove(foundHotel);
 //    }
 //
 //

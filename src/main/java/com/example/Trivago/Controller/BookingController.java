@@ -24,4 +24,10 @@ public class BookingController {
         BookingResponseDTO hotelBooking = hotelService.bookHotelresponse(request);
         return ResponseEntity.ok(hotelBooking);
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteHotelBooking(@RequestParam("id") Long id) {
+        hotelService.cancelBooking(id);
+        return ResponseEntity.ok("Booking No. " + id + " eliminado con exito");
+    }
 }

@@ -13,7 +13,7 @@
 //import java.util.List;
 //
 //@Repository
-//public class FlightRepositoryImpl implements IFlightRepository {
+//public class FlightRepositoryImpl{
 //
 //    private List<Flight> flightList;
 //

@@ -5,15 +5,19 @@ import com.example.Trivago.DTO.Request.BookingRequestDTO;
 import com.example.Trivago.DTO.Response.BookingResponseDTO;
 import com.example.Trivago.DTO.Response.BookingResponseDetailDTO;
 import com.example.Trivago.DTO.Response.ResponseStatusDTO;
+import com.example.Trivago.DTO.Response.RespuestaDTO;
+import com.example.Trivago.Entity.HotelBooking;
 import com.example.Trivago.Exception.InvalidBookingHotel;
 import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidDestination;
 import com.example.Trivago.Entity.Hotel;
+import com.example.Trivago.Repository.IHotelBookingRepository;
 import com.example.Trivago.Repository.IHotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 
@@ -21,6 +25,9 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
     @Autowired
     private IHotelRepository hotelRepository;
+
+    @Autowired
+    private IHotelBookingRepository hotelBookingRepository;
 
     @Override
     public BookingResponseDTO bookHotelresponse(BookingRequestDTO request) {
@@ -167,5 +174,20 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         hotelRepository.save(hotel);
 
         return response;
+    }
+
+
+    public RespuestaDTO cancelBooking(Long id) {
+
+        Optional<HotelBooking> optionalHotelBooking = hotelBookingRepository.findById(id);
+        if (optionalHotelBooking.isPresent()) {
+            HotelBooking hotelBooking = optionalHotelBooking.get();
+            hotelBooking.setActive(false);
+            hotelBookingRepository.save(hotelBooking);
+
+            return new RespuestaDTO("La reserva se canceló con exito");
+        }
+
+        return new RespuestaDTO("No se encontro la reserva");
     }
 }
