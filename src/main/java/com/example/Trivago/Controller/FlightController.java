@@ -14,14 +14,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/flights")
 @Validated
 public class FlightController {
 
     @Autowired
     IFlight flightService;
 
-    @GetMapping("/flights")
+    @GetMapping()
     public ResponseEntity<?> getAvailableFlights(
             @RequestParam(value = "date_from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_from,
             @RequestParam(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,

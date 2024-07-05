@@ -40,7 +40,7 @@ public class Flight {
     private LocalDate dateTo;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private Boolean isActive;
 
     //un vuelo puede estar asociado con muchas reservas de vuelo.
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)

@@ -34,7 +34,7 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         // Encontrar el hotel por código
 
         System.out.println(request.getBooking().getHotelCode());
-        Hotel hotel = hotelRepository.getById(request.getBooking().getHotelCode());
+        Optional<Hotel> hotel = hotelRepository.getByHotelCode(request.getBooking().getHotelCode());
 
         System.out.println(hotel);
         if (hotel == null) {
@@ -45,13 +45,13 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         LocalDate dateTo = request.getBooking().getDateTo();//getDateTo();
 
 
-        if (hotel.getIsReserved()) {
-            throw new InvalidBookingHotel(hotel.getName() + " el hotel ya fue reservado");
+        if (hotel.get().getIsReserved()) {
+            throw new InvalidBookingHotel(hotel.get().getHotelCode()+ " el hotel ya fue reservado");
         }
 
 
         // noche de la doble  $6300")
-        double pricePerNight = Double.parseDouble(hotel.getPricePerNight().replace("$", ""));
+        double pricePerNight = Double.parseDouble(hotel.get().getPricePerNight().replace("$", ""));
         long numberOfNights = dateFrom.until(dateTo).getDays();
         double amount = pricePerNight * numberOfNights;
 
@@ -89,8 +89,8 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         //  respuesta
         BookingResponseDetailDTO bookingDetail = new BookingResponseDetailDTO();
         if(dateFrom.isAfter(dateTo) ||
-                !dateTo.isEqual(hotel.getDateTo()) ||
-                !dateFrom.isEqual(hotel.getDateFrom())) {
+                !dateTo.isEqual(hotel.get().getDateTo()) ||
+                !dateFrom.isEqual(hotel.get().getDateFrom())) {
             throw new InvalidDate("La fecha de llegada debe ser posterior a la fecha de salida " +
                     "o viceversa y además debe coincidir con las fechas disponibles del hotel");
         }
@@ -98,7 +98,7 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         bookingDetail.setDateFrom(dateFrom);
         bookingDetail.setDateTo(dateTo);
 
-        if(!hotel.getDestination().equalsIgnoreCase(request.getBooking().getDestination())  ){
+        if(!hotel.get().getDestination().equalsIgnoreCase(request.getBooking().getDestination())  ){
             throw new InvalidDestination(request.getBooking().getDestination() + " como destino es incorrecto");
         }
 
@@ -106,12 +106,12 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
         bookingDetail.setHotelCode(request.getBooking().getHotelCode());
         if(request.getBooking().getPeopleAmount() > 5 ){
-            throw new InvalidBookingHotel(hotel.getRoomType() + " No admite más de 5 personas ");
+            throw new InvalidBookingHotel(hotel.get().getRoomType() + " No admite más de 5 personas ");
         }
 
 
         int maxCapacity = 0;
-        switch (hotel.getRoomType().toLowerCase()) {
+        switch (hotel.get().getRoomType().toLowerCase()) {
             case "single":
                 maxCapacity = 1;
                 break;
@@ -125,11 +125,11 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
                 maxCapacity = 4;
                 break;
             default:
-                throw new InvalidBookingHotel("Tipo de habitación desconocido: " + hotel.getRoomType());
+                throw new InvalidBookingHotel("Tipo de habitación desconocido: " + hotel.get().getRoomType());
         }
 
         if (request.getBooking().getPeopleAmount() > maxCapacity) {
-            throw new InvalidBookingHotel(hotel.getRoomType() + " no admite más de " + maxCapacity + " personas.");
+            throw new InvalidBookingHotel(hotel.get().getRoomType() + " no admite más de " + maxCapacity + " personas.");
         }
 
 
@@ -170,8 +170,7 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         response.setStatus(responseStatusDTO);
 
         // Marcar  reservada
-        hotel.setIsReserved(true);
-        hotelRepository.save(hotel);
+        hotel.get().setIsActive(true);
 
         return response;
     }

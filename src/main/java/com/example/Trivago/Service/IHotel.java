@@ -8,15 +8,13 @@ import java.util.List;
 
 public interface IHotel {
 
-    List<HotelDTO> getAll();
+    RespuestaDTO deleteHotelByCode(String hotelCode);
 
     List<HotelDTO> getAvailableHotels(LocalDate dateFrom, LocalDate dateTo, String destination);
 
-    RespuestaDTO addNewHotel(HotelDTO newHotel);
+    List<HotelDTO> getAll();
+
+    RespuestaDTO addNewHotel(HotelDTO hotelDTO);
 
     RespuestaDTO updateHotelById(HotelDTO updateHotel);
-
-    RespuestaDTO deleteHotelByCode(String hotelCode);
-
-    HotelDTO getHotelByCode(String hotelCode);
 }
