@@ -17,4 +17,6 @@ public interface IHotel {
     RespuestaDTO updateHotelById(HotelDTO updateHotel);
 
     RespuestaDTO deleteHotelById(String hotelCode);
+
+    List<HotelDTO> getAllHotels();
 }

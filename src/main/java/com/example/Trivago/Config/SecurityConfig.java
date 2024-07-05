@@ -25,7 +25,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(csrf-> csrf.disable()).authorizeHttpRequests(authRequest ->
-                        authRequest.requestMatchers("/auth/**").permitAll()
+                        authRequest.requestMatchers("/api/v1/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/demo").hasAuthority("USER")
                                 .requestMatchers(HttpMethod.GET, "/api/v1/index2").hasAuthority("ADMIN")
                                 .anyRequest().authenticated())

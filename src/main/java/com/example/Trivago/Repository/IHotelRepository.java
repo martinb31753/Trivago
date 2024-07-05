@@ -8,14 +8,15 @@ import java.util.List;
 
 public interface IHotelRepository extends JpaRepository<Hotel,Long> {
 
-    List<Hotel> getAll();
+    List<Hotel> findAll();
 
-    Hotel getById(String hotelCode);
-    List<Hotel> getHotelsAvailableFilter(LocalDate date_from, LocalDate date_to, String destination);
+    Hotel getByHotelCode(String hotelCode);
 
-   Hotel save(Hotel hotel);
+    //List<Hotel> getHotelsAvailableFilter(LocalDate date_from, LocalDate date_to, String destination);
 
-    boolean update(Hotel hotel);
+    //Hotel save(Hotel hotel);
 
-    boolean delete (String hotelCode);
+    //boolean update(Hotel hotel);
+
+    //boolean delete (String hotelCode);
 }

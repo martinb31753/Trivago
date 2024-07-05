@@ -22,10 +22,16 @@ public class HotelServiceImpl implements IHotel {
     private List<HotelDTO> hotelList;
     ModelMapper modelMapper = new ModelMapper();
 
+    @Override
+    public List<HotelDTO> getAllHotels() {
+        return hotelRepository.findAll().stream()
+                .map(hotel -> modelMapper.map(hotel, HotelDTO.class))
+                .toList();
+    }
 
     @Override
     public List<HotelDTO> getAll() {
-        return hotelRepository.getAll()
+        return hotelRepository.findAll()
                 .stream()
                 .map(hotel -> modelMapper.map(hotel, HotelDTO.class))
                 .toList();
@@ -81,7 +87,7 @@ public class HotelServiceImpl implements IHotel {
 
         modelMapper.map(updateHotel, hotel);
 
-        hotelRepository.update(hotel);
+        //hotelRepository.update(hotel);
 
         return new RespuestaDTO("El Hotel se actualizó con éxito");
     }
@@ -89,7 +95,7 @@ public class HotelServiceImpl implements IHotel {
     @Override
     public RespuestaDTO deleteHotelById(String hotelCode) {
 
-        hotelRepository.delete(hotelCode);
+        //hotelRepository.delete(hotelCode);
 
         return new RespuestaDTO ("El Hotel se eliminó con éxito");
     }

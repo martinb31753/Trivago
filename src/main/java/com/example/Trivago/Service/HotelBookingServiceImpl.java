@@ -27,7 +27,7 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         // Encontrar el hotel por código
 
         System.out.println(request.getBooking().getHotelCode());
-        Hotel hotel = hotelRepository.getById(request.getBooking().getHotelCode());
+        Hotel hotel = hotelRepository.getByHotelCode(request.getBooking().getHotelCode());
 
         System.out.println(hotel);
         if (hotel == null) {

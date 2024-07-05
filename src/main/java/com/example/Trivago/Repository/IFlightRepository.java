@@ -8,15 +8,15 @@ import java.util.List;
 
 public interface IFlightRepository extends JpaRepository<Flight,Long> {
 
-    List<Flight> getAll();
+    List<Flight> findAll();
 
     Flight getByFlightNumber(String flightCode);
 
-    Flight save(Flight flight);
+    //Flight save(Flight flight);
 
-    boolean update(Flight flight);
+    //boolean update(Flight flight);
 
-    boolean delete(String flightNumber);
+    //boolean delete(String flightNumber);
 
-//    Flight getById(String flightNumber); tiene la mism lógica que getByFlightNumber
+    //Flight getById(String flightNumber); tiene la mism lógica que getByFlightNumber
 }

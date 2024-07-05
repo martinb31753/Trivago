@@ -23,6 +23,11 @@ public class HotelController {
     IHotel hotelService;
 
     @GetMapping("/hotels")
+    public List<HotelDTO> getAllHotels() {
+        return hotelService.getAllHotels();
+    }
+
+    @GetMapping("/hotels-by-date")
     public ResponseEntity<?> getAvailableHotels(
             @RequestParam(value="date_from", required = false) @DateTimeFormat(pattern="dd-MM-yyyy")  LocalDate date_from,
             @RequestParam(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,

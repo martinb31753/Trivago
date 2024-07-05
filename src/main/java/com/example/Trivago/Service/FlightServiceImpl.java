@@ -23,7 +23,7 @@ public class FlightServiceImpl implements IFlight {
 
     @Override
     public List<FlightDTO> getAll() {
-        return flightRepository.getAll().stream()
+        return flightRepository.findAll().stream()
                 .map(flight -> modelMapper.map(flight, FlightDTO.class)).toList();
     }
 
@@ -90,7 +90,7 @@ public class FlightServiceImpl implements IFlight {
 
         modelMapper.map(updateFlight, flight);
 
-        flightRepository.update(flight);
+        //flightRepository.update(flight);
 
         return new RespuestaDTO("El vuelo ha sido actualizado con éxito");
     }
@@ -98,7 +98,7 @@ public class FlightServiceImpl implements IFlight {
     @Override
     public RespuestaDTO deleteFlightById(String flightNumber) {
 
-        flightRepository.delete(flightNumber);
+        //flightRepository.delete(flightNumber);
 
         return new RespuestaDTO ("El vuelo ha sido eliminado con exito");
     }
