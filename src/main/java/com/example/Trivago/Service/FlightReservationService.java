@@ -4,23 +4,30 @@ import com.example.Trivago.DTO.Request.FlightReservationRequestDTO;
 import com.example.Trivago.DTO.Response.FlightReservationResponseDTO;
 import com.example.Trivago.DTO.Response.FlightReservationResponseDetailDTO;
 import com.example.Trivago.DTO.Response.ResponseStatusDTO;
+import com.example.Trivago.DTO.Response.RespuestaDTO;
+import com.example.Trivago.Entity.FlightBooking;
 import com.example.Trivago.Exception.FlightNotFound;
 import com.example.Trivago.Exception.InvalidBookingHotel;
 import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidReservationFlight;
 import com.example.Trivago.Entity.Flight;
+import com.example.Trivago.Repository.IFlightBookingRepository;
 import com.example.Trivago.Repository.IFlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Optional;
 
 @Service
 public class FlightReservationService implements IFlightReservationService {
 
     @Autowired
     private IFlightRepository flightRepository;
+
+    @Autowired
+    private IFlightBookingRepository flightBookingRepository;
 
     HashMap<String, FlightReservationResponseDTO>  flightReserved = new HashMap<>();
 
@@ -35,13 +42,13 @@ public class FlightReservationService implements IFlightReservationService {
         LocalDate dateTo = request.getFlightReservationDTO().getDateTo();
 
         // Encontrar el hotel por código //acá modifique el metodo del repo al que se llama
-        Flight flight = flightRepository.getByFlightNumber(request.getFlightReservationDTO().getFlightNumber());
-        if (flight == null) {
-            throw new FlightNotFound(flight.getFlightNumber() + " vuelo no existe");
+        Optional<Flight> flight = flightRepository.findByFlightNumber(request.getFlightReservationDTO().getFlightNumber());
+        if (flight.isEmpty()) {
+            throw new FlightNotFound(flight.get().getFlightNumber() + " vuelo no existe");
         }
 
 
-        double pricePerPerson = Double.parseDouble(flight.getPricePerPerson().replace("$", "").replace(",", ""));
+        double pricePerPerson = Double.parseDouble(flight.get().getPricePerPerson().replace("$", "").replace(",", ""));
 
         if (request.getFlightReservationDTO().getPeople().size() == 0) {
             throw new InvalidReservationFlight("No hay pasajeros existentes");
@@ -89,7 +96,7 @@ public class FlightReservationService implements IFlightReservationService {
         FlightReservationResponseDetailDTO flightReservation = new FlightReservationResponseDetailDTO();
 
         if (dateFrom.isAfter(dateTo) || dateTo.isBefore(dateFrom) ||
-                (!dateFrom.isEqual(flight.getDateFrom()) || !dateTo.isEqual(flight.getDateTo()))) {
+                (!dateFrom.isEqual(flight.get().getDateFrom()) || !dateTo.isEqual(flight.get().getDateTo()))) {
             throw new InvalidDate("La fecha de llegada debe ser posterior a la fecha de salida o viceversa, " +
                     "y además debe coincidir con las de fechas del vuelo");
         }
@@ -97,8 +104,8 @@ public class FlightReservationService implements IFlightReservationService {
         flightReservation.setDateFrom(dateFrom);
         flightReservation.setDateTo(dateTo);
 
-        if (!flight.getOrigin().equalsIgnoreCase(request.getFlightReservationDTO().getOrigin()) ||
-                !flight.getDestination().equalsIgnoreCase(request.getFlightReservationDTO().getDestination())) {
+        if (!flight.get().getOrigin().equalsIgnoreCase(request.getFlightReservationDTO().getOrigin()) ||
+                !flight.get().getDestination().equalsIgnoreCase(request.getFlightReservationDTO().getDestination())) {
             throw new InvalidDate("El origen y destino no coinciden con un vuelo existente");
         }
 
@@ -107,7 +114,7 @@ public class FlightReservationService implements IFlightReservationService {
         flightReservation.setFlightNumber(request.getFlightReservationDTO().getFlightNumber());
         flightReservation.setSeats(request.getFlightReservationDTO().getSeats());
 
-        if (!flight.getSeatType().equalsIgnoreCase(request.getFlightReservationDTO().getSeatType())) {
+        if (!flight.get().getSeatType().equalsIgnoreCase(request.getFlightReservationDTO().getSeatType())) {
             throw new InvalidReservationFlight("El tipo de asiento no coincide con el tipo de asiento del vuelo");
         }
         flightReservation.setSeatType(request.getFlightReservationDTO().getSeatType());
@@ -133,5 +140,18 @@ public class FlightReservationService implements IFlightReservationService {
         }
 
         return response;
+    }
+
+
+    public RespuestaDTO cancelFlight(Long id) {
+        Optional<FlightBooking> optionalFlightReservation = flightBookingRepository.findById(id);
+        if (optionalFlightReservation.isPresent()) {
+            FlightBooking flightReservation = optionalFlightReservation.get();
+            flightReservation.setActive(false);
+            flightBookingRepository.save(flightReservation);
+
+            return new RespuestaDTO("El vuelo ha sido cancelado con exito");
+        }
+        return new RespuestaDTO("No se encontro el vuelo");
     }
 }

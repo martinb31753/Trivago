@@ -6,12 +6,15 @@ import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidDestination;
 import com.example.Trivago.Entity.Hotel;
 import com.example.Trivago.Repository.IHotelRepository;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelServiceImpl implements IHotel {
@@ -22,14 +25,7 @@ public class HotelServiceImpl implements IHotel {
     private List<HotelDTO> hotelList;
     ModelMapper modelMapper = new ModelMapper();
 
-    @Override
-    public List<HotelDTO> getAllHotels() {
-        return hotelRepository.findAll().stream()
-                .map(hotel -> modelMapper.map(hotel, HotelDTO.class))
-                .toList();
-    }
 
-    @Override
     public List<HotelDTO> getAll() {
         return hotelRepository.findAll()
                 .stream()
@@ -37,7 +33,6 @@ public class HotelServiceImpl implements IHotel {
                 .toList();
     }
 
-    @Override
     public List<HotelDTO> getAvailableHotels(LocalDate dateFrom, LocalDate dateTo, String destination) {
         hotelList = getAll();
         if (destination == null && dateFrom == null && dateTo == null) {
@@ -49,16 +44,14 @@ public class HotelServiceImpl implements IHotel {
             throw new InvalidDestination(destination + " no es un destino existente");
         }
 
-        List<HotelDTO> availableHotels = hotelList.stream().filter(hotel ->
-                (destination == null || hotel.getDestination().equalsIgnoreCase(destination)) &&
-                        (dateFrom == null || isWithinDateRange(hotel.getDateFrom(), dateFrom, dateTo)) &&
-                        (dateTo == null || isWithinDateRange(hotel.getDateTo(), dateFrom, dateTo)))
-                .toList();
+
+
+        List<Hotel> availableHotels = hotelRepository.getHotelsAvailableFilter(dateFrom, dateTo, destination);
         if (availableHotels.isEmpty()) {
             throw new InvalidDate("No hay hoteles disponibles para las fechas proporcionadas.");
         }
 
-        return availableHotels;
+        return availableHotels.stream().map(hotel -> modelMapper.map(hotel, HotelDTO.class)).collect(Collectors.toList());
     }
 
 
@@ -67,7 +60,6 @@ public class HotelServiceImpl implements IHotel {
         return !date.isBefore(rangeStart) && !date.isAfter(rangeEnd);
     }
 
-    @Override
     public RespuestaDTO addNewHotel(HotelDTO newHotel) {
 
         Hotel hotel = new Hotel();
@@ -80,23 +72,27 @@ public class HotelServiceImpl implements IHotel {
 
     }
 
-    @Override
     public RespuestaDTO updateHotelById(HotelDTO updateHotel) {
 
         Hotel hotel= new Hotel();
 
         modelMapper.map(updateHotel, hotel);
 
-        //hotelRepository.update(hotel);
+        hotelRepository.save(hotel);
 
         return new RespuestaDTO("El Hotel se actualizó con éxito");
     }
 
     @Override
-    public RespuestaDTO deleteHotelById(String hotelCode) {
-
-        //hotelRepository.delete(hotelCode);
-
-        return new RespuestaDTO ("El Hotel se eliminó con éxito");
+    @Transactional
+    public RespuestaDTO deleteHotelByCode(String hotelCode) {
+        Optional<Hotel> optionalHotel = hotelRepository.getByHotelCode(hotelCode);
+        if (optionalHotel.isPresent()) {
+            Hotel hotel = optionalHotel.get();
+            hotel.setIsActive(false);
+            hotelRepository.save(hotel);
+            return new RespuestaDTO("El Hotel se eliminó con exito");
+        }
+        return new RespuestaDTO("No se encontro el Hotel");
     }
 }

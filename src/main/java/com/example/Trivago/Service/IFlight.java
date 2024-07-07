@@ -8,15 +8,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface IFlight {
+    RespuestaDTO deleteFlightByCode(String flightNumber);
+
+    List<FlightDTO> getFlightByDate(LocalDate dateFrom, LocalDate dateTo, String origin, String destination);
 
     List<FlightDTO> getAll();
-    List<FlightDTO> getFlightByDate(LocalDate date_from, LocalDate date_to, String origin, String destination);
-
-    FlightDTO getByFlightNumber(String flightCode);
 
     RespuestaDTO addNewFlight(FlightDTO flightDTO);
 
     RespuestaDTO updateFlight(FlightDTO updateFlight);
 
-    RespuestaDTO deleteFlightById(String flightNumber);
+
 }

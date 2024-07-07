@@ -14,14 +14,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/flights")
 @Validated
 public class FlightController {
 
     @Autowired
     IFlight flightService;
 
-    @GetMapping("/flights")
+    @GetMapping()
     public ResponseEntity<?> getAvailableFlights(
             @RequestParam(value = "date_from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_from,
             @RequestParam(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,
@@ -42,9 +42,10 @@ public class FlightController {
 
     }
 
-    @DeleteMapping("/remove-flight/{flightNumber}")
-    public ResponseEntity<?> deleteFlightById(@PathVariable String flightNumber) {
-        return new ResponseEntity<>(flightService.deleteFlightById(flightNumber), HttpStatus.OK);
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteFlight(@RequestParam("flightNumber") String flightNumber) {
+        flightService.deleteFlightByCode(flightNumber);
+        return ResponseEntity.ok("Vuelo No. " + flightNumber + " eliminado");
     }
 
 

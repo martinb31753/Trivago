@@ -1,9 +1,10 @@
 package com.example.Trivago.Service;
+
 import com.example.Trivago.DTO.FlightDTO;
 import com.example.Trivago.DTO.Response.RespuestaDTO;
+import com.example.Trivago.Entity.Flight;
 import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidDestination;
-import com.example.Trivago.Entity.Flight;
 import com.example.Trivago.Repository.IFlightRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,97 +12,79 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightServiceImpl implements IFlight {
+
     @Autowired
     private IFlightRepository flightRepository;
 
     private List<FlightDTO> flightList;
-    ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper = new ModelMapper();
 
-    @Override
     public List<FlightDTO> getAll() {
         return flightRepository.findAll().stream()
-                .map(flight -> modelMapper.map(flight, FlightDTO.class)).toList();
+                .map(flight -> modelMapper.map(flight, FlightDTO.class))
+                .collect(Collectors.toList());
     }
 
-    @Override
-    public List<FlightDTO> getFlightByDate(LocalDate date_from, LocalDate date_to, String origin, String destination) {
+    public List<FlightDTO> getFlightByDate(LocalDate dateFrom, LocalDate dateTo, String origin, String destination) {
         flightList = getAll();
-        if (origin == null && destination == null && date_from == null && date_to == null) {
+        if (origin == null && destination == null && dateFrom == null && dateTo == null) {
             return flightList;
         }
 
-        //validamos que el origen exista - validación - US0005
-        if (origin != null && flightList.stream()
-                .noneMatch(flight -> flight.getOrigin().equalsIgnoreCase(origin))) {
+        // Validar origen y destino
+        if (origin != null && flightList.stream().noneMatch(flight -> flight.getOrigin().equalsIgnoreCase(origin))) {
             throw new InvalidDestination(origin + " no es un origen existente");
         }
 
-        //validamos que el destino exista - validación - US0005
-        if (destination != null && flightList.stream()
-                .noneMatch(flight -> flight.getDestination().equalsIgnoreCase(destination))) {
+        if (destination != null && flightList.stream().noneMatch(flight -> flight.getDestination().equalsIgnoreCase(destination))) {
             throw new InvalidDestination(destination + " no es un destino existente");
         }
 
-        List<FlightDTO> availableFlights = flightList.stream().filter(flight ->
-                (origin == null || flight.getOrigin().equalsIgnoreCase(origin)) &&
-                        (destination == null || flight.getDestination().equalsIgnoreCase(destination)) &&
-                        (date_from == null || isWithinDateRange(flight.getDateFrom(), date_from, date_to)) &&
-                        (date_to == null || isWithinDateRange(flight.getDateTo(), date_from, date_to)))
-                .toList();
+        List<Flight> availableFlights = flightRepository.getFlightsAvailableFilter(dateFrom, dateTo, origin, destination);
+
         if (availableFlights.isEmpty()) {
             throw new InvalidDate("No hay vuelos disponibles para las fechas proporcionadas.");
         }
-        return availableFlights;
+
+        return availableFlights.stream().map(flight -> modelMapper.map(flight, FlightDTO.class)).collect(Collectors.toList());
     }
 
     private boolean isWithinDateRange(LocalDate date, LocalDate rangeStart, LocalDate rangeEnd) {
         return !date.isBefore(rangeStart) && !date.isAfter(rangeEnd);
     }
 
-
-    @Override
-    public FlightDTO getByFlightNumber(String flightCode) {
-        return null;
-    }
-
-    @Override
     public RespuestaDTO addNewFlight(FlightDTO flightDTO) {
-        Flight flight = new Flight();
-
         if (flightDTO.getDateFrom().isAfter(flightDTO.getDateTo()) || flightDTO.getDateFrom().isEqual(flightDTO.getDateTo())) {
-            throw new InvalidDate("La fecha de llegada debe ser posterior a la fecha de salida o viceversa, " +
-                    "y además debe coincidir con las de fechas del vuelo");
+            throw new InvalidDate("La fecha de llegada debe ser posterior a la fecha de salida o viceversa, y además debe coincidir con las de fechas del vuelo");
         }
-        modelMapper.map(flightDTO, flight);
 
+        Flight flight = modelMapper.map(flightDTO, Flight.class);
         flightRepository.save(flight);
 
         return new RespuestaDTO("El vuelo ha sido creado con éxito");
     }
 
-
-    @Override
     public RespuestaDTO updateFlight(FlightDTO updateFlight) {
-        Flight flight = new Flight();
-
-        modelMapper.map(updateFlight, flight);
-
-        //flightRepository.update(flight);
+        Flight flight = modelMapper.map(updateFlight, Flight.class);
+        flightRepository.save(flight);
 
         return new RespuestaDTO("El vuelo ha sido actualizado con éxito");
     }
 
-    @Override
-    public RespuestaDTO deleteFlightById(String flightNumber) {
+    public RespuestaDTO deleteFlightByCode(String flightCode) {
+        Optional<Flight> optionalFlight = flightRepository.findByFlightNumber(flightCode);
+        if (optionalFlight.isPresent()) {
+            Flight flight = optionalFlight.get();
+            flight.setIsActive(false);
+            flightRepository.save(flight);
 
-        //flightRepository.delete(flightNumber);
-
-        return new RespuestaDTO ("El vuelo ha sido eliminado con exito");
+            return new RespuestaDTO("El vuelo se eliminó con éxito");
+        }
+        return new RespuestaDTO("No se encontró el vuelo");
     }
-
 }
-

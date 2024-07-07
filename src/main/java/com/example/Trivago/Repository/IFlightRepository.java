@@ -3,20 +3,25 @@ package com.example.Trivago.Repository;
 import com.example.Trivago.Entity.Flight;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface IFlightRepository extends JpaRepository<Flight,Long> {
+    @Query("SELECT h FROM Flight h " +
+            "WHERE h.dateFrom <= :dateFrom " +
+            "AND h.dateTo >= :dateTo " +
+            "AND h.origin = :origin " +
+            "AND h.destination = :destination " +
+            "AND h.isActive = true")
+    List<Flight> getFlightsAvailableFilter(LocalDate dateFrom,
+                                          LocalDate dateTo,
+                                          String origin,
+                                          String destination);
 
-    List<Flight> findAll();
-
-    Flight getByFlightNumber(String flightCode);
-
-    //Flight save(Flight flight);
-
-    //boolean update(Flight flight);
-
-    //boolean delete(String flightNumber);
-
-    //Flight getById(String flightNumber); tiene la mism lógica que getByFlightNumber
+    @Query("SELECT f FROM Flight f WHERE f.flightNumber = :flightNumber AND f.isActive = true")
+    Optional<Flight> findByFlightNumber(String flightNumber);
 }

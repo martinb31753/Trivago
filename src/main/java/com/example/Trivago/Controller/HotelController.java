@@ -15,19 +15,14 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/hotels")
 @Validated
 public class HotelController {
 
     @Autowired
     IHotel hotelService;
 
-    @GetMapping("/hotels")
-    public List<HotelDTO> getAllHotels() {
-        return hotelService.getAllHotels();
-    }
-
-    @GetMapping("/hotels-by-date")
+    @GetMapping()
     public ResponseEntity<?> getAvailableHotels(
             @RequestParam(value="date_from", required = false) @DateTimeFormat(pattern="dd-MM-yyyy")  LocalDate date_from,
             @RequestParam(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,
@@ -47,8 +42,9 @@ public class HotelController {
 
     }
 
-    @DeleteMapping("/remove-hotel/{hotelCode}")
-    public ResponseEntity<?> deleteHotelById(@PathVariable String hotelCode) {
-        return new ResponseEntity<>(hotelService.deleteHotelById(hotelCode), HttpStatus.OK);
+    @PutMapping("/delete/{hotelCode}")
+    public ResponseEntity<?> deleteHotel(@PathVariable("hotelCode") String hotelCode) {
+        hotelService.deleteHotelByCode(hotelCode);
+        return ResponseEntity.ok("Hotele No. " + hotelCode + " eliminado");
     }
 }
