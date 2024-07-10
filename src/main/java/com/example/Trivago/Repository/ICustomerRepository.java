@@ -1,7 +1,7 @@
 package com.example.Trivago.Repository;
 
-import com.example.Trivago.Entity.Customer;
+import com.example.Trivago.Entity.People;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ICustomerRepository extends JpaRepository<Customer,Long> {
+public interface ICustomerRepository extends JpaRepository<People,Long> {
 }

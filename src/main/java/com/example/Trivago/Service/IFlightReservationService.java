@@ -9,5 +9,9 @@ public interface IFlightReservationService {
 
     FlightReservationResponseDTO flightReservation(FlightReservationRequestDTO request);
 
+    RespuestaDTO updateFlightReservation(FlightReservationRequestDTO editReservation, Long id);
+
     RespuestaDTO cancelFlight(Long id);
+
+
 }

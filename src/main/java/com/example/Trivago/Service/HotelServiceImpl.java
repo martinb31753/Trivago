@@ -2,6 +2,7 @@ package com.example.Trivago.Service;
 
 import com.example.Trivago.DTO.HotelDTO;
 import com.example.Trivago.DTO.Response.RespuestaDTO;
+import com.example.Trivago.Exception.HotelNotFound;
 import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidDestination;
 import com.example.Trivago.Entity.Hotel;
@@ -27,7 +28,7 @@ public class HotelServiceImpl implements IHotel {
 
 
     public List<HotelDTO> getAll() {
-        return hotelRepository.findAll()
+        return hotelRepository.getAllHotelIsActive()
                 .stream()
                 .map(hotel -> modelMapper.map(hotel, HotelDTO.class))
                 .toList();
@@ -72,15 +73,12 @@ public class HotelServiceImpl implements IHotel {
 
     }
 
-    public RespuestaDTO updateHotelById(HotelDTO updateHotel) {
-
-        Hotel hotel= new Hotel();
-
+    public RespuestaDTO updateHotel(HotelDTO updateHotel, String hotelCode) {
+        Hotel hotel= hotelRepository.getByHotelCode(hotelCode)
+                        .orElseThrow(()-> new HotelNotFound("No se encontró ningún Hotel"));
         modelMapper.map(updateHotel, hotel);
-
         hotelRepository.save(hotel);
-
-        return new RespuestaDTO("El Hotel se actualizó con éxito");
+        return new RespuestaDTO("Hotel modificado correctamente");
     }
 
     @Override

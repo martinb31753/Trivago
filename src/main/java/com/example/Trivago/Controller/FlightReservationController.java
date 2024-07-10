@@ -24,6 +24,12 @@ public class FlightReservationController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PutMapping("/edit")
+    public ResponseEntity<?> editFlightReservation(@RequestBody @Valid FlightReservationRequestDTO editReservation,
+                                                   @RequestParam Long id) {
+        return new ResponseEntity<>(flightService.updateFlightReservation(editReservation, id), HttpStatus.OK);
+    }
+
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteFlightReservation(@RequestParam("id") Long id) {
         flightService.cancelFlight(id);

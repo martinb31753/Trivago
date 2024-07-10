@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -21,45 +21,31 @@ public class HotelBooking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name ="date_from")
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate dateFrom;
-
-    @Column(name = "date_to")
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate dateTo;
-
-    @Column(name = "destination")
-    private String destination;
-
     @Column(name = "people_amount")
     private int peopleAmount;
 
-    @Column(name = "room_type")
-    private String roomType;
-
-    @Column(name = "hotel_code")
-    private String hotelCode;
-
-    @Column(name = "is_active")
-    private boolean isActive;
-
-    //cada reserva pertenece a un solo cliente
+    //cada reserva pertenece a un cliente
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "hotel_booking_people",
+            joinColumns = @JoinColumn(name = "hotel_booking_id"),
+            inverseJoinColumns = @JoinColumn(name = "people_id"))
+    private Set<People> people;
+
     //muchas reservas tienen una unica forma de pago
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
 
-
     // Relación uno a uno con Hotel, mapeado por el campo hotelBooking en Hotel
-    @OneToOne(mappedBy = "hotelBooking")
+    @OneToOne
+    @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
 
-
-
+    @Column(name = "is_active",columnDefinition = "boolean default true")
+    private Boolean isActive = true;
 }

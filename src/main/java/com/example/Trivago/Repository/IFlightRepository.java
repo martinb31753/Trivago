@@ -2,6 +2,7 @@ package com.example.Trivago.Repository;
 
 import com.example.Trivago.Entity.Flight;
 
+import com.example.Trivago.Entity.Hotel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,5 +24,10 @@ public interface IFlightRepository extends JpaRepository<Flight,Long> {
                                           String destination);
 
     @Query("SELECT f FROM Flight f WHERE f.flightNumber = :flightNumber AND f.isActive = true")
-    Optional<Flight> findByFlightNumber(String flightNumber);
+    Optional<Flight> findByFlightNumber(@Param("flightNumber") String flightNumber);
+
+    Optional<Flight> findByFlightNumberAndSeatType(String flightNumber, String seatType);
+
+    @Query("SELECT f FROM Flight f WHERE f.isActive = true")
+    List<Flight> getAllFlightsIsActive();
 }

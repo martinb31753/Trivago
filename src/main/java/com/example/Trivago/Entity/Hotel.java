@@ -19,7 +19,7 @@ public class Hotel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long hotelId;
+    private Long Id;
     @Column(name = "hotel_code")
     private String hotelCode;
     @Column(name = "name")
@@ -39,15 +39,16 @@ public class Hotel {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateTo;
 
-    @Column(name = "is_reserved")
-    private Boolean isReserved;
+    @Column(name = "is_reserved",columnDefinition = "boolean default false")
+    private Boolean isReserved = false;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @Column(name = "is_active",columnDefinition = "boolean default true")
+    private Boolean isActive = true;
 
     // Relación uno a uno con HotelBooking
-    @OneToOne
-    @JoinColumn(name = "hotel_booking_id")
+
+
+    @OneToOne(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private HotelBooking hotelBooking;
 
 

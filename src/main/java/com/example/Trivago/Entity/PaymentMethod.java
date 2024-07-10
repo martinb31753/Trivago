@@ -25,14 +25,6 @@ public class PaymentMethod {
     @Column(name = "dues")
     private Integer dues;
 
-    //un método de pago puede estar asociado con muchas reservas de vuelo
-    @OneToMany(mappedBy = "paymentMethod", cascade = CascadeType.ALL)
-    private List<FlightBooking> flightBookings;
-
-    //un método de pago puede estar asociado con muchas reservas de hoteles
-    @OneToMany(mappedBy = "paymentMethod", cascade = CascadeType.ALL)
-    private List<HotelBooking> hotelBookings;
-
 
 
 

@@ -13,6 +13,8 @@ import com.example.Trivago.Exception.InvalidDestination;
 import com.example.Trivago.Entity.Hotel;
 import com.example.Trivago.Repository.IHotelBookingRepository;
 import com.example.Trivago.Repository.IHotelRepository;
+import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,8 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
 
     @Autowired
     private IHotelBookingRepository hotelBookingRepository;
+
+    private final ModelMapper modelMapper = new ModelMapper();
 
     @Override
     public BookingResponseDTO bookHotelresponse(BookingRequestDTO request) {
@@ -175,13 +179,23 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         return response;
     }
 
+    @Override
+    @Transactional
+    public RespuestaDTO updateHotelReservation(BookingRequestDTO editReservation, Long id) {
+        HotelBooking hotelBookingEdit = hotelBookingRepository.findById(id)
+        .orElseThrow(() -> new InvalidBookingHotel("No se encontró la Reserva de hotel"));
+        modelMapper.map(editReservation, hotelBookingEdit);
+//        hotelBookingRepository.save(hotelBookingEdit);
+
+        return new RespuestaDTO("Reserva de Vuelo modificada correctamente");
+    }
 
     public RespuestaDTO cancelBooking(Long id) {
 
         Optional<HotelBooking> optionalHotelBooking = hotelBookingRepository.findById(id);
         if (optionalHotelBooking.isPresent()) {
             HotelBooking hotelBooking = optionalHotelBooking.get();
-            hotelBooking.setActive(false);
+            hotelBooking.setIsActive(false);
             hotelBookingRepository.save(hotelBooking);
 
             return new RespuestaDTO("La reserva se canceló con exito");

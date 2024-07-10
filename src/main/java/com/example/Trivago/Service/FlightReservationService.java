@@ -13,6 +13,7 @@ import com.example.Trivago.Exception.InvalidReservationFlight;
 import com.example.Trivago.Entity.Flight;
 import com.example.Trivago.Repository.IFlightBookingRepository;
 import com.example.Trivago.Repository.IFlightRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ public class FlightReservationService implements IFlightReservationService {
     @Autowired
     private IFlightBookingRepository flightBookingRepository;
 
+    private final ModelMapper modelMapper = new ModelMapper();
     HashMap<String, FlightReservationResponseDTO>  flightReserved = new HashMap<>();
 
     @Override
@@ -142,12 +144,22 @@ public class FlightReservationService implements IFlightReservationService {
         return response;
     }
 
+    @Override
+    public RespuestaDTO updateFlightReservation(FlightReservationRequestDTO editReservation, Long id) {
+        FlightBooking flightBookingEdit = flightBookingRepository.findById(id)
+                .orElseThrow(() -> new InvalidReservationFlight("No se encontró la Reserva de vuelo"));
+        modelMapper.map(editReservation, flightBookingEdit);
+        flightBookingRepository.save(flightBookingEdit);
+
+        return new RespuestaDTO("Reserva de Hotel modificada correctamente");
+    }
+
 
     public RespuestaDTO cancelFlight(Long id) {
         Optional<FlightBooking> optionalFlightReservation = flightBookingRepository.findById(id);
         if (optionalFlightReservation.isPresent()) {
             FlightBooking flightReservation = optionalFlightReservation.get();
-            flightReservation.setActive(false);
+            flightReservation.setIsActive(false);
             flightBookingRepository.save(flightReservation);
 
             return new RespuestaDTO("El vuelo ha sido cancelado con exito");

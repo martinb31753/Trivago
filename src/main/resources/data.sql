@@ -26,18 +26,38 @@ INSERT INTO flights (flight_number, origin, destination, seat_type, price_per_pe
 ('BOME-4442', 'Bogotá', 'Medellín', 'Economy', 11000, '2025-02-10', '2025-02-24', true),
 ('MEPI-9986', 'Medellín', 'Puerto Iguazú', 'Business', 41640, '2025-04-17', '2025-05-02', true);
 
-INSERT INTO flights (flight_number, origin, destination, seat_type, price_per_person, date_from, date_to) VALUES
-('BAPI-1235', 'Buenos Aires', 'Puerto Iguazú', 'Economy', 6500, '2025-02-10', '2025-02-15'),
-('PIBA-1420', 'Puerto Iguazú', 'Bogotá', 'Business', 43200, '2025-02-10', '2025-02-20'),
-('PIBA-1420', 'Puerto Iguazú', 'Bogotá', 'Economy', 25735.89, '2025-02-10', '2025-02-20'),
-('BATU-5536', 'Buenos Aires', 'Tucumán', 'Economy', 7320, '2025-02-10', '2025-02-17'),
-('TUPI-3369', 'Tucumán', 'Puerto Iguazú', 'Business', 12530, '2025-02-12', '2025-02-23'),
-('TUPI-3369', 'Tucumán', 'Puerto Iguazú', 'Economy', 5400, '2025-02-12', '2025-02-23'),
-('BOCA-4213', 'Bogotá', 'Cartagena', 'Economy', 8000, '2025-01-23', '2025-02-05'),
-('CAME-0321', 'Cartagena', 'Medellín', 'Economy', 7800, '2025-01-23', '2025-01-31'),
-('BOBA-6567', 'Bogotá', 'Buenos Aires', 'Business', 57000, '2025-02-15', '2025-02-28'),
-('BOBA-6567', 'Bogotá', 'Buenos Aires', 'Economy', 39860, '2025-02-15', '2025-02-28'),
-('BOME-4442', 'Bogotá', 'Medellín', 'Economy', 11000, '2025-02-10', '2025-02-24'),
-('MEPI-9986', 'Medellín', 'Puerto Iguazú', 'Business', 41640, '2025-04-17', '2025-05-02');
-
 --################################--
+
+INSERT INTO customers (user_name, password) VALUES ('johndoe@gmail.com', 'password123');
+
+-- Insertar personas
+INSERT INTO people (dni, name, last_name, birth_date, email)
+VALUES ('12345678A', 'Jane', 'Doe', '1985-05-15', 'johndoe@gmail.com');
+
+INSERT INTO people (dni, name, last_name, birth_date, email)
+VALUES ('87654321B', 'John', 'Smith', '1990-08-20', 'john.smith@example.com');
+
+-- Insertar un método de pago
+INSERT INTO payment_method (type, number_card, dues)
+VALUES ('Credit', '4567098767898790', 6);
+
+-- Insertar una reserva de hotel
+INSERT INTO hotel_bookings (people_amount, hotel_id, customer_id, payment_method_id)
+VALUES (2,
+       (SELECT id FROM hotels WHERE hotel_code = 'CH-0002'),
+       (SELECT id FROM customers WHERE user_name = 'johndoe@gmail.com'),
+   (SELECT id FROM payment_method WHERE number_card = '4567098767898790')
+   );
+
+-- Obtener el ID de la reserva recién insertada
+SET @bookingId = LAST_INSERT_ID();
+
+-- Relacionar personas con la reserva de hotel
+INSERT INTO hotel_booking_people (hotel_booking_id, people_id)
+VALUES ((SELECT id FROM hotel_bookings WHERE hotel_id = 1),
+    (SELECT id FROM people WHERE dni = '12345678A'));
+
+INSERT INTO hotel_booking_people (hotel_booking_id, people_id)
+VALUES ((SELECT id FROM hotel_bookings WHERE hotel_id = 1),
+(SELECT id FROM people WHERE dni = '87654321B'));
+

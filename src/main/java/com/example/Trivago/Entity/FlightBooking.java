@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -20,46 +20,28 @@ public class FlightBooking {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
-        @Column(name ="date_from")
-        @JsonFormat(pattern = "dd-MM-yyyy")
-        private LocalDate dateFrom;
-
-        @Column(name = "date_to")
-        @JsonFormat(pattern = "dd-MM-yyyy")
-        private LocalDate dateTo;
-
-        @Column(name = "origin")
-        private String origin;
-
-        @Column(name = "destination")
-        private String destination;
-
-        @Column(name = "flight_number")
-        private String flightNumber;
-
         @Column(name = "seats")
         private int seats;
 
-        @Column(name = "seat_type")
-        private String seatType;
+        @Column(name = "is_active",columnDefinition = "boolean default true")
+        private Boolean isActive = true;
 
-        @Column(name = "is_active")
-        private boolean isActive;
-
-        //cada reserva pertenece a un solo cliente
-        @ManyToOne
+        @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "customer_id")
         private Customer customer;
 
-        //muchas reservas tienen una unica forma de pago
-        @ManyToOne
+        @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+        @JoinTable(name = "flight_booking_people",
+                joinColumns = @JoinColumn(name = "flight_booking_id"),
+                inverseJoinColumns = @JoinColumn(name = "people_id"))
+        private Set<People> people;
+
+        @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
         @JoinColumn(name = "payment_method_id")
         private PaymentMethod paymentMethod;
 
-        //cada reserva de vuelo está asociada con un solo vuelo
-        @ManyToOne
+        @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
         @JoinColumn(name = "flight_id")
         private Flight flight;
-
 
 }

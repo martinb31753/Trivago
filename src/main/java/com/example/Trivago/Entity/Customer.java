@@ -15,28 +15,13 @@ import java.util.List;
 @Entity
 @Table(name = "customers")
 public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "dni")
-    private String dni;
-    @Column(name = "name")
-    private String name;
-    @Column(name = "last_name")
-    private String lastName;
-    @Column(name = "birth_date")
-    private LocalDate birthDate;
-    @Column(name = "email")
-    private String email;
 
-    //un cliente puede tener muchas reservas
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<FlightBooking> flightBookings;
-
-    //un cliente puede tener muchas reservas
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<HotelBooking> hotelBookings;
-
-
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+        @Column(name = "user_name")
+        private String UserName;
+        @Column(name = "password")
+        private String password;
 
 }

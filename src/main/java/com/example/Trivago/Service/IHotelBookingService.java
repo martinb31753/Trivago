@@ -10,5 +10,9 @@ public interface IHotelBookingService {
 
     BookingResponseDTO bookHotelresponse(BookingRequestDTO request);
 
+    RespuestaDTO updateHotelReservation(BookingRequestDTO editReservation, Long id);
+
     RespuestaDTO cancelBooking(Long id);
+
+
 }
