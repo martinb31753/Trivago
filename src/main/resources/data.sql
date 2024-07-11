@@ -1,5 +1,5 @@
 INSERT INTO hotels (hotel_code, name, destination, room_type, price_per_night, date_from, date_to, is_reserved, is_active) VALUES
-('CH-0002', 'Cataratas Hotel', 'Puerto Iguazú', 'Double', 6300, '2025-02-10', '2025-03-20', false, true),
+('CH-0002', 'Cataratas Hotel', 'Puerto Iguazú', 'Double', 6300, '2025-02-10', '2025-03-20', true, true),
 ('CH-0003', 'Cataratas Hotel 2', 'Puerto Iguazú', 'Triple', 8200, '2025-02-10', '2025-03-23', false, true),
 ('HB-0001', 'Hotel Bristol', 'Buenos Aires', 'Single', 5435, '2025-02-10', '2025-03-19', false, true),
 ('BH-0002', 'Hotel Bristol 2', 'Buenos Aires', 'Double', 7200, '2025-02-12', '2025-04-17', false, true),
@@ -37,17 +37,17 @@ VALUES ('12345678A', 'Jane', 'Doe', '1985-05-15', 'johndoe@gmail.com');
 INSERT INTO people (dni, name, last_name, birth_date, email)
 VALUES ('87654321B', 'John', 'Smith', '1990-08-20', 'john.smith@example.com');
 
--- Insertar un método de pago
-INSERT INTO payment_method (type, number_card, dues)
-VALUES ('Credit', '4567098767898790', 6);
-
 -- Insertar una reserva de hotel
-INSERT INTO hotel_bookings (people_amount, hotel_id, customer_id, payment_method_id)
-VALUES (2,
+INSERT INTO hotel_bookings (people_amount, payment_method, number_card, dues, hotel_id, customer_id)
+VALUES (2, 'CREDIT', '2340-4560-4570-3490', 3,
        (SELECT id FROM hotels WHERE hotel_code = 'CH-0002'),
-       (SELECT id FROM customers WHERE user_name = 'johndoe@gmail.com'),
-   (SELECT id FROM payment_method WHERE number_card = '4567098767898790')
-   );
+       (SELECT id FROM customers WHERE user_name = 'johndoe@gmail.com'));
+
+-- Insertar una reserva de vuelo
+INSERT INTO flight_bookings (seats, payment_method, number_card, dues, flight_id, customer_id)
+VALUES (2, 'CREDIT', '2340-4560-4570-3490', 3,
+       (SELECT id FROM flights WHERE flight_number = 'BAPI-1235'),
+       (SELECT id FROM customers WHERE user_name = 'johndoe@gmail.com'));
 
 -- Obtener el ID de la reserva recién insertada
 SET @bookingId = LAST_INSERT_ID();

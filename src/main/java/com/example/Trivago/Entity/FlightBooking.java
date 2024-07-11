@@ -26,6 +26,15 @@ public class FlightBooking {
         @Column(name = "is_active",columnDefinition = "boolean default true")
         private Boolean isActive = true;
 
+        @Column(name = "paymentMethod")
+        private String paymentMethod;
+
+        @Column(name = "number_card")
+        private String numberCard;
+
+        @Column(name = "dues")
+        private Integer dues;
+
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "customer_id")
         private Customer customer;
@@ -35,10 +44,6 @@ public class FlightBooking {
                 joinColumns = @JoinColumn(name = "flight_booking_id"),
                 inverseJoinColumns = @JoinColumn(name = "people_id"))
         private Set<People> people;
-
-        @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-        @JoinColumn(name = "payment_method_id")
-        private PaymentMethod paymentMethod;
 
         @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
         @JoinColumn(name = "flight_id")

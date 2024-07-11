@@ -86,11 +86,14 @@ public class HotelServiceImpl implements IHotel {
     public RespuestaDTO deleteHotelByCode(String hotelCode) {
         Optional<Hotel> optionalHotel = hotelRepository.getByHotelCode(hotelCode);
         if (optionalHotel.isPresent()) {
+            if (optionalHotel.get().getIsReserved()){
+                throw new HotelNotFound("No se puede eliminar un Hotel reservado");
+            }
             Hotel hotel = optionalHotel.get();
             hotel.setIsActive(false);
             hotelRepository.save(hotel);
             return new RespuestaDTO("El Hotel se eliminó con exito");
         }
-        return new RespuestaDTO("No se encontro el Hotel");
+        return new RespuestaDTO("No se encontró el Hotel");
     }
 }

@@ -35,10 +35,14 @@ public class HotelBooking {
             inverseJoinColumns = @JoinColumn(name = "people_id"))
     private Set<People> people;
 
-    //muchas reservas tienen una unica forma de pago
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_method_id")
-    private PaymentMethod paymentMethod;
+    @Column(name = "payment_method")
+    private String paymentMethod;
+
+    @Column(name = "number_card")
+    private String numberCard;
+
+    @Column(name = "dues")
+    private Integer dues;
 
     // Relación uno a uno con Hotel, mapeado por el campo hotelBooking en Hotel
     @OneToOne

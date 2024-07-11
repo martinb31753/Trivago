@@ -42,8 +42,8 @@ public class HotelController {
 
     }
 
-    @PutMapping("/delete/{hotelCode}")
-    public ResponseEntity<?> deleteHotel(@PathVariable("hotelCode") String hotelCode) {
+    @PutMapping("/delete")
+    public ResponseEntity<?> deleteHotel(@RequestParam String hotelCode) {
         hotelService.deleteHotelByCode(hotelCode);
         return ResponseEntity.ok("Hotele No. " + hotelCode + " eliminado");
     }

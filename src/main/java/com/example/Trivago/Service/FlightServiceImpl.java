@@ -95,7 +95,11 @@ public class FlightServiceImpl implements IFlight {
 
     public RespuestaDTO deleteFlightByCode(String flightCode) {
         Optional<Flight> optionalFlight = flightRepository.findByFlightNumber(flightCode);
+        Long totalFlightReservation = flightRepository.countByFlightNumber(flightCode);
         if (optionalFlight.isPresent()) {
+            if (totalFlightReservation > 0) {
+                throw new FlightNotFound("No se puede eliminar el vuelo porque hay reservas realizadas");
+            }
             Flight flight = optionalFlight.get();
             flight.setIsActive(false);
             flightRepository.save(flight);

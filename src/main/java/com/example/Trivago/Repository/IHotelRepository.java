@@ -28,4 +28,8 @@ public interface IHotelRepository extends JpaRepository<Hotel,Long> {
 
     @Query("SELECT h FROM Hotel h WHERE h.isActive = true")
     List<Hotel> getAllHotelIsActive();
+
+
+
+
 }

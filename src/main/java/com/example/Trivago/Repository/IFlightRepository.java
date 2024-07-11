@@ -28,6 +28,9 @@ public interface IFlightRepository extends JpaRepository<Flight,Long> {
 
     Optional<Flight> findByFlightNumberAndSeatType(String flightNumber, String seatType);
 
+    @Query("SELECT COUNT(fb) FROM FlightBooking fb JOIN fb.flight f WHERE f.flightNumber = :flightNumber")
+    Long countByFlightNumber(@Param("flightNumber") String flightNumber);
+
     @Query("SELECT f FROM Flight f WHERE f.isActive = true")
     List<Flight> getAllFlightsIsActive();
 }

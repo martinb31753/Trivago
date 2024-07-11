@@ -42,8 +42,8 @@ public class FlightController {
 
     }
 
-    @PutMapping("/delete/{flightNumber}")
-    public ResponseEntity<?> deleteFlight(@PathVariable("flightNumber") String flightNumber) {
+    @PutMapping("/delete")
+    public ResponseEntity<?> deleteFlight(@RequestParam String flightNumber) {
         flightService.deleteFlightByCode(flightNumber);
         return ResponseEntity.ok("Vuelo No. " + flightNumber + " eliminado");
     }
