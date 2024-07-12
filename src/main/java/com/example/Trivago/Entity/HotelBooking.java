@@ -41,8 +41,8 @@ public class HotelBooking {
     @Column(name = "hotel_code")
     private String hotelCode;
 
-    @Column(name = "is_active")
-    private boolean isActive;
+    @Column(name = "is_active",columnDefinition = "boolean default true")
+    private boolean isActive = true;
 
     //cada reserva pertenece a un solo cliente
     @ManyToOne

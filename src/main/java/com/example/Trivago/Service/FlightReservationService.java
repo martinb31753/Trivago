@@ -5,14 +5,18 @@ import com.example.Trivago.DTO.Response.FlightReservationResponseDTO;
 import com.example.Trivago.DTO.Response.FlightReservationResponseDetailDTO;
 import com.example.Trivago.DTO.Response.ResponseStatusDTO;
 import com.example.Trivago.DTO.Response.RespuestaDTO;
+import com.example.Trivago.Entity.Customer;
 import com.example.Trivago.Entity.FlightBooking;
+import com.example.Trivago.Entity.PaymentMethod;
 import com.example.Trivago.Exception.FlightNotFound;
 import com.example.Trivago.Exception.InvalidBookingHotel;
 import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidReservationFlight;
 import com.example.Trivago.Entity.Flight;
+import com.example.Trivago.Repository.ICustomerRepository;
 import com.example.Trivago.Repository.IFlightBookingRepository;
 import com.example.Trivago.Repository.IFlightRepository;
+import com.example.Trivago.Repository.IPaymentMethodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +33,13 @@ public class FlightReservationService implements IFlightReservationService {
     @Autowired
     private IFlightBookingRepository flightBookingRepository;
 
-    HashMap<String, FlightReservationResponseDTO>  flightReserved = new HashMap<>();
+    @Autowired
+    private IPaymentMethodRepository paymentMethodRepository;
+
+    @Autowired
+    private ICustomerRepository customerRepository;
+
+    HashMap<String, FlightReservationResponseDTO> flightReserved = new HashMap<>();
 
     @Override
     public FlightReservationResponseDTO flightReservation(FlightReservationRequestDTO request) {
@@ -54,7 +64,7 @@ public class FlightReservationService implements IFlightReservationService {
             throw new InvalidReservationFlight("No hay pasajeros existentes");
         }
         if (
-                request.getFlightReservationDTO().getSeats() != request.getFlightReservationDTO().getPeople().size()){
+                request.getFlightReservationDTO().getSeats() != request.getFlightReservationDTO().getPeople().size()) {
             throw new InvalidReservationFlight("La cantidad de pasajeros no coincide con la cantidad de asientos "
                     + request.getFlightReservationDTO().getSeats() + " contra " + request.getFlightReservationDTO().getPeople().size());
         }
@@ -92,7 +102,6 @@ public class FlightReservationService implements IFlightReservationService {
         // Tarjeta de débito: Informar que se ha ingresado una cantidad de cuotas diferente a 1.
 
 
-
         FlightReservationResponseDetailDTO flightReservation = new FlightReservationResponseDetailDTO();
 
         if (dateFrom.isAfter(dateTo) || dateTo.isBefore(dateFrom) ||
@@ -121,6 +130,37 @@ public class FlightReservationService implements IFlightReservationService {
         flightReservation.setPeople(request.getFlightReservationDTO().getPeople());
 
 
+        // Crear y guardar la reserva
+        FlightBooking flightBooking = new FlightBooking();
+        flightBooking.setPeopleAmount(request.getFlightReservationDTO().getPeople().size());
+        flightBooking.setFlight(flight.get());
+        flightBooking.setCustomer(customer);
+        flightBooking.setPaymentMethod(paymentMethod);
+
+
+
+        Customer customer = customerRepository.findByUserName(request.getFlightReservationDTO().getUserName())
+                .orElseGet(() -> {
+                    Customer newCustomer = new Customer();
+                    newCustomer.setUserName(request.getFlightReservationDTO().getUserName());
+                    return customerRepository.save(newCustomer);
+                });
+        flightBooking.setCustomer(customer);
+        flightBooking.setFlight(flight.get());
+
+        PaymentMethod paymentMethod = paymentMethodRepository.findByTypeAndNumber(
+                request.getFlightReservationDTO().getPaymentMethod().getType(),
+                request.getFlightReservationDTO().getPaymentMethod().getNumberCard()
+        ).orElseGet(() -> {
+            PaymentMethod newPaymentMethod = new PaymentMethod();
+            newPaymentMethod.setType(request.getFlightReservationDTO().getPaymentMethod().getType());
+            newPaymentMethod.setNumberCard(request.getFlightReservationDTO().getPaymentMethod().getNumberCard());
+            newPaymentMethod.setDues(request.getFlightReservationDTO().getPaymentMethod().getDues());
+            return paymentMethodRepository.save(newPaymentMethod);
+        });
+        flightBooking.setPaymentMethod(paymentMethod);
+
+        flightBookingRepository.save(flightBooking);
         ResponseStatusDTO status = new ResponseStatusDTO();
         status.setCode(201);
         status.setMessage("El proceso termino satisfactoriamente");

@@ -63,8 +63,10 @@ public class FlightServiceImpl implements IFlight {
             throw new InvalidDate("La fecha de llegada debe ser posterior a la fecha de salida o viceversa, y además debe coincidir con las de fechas del vuelo");
         }
 
+
         Flight flight = modelMapper.map(flightDTO, Flight.class);
         flightRepository.save(flight);
+
 
         return new RespuestaDTO("El vuelo ha sido creado con éxito");
     }

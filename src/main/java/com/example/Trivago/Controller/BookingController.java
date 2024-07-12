@@ -19,12 +19,11 @@ public class BookingController {
     @Autowired
     private IHotelBookingService hotelService;
 
-    @PostMapping()
-    public ResponseEntity<?> bookHotel(@Valid @RequestBody BookingRequestDTO request){
+    @PostMapping("/new")
+    public ResponseEntity<?> bookHotel(@RequestBody BookingRequestDTO request){
         BookingResponseDTO hotelBooking = hotelService.bookHotelresponse(request);
         return ResponseEntity.ok(hotelBooking);
     }
-
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteHotelBooking(@RequestParam("id") Long id) {
         hotelService.cancelBooking(id);

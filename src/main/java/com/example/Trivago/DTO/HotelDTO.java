@@ -42,4 +42,6 @@ public class HotelDTO {
     @JsonProperty("is_reserved")
     private Boolean isReserved;
 
+
+
 }

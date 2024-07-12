@@ -1,3 +1,4 @@
+
 INSERT INTO hotels (hotel_code, name, destination, room_type, price_per_night, date_from, date_to, is_reserved, is_active) VALUES
 ('CH-0002', 'Cataratas Hotel', 'Puerto Iguazú', 'Double', 6300, '2025-02-10', '2025-03-20', false, true),
 ('CH-0003', 'Cataratas Hotel 2', 'Puerto Iguazú', 'Triple', 8200, '2025-02-10', '2025-03-23', false, true),
@@ -25,3 +26,4 @@ INSERT INTO flights (flight_number, origin, destination, seat_type, price_per_pe
 ('BOBA-6567', 'Bogotá', 'Buenos Aires', 'Economy', 39860, '2025-02-15', '2025-02-28', true),
 ('BOME-4442', 'Bogotá', 'Medellín', 'Economy', 11000, '2025-02-10', '2025-02-24', true),
 ('MEPI-9986', 'Medellín', 'Puerto Iguazú', 'Business', 41640, '2025-04-17', '2025-05-02', true);
+

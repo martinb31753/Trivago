@@ -31,10 +31,11 @@ public class FlightController {
         return ResponseEntity.ok(filteredFlights);
     }
 
-    @PostMapping("/add-new-flight")
-    public ResponseEntity<?> addNewFlight(@RequestBody @Valid FlightDTO newFlight) {
+    @PostMapping("/new")
+    public ResponseEntity<?> addNewFlight(@RequestBody FlightDTO newFlight) {
         return new ResponseEntity<>(flightService.addNewFlight(newFlight), HttpStatus.CREATED);
     }
+
 
     @PutMapping("/update-flight/{flightNumber}")
     public ResponseEntity<?> updateFlight(@RequestBody @Valid FlightDTO updateFlight, @PathVariable String flightNumber) {

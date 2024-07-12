@@ -63,4 +63,6 @@ public class FlightReservationRequestDetailDTO {
     @Valid
     @JsonProperty("payment_method")
     private PaymentMethodDTO paymentMethod;
+
+
 }

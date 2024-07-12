@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -43,8 +42,8 @@ public class FlightBooking {
         @Column(name = "seat_type")
         private String seatType;
 
-        @Column(name = "is_active")
-        private boolean isActive;
+        @Column(name = "is_active",columnDefinition = "boolean default true")
+        private boolean isActive = true;
 
         //cada reserva pertenece a un solo cliente
         @ManyToOne
@@ -60,6 +59,7 @@ public class FlightBooking {
         @ManyToOne
         @JoinColumn(name = "flight_id")
         private Flight flight;
+
 
 
 }

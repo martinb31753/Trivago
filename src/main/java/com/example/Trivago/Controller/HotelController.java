@@ -30,11 +30,11 @@ public class HotelController {
         List<HotelDTO> filteredHotels = hotelService.getAvailableHotels(date_from, date_to, destination);
         return ResponseEntity.ok(filteredHotels);
     }
-
-    @PostMapping("/add-new-hotel")
+    @PostMapping("/new")
     public ResponseEntity<?> addNewHotel(@RequestBody HotelDTO newHotel) {
         return new ResponseEntity<>( hotelService.addNewHotel(newHotel),HttpStatus.CREATED);
     }
+
 
     @PutMapping("/update-hotel/{hotelCode}")
     public ResponseEntity<?> updateHotelById(@RequestBody HotelDTO updateHotel, @PathVariable String hotelCode) {

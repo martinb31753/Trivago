@@ -18,11 +18,13 @@ public class FlightReservationController {
     @Autowired
     IFlightReservationService flightService;
 
-    @PostMapping()
-    public ResponseEntity<?> flightReservation(@RequestBody @Valid FlightReservationRequestDTO request) {
+    @PostMapping("/new")
+    public ResponseEntity<?> flightReservation(@RequestBody FlightReservationRequestDTO request) {
         FlightReservationResponseDTO response = flightService.flightReservation(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteFlightReservation(@RequestParam("id") Long id) {

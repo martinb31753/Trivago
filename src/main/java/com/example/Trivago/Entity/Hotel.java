@@ -39,11 +39,11 @@ public class Hotel {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateTo;
 
-    @Column(name = "is_reserved")
-    private Boolean isReserved;
+    @Column(name = "is_reserved",columnDefinition = "boolean default false")
+    private Boolean isReserved = false;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @Column(name = "is_active",columnDefinition = "boolean default true")
+    private Boolean isActive = true;
 
     // Relación uno a uno con HotelBooking
     @OneToOne
