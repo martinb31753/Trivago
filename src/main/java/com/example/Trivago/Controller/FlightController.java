@@ -31,20 +31,19 @@ public class FlightController {
         return ResponseEntity.ok(filteredFlights);
     }
 
-    @PostMapping("/new")
-    public ResponseEntity<?> addNewFlight(@RequestBody FlightDTO newFlight) {
+    @PostMapping("/add-new-flight")
+    public ResponseEntity<?> addNewFlight(@RequestBody @Valid FlightDTO newFlight) {
         return new ResponseEntity<>(flightService.addNewFlight(newFlight), HttpStatus.CREATED);
     }
-
-
-    @PutMapping("/update-flight/{flightNumber}")
-    public ResponseEntity<?> updateFlight(@RequestBody @Valid FlightDTO updateFlight, @PathVariable String flightNumber) {
-        return new ResponseEntity<>(flightService.updateFlight(updateFlight), HttpStatus.OK);
+//permite editar vuelos con codigos unicos, sino arroja un 403
+    @PutMapping("/edit")
+    public ResponseEntity<?> updateFlight(@RequestBody FlightDTO updateFlight, @RequestParam String flightNumber) {
+        return new ResponseEntity<>(flightService.updateFlight(updateFlight, flightNumber), HttpStatus.OK);
 
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteFlight(@RequestParam("flightNumber") String flightNumber) {
+    @PutMapping("/delete")
+    public ResponseEntity<?> deleteFlight(@RequestParam String flightNumber) {
         flightService.deleteFlightByCode(flightNumber);
         return ResponseEntity.ok("Vuelo No. " + flightNumber + " eliminado");
     }

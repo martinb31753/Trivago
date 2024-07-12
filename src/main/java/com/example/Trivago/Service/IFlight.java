@@ -16,7 +16,7 @@ public interface IFlight {
 
     RespuestaDTO addNewFlight(FlightDTO flightDTO);
 
-    RespuestaDTO updateFlight(FlightDTO updateFlight);
+    RespuestaDTO updateFlight(FlightDTO updateFlight, String flightNumber);
 
 
 }

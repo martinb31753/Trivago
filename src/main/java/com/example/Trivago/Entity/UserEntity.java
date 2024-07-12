@@ -26,10 +26,6 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false)
     private String username;
     private String password;
-    @Column(name = "firstname")
-    private String firstName;
-    @Column(name = "lastname")
-    private String lastName;
     @Enumerated(EnumType.STRING)
     private Rol role;
 
@@ -57,12 +53,6 @@ public class UserEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-//
-//    @Column(name = "rol")
-//    private String rol;
 
 
 }

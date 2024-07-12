@@ -19,7 +19,7 @@ public class Hotel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long hotelId;
+    private Long Id;
     @Column(name = "hotel_code")
     private String hotelCode;
     @Column(name = "name")
@@ -46,8 +46,9 @@ public class Hotel {
     private Boolean isActive = true;
 
     // Relación uno a uno con HotelBooking
-    @OneToOne
-    @JoinColumn(name = "hotel_booking_id")
+
+
+    @OneToOne(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private HotelBooking hotelBooking;
 
 

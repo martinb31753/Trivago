@@ -16,5 +16,5 @@ public interface IHotel {
 
     RespuestaDTO addNewHotel(HotelDTO hotelDTO);
 
-    RespuestaDTO updateHotelById(HotelDTO updateHotel);
+    RespuestaDTO updateHotel(HotelDTO updateHotel, String hotelCode);
 }

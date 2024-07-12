@@ -38,9 +38,7 @@ public class AuthServImpl implements IAuthService{
         UserEntity user = UserEntity.builder()
                 .username(userToRegisterDto.getUsername())
                 .password(passwordEncoder.encode(userToRegisterDto.getPassword()))
-                .firstName(userToRegisterDto.getFirstName())
-                .lastName(userToRegisterDto.getLastName())
-                .role(Rol.USER)
+                .role(Rol.CLIENTE)
                 .build();
 
         repository.save(user);

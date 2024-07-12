@@ -19,10 +19,17 @@ public interface IHotelRepository extends JpaRepository<Hotel,Long> {
             "AND h.destination = :destination " +
             "AND h.isActive = true " +
             "AND h.isReserved = false")
-    List<Hotel> getHotelsAvailableFilter(LocalDate dateFrom,
-                                         LocalDate dateTo,
-                                         String destination);
+    List<Hotel> getHotelsAvailableFilter(@Param("dateFrom") LocalDate dateFrom,
+                                         @Param("dateTo") LocalDate dateTo,
+                                         @Param("destination") String destination);
 
-    @Query("SELECT h FROM Hotel h WHERE h.hotelCode = :hotelCode")
-    Optional<Hotel> getByHotelCode(@PathVariable("hotelCode") String hotelCode);
+    @Query("SELECT h FROM Hotel h WHERE h.hotelCode = :hotelCode AND h.isActive = true ")
+    Optional<Hotel> getByHotelCode(@Param("hotelCode") String hotelCode);
+
+    @Query("SELECT h FROM Hotel h WHERE h.isActive = true")
+    List<Hotel> getAllHotelIsActive();
+
+
+
+
 }

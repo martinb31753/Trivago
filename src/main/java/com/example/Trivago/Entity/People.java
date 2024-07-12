@@ -35,4 +35,6 @@ public class People {
 
     @ManyToMany(mappedBy = "people", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<FlightBooking> flightBookings;
+
+
 }

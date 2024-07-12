@@ -3,6 +3,7 @@ package com.example.Trivago.Service;
 import com.example.Trivago.DTO.FlightDTO;
 import com.example.Trivago.DTO.Response.RespuestaDTO;
 import com.example.Trivago.Entity.Flight;
+import com.example.Trivago.Exception.FlightNotFound;
 import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidDestination;
 import com.example.Trivago.Repository.IFlightRepository;
@@ -25,7 +26,7 @@ public class FlightServiceImpl implements IFlight {
     private final ModelMapper modelMapper = new ModelMapper();
 
     public List<FlightDTO> getAll() {
-        return flightRepository.findAll().stream()
+        return flightRepository.getAllFlightsIsActive().stream()
                 .map(flight -> modelMapper.map(flight, FlightDTO.class))
                 .collect(Collectors.toList());
     }
@@ -71,16 +72,36 @@ public class FlightServiceImpl implements IFlight {
         return new RespuestaDTO("El vuelo ha sido creado con éxito");
     }
 
-    public RespuestaDTO updateFlight(FlightDTO updateFlight) {
-        Flight flight = modelMapper.map(updateFlight, Flight.class);
-        flightRepository.save(flight);
 
-        return new RespuestaDTO("El vuelo ha sido actualizado con éxito");
+    public RespuestaDTO updateFlight(FlightDTO updatedFlight, String flightNumber) {
+        // Busca el vuelo por número de vuelo y tipo de asiento
+        Optional<Flight> existingFlightObt = flightRepository.findByFlightNumberAndSeatType(
+                flightNumber, updatedFlight.getSeatType());
+
+        if (existingFlightObt.isPresent()) {
+            Flight existingFlight = existingFlightObt.get();
+            existingFlight.setOrigin(updatedFlight.getOrigin());
+            existingFlight.setDestination(updatedFlight.getDestination());
+            existingFlight.setPricePerPerson(updatedFlight.getPricePerPerson());
+            existingFlight.setDateFrom(updatedFlight.getDateFrom());
+            existingFlight.setDateTo(updatedFlight.getDateTo());
+
+            flightRepository.save(existingFlight);
+            return new RespuestaDTO("Vuelo modificado correctamente");
+        } else {
+            throw new FlightNotFound("No se encontró el vuelo ");
+        }
+
     }
+
 
     public RespuestaDTO deleteFlightByCode(String flightCode) {
         Optional<Flight> optionalFlight = flightRepository.findByFlightNumber(flightCode);
+        Long totalFlightReservation = flightRepository.countByFlightNumber(flightCode);
         if (optionalFlight.isPresent()) {
+            if (totalFlightReservation > 0) {
+                throw new FlightNotFound("No se puede eliminar el vuelo porque hay reservas realizadas");
+            }
             Flight flight = optionalFlight.get();
             flight.setIsActive(false);
             flightRepository.save(flight);
@@ -89,4 +110,9 @@ public class FlightServiceImpl implements IFlight {
         }
         return new RespuestaDTO("No se encontró el vuelo");
     }
-}
+    }
+
+
+
+
+
