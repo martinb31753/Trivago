@@ -21,6 +21,7 @@ public class FlightController {
     @Autowired
     IFlight flightService;
 
+
     @GetMapping("/flights")
     public ResponseEntity<FlightDTO[]> getFlights() {
         FlightDTO[] flights = flightService.findAll().toArray(new FlightDTO[0]);
