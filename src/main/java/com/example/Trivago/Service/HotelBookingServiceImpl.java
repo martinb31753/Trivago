@@ -1,26 +1,37 @@
 package com.example.Trivago.Service;
 
 
+import com.example.Trivago.DTO.FlightDTO;
 import com.example.Trivago.DTO.Request.BookingRequestDTO;
 import com.example.Trivago.DTO.Response.BookingResponseDTO;
 import com.example.Trivago.DTO.Response.BookingResponseDetailDTO;
 import com.example.Trivago.DTO.Response.ResponseStatusDTO;
+import com.example.Trivago.Entity.HotelBooking;
 import com.example.Trivago.Exception.InvalidBookingHotel;
 import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidDestination;
 import com.example.Trivago.Entity.Hotel;
+import com.example.Trivago.Repository.IFlightBookingRepository;
+import com.example.Trivago.Repository.IHotelBookingRepository;
 import com.example.Trivago.Repository.IHotelRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 
 public class HotelBookingServiceImpl implements IHotelBookingService {
 
+    ModelMapper modelMapper = new ModelMapper();
+
     @Autowired
     private IHotelRepository hotelRepository;
+
+    @Autowired
+    private IHotelBookingRepository hotelbookingRepository;
 
     @Override
     public BookingResponseDTO bookHotelresponse(BookingRequestDTO request) {
@@ -167,5 +178,11 @@ public class HotelBookingServiceImpl implements IHotelBookingService {
         hotelRepository.save(hotel);
 
         return response;
+    }
+
+    @Override
+    public List<HotelBooking> findAll() {
+        return hotelbookingRepository.findAll().stream()
+                .map(flight -> modelMapper.map(flight, HotelBooking.class)).toList();
     }
 }

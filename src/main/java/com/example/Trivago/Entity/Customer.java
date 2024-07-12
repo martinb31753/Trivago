@@ -1,5 +1,6 @@
 package com.example.Trivago.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "customers")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,15 +30,4 @@ public class Customer {
     private LocalDate birthDate;
     @Column(name = "email")
     private String email;
-
-    //un cliente puede tener muchas reservas
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<FlightBooking> flightBookings;
-
-    //un cliente puede tener muchas reservas
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<HotelBooking> hotelBookings;
-
-
-
 }

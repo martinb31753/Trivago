@@ -7,12 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-
+@AllArgsConstructor
 @Entity
 @Table(name = "flight_bookings")
 public class FlightBooking {
@@ -20,7 +19,7 @@ public class FlightBooking {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
-        @Column(name ="date_from")
+        @Column(name = "date_from")
         @JsonFormat(pattern = "dd-MM-yyyy")
         private LocalDate dateFrom;
 
@@ -28,38 +27,46 @@ public class FlightBooking {
         @JsonFormat(pattern = "dd-MM-yyyy")
         private LocalDate dateTo;
 
+        @Column(name = "destination")
+        private String destination;
+
         @Column(name = "origin")
         private String origin;
 
-        @Column(name = "destination")
-        private String destination;
+        @Column(name = "people_amount")
+        private int peopleAmount;
 
         @Column(name = "flight_number")
         private String flightNumber;
 
-        @Column(name = "seats")
-        private int seats;
-
         @Column(name = "seat_type")
         private String seatType;
+
+        @Column(name = "seats")
+        private int seats;
 
         @Column(name = "is_active")
         private boolean isActive;
 
+        @Column(name = "amount")
+        private Double amount;
+
+        @Column(name = "created_at", updatable = false)
+        @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+        private LocalDateTime created_at;
+
         //cada reserva pertenece a un solo cliente
-        @ManyToOne
+        @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "customer_id")
         private Customer customer;
 
         //muchas reservas tienen una unica forma de pago
-        @ManyToOne
+        @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "payment_method_id")
         private PaymentMethod paymentMethod;
 
-        //cada reserva de vuelo está asociada con un solo vuelo
-        @ManyToOne
-        @JoinColumn(name = "flight_id")
-        private Flight flight;
-
-
+        @PrePersist
+        protected void onCreate() {
+                created_at = LocalDateTime.now();
+        }
 }

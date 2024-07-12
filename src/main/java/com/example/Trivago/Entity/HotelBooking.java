@@ -7,21 +7,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 @Table(name = "hotel_bookings")
-
 public class HotelBooking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name ="date_from")
+    @Column(name = "date_from")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateFrom;
 
@@ -44,22 +42,25 @@ public class HotelBooking {
     @Column(name = "is_active")
     private boolean isActive;
 
+    @Column(name = "amount")
+    private Double amount;
+
+    @Column(name = "created_at", updatable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime created_at;
+
     //cada reserva pertenece a un solo cliente
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
     //muchas reservas tienen una unica forma de pago
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
 
-
-    // Relación uno a uno con Hotel, mapeado por el campo hotelBooking en Hotel
-    @OneToOne(mappedBy = "hotelBooking")
-    private Hotel hotel;
-
-
-
-
+    @PrePersist
+    protected void onCreate() {
+        created_at = LocalDateTime.now();
+    }
 }

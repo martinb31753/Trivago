@@ -1,5 +1,6 @@
 package com.example.Trivago.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "payment_method")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PaymentMethod {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,16 +26,4 @@ public class PaymentMethod {
     private String numberCard;
     @Column(name = "dues")
     private Integer dues;
-
-    //un método de pago puede estar asociado con muchas reservas de vuelo
-    @OneToMany(mappedBy = "paymentMethod", cascade = CascadeType.ALL)
-    private List<FlightBooking> flightBookings;
-
-    //un método de pago puede estar asociado con muchas reservas de hoteles
-    @OneToMany(mappedBy = "paymentMethod", cascade = CascadeType.ALL)
-    private List<HotelBooking> hotelBookings;
-
-
-
-
 }

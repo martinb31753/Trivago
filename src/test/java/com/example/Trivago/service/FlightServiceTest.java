@@ -56,17 +56,17 @@ public class FlightServiceTest {
 
     @Test
     void testGetAllFlights() {
-        when(flightRepository.getAll()).thenReturn(flightList);
-        List<FlightDTO> result = flightService.getAll();
-        flightListDTO = flightService.getAll();
+        when(flightRepository.findAll()).thenReturn(flightList);
+        List<FlightDTO> result = flightService.findAll();
+        flightListDTO = flightService.findAll();
         assertNotNull(result);
         assertEquals(flightListDTO, result);
      }
 
     @Test
     void testGetFlightByDate() {
-        when(flightRepository.getAll()).thenReturn(flightList);
-        flightListDTO = flightService.getAll();
+        when(flightRepository.findAll()).thenReturn(flightList);
+        flightListDTO = flightService.findAll();
         System.out.println(flightListDTO);
         List<FlightDTO> result = flightService.getFlightByDate(
                 LocalDate.of(2025, 2, 10),

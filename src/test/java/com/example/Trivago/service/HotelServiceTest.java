@@ -4,7 +4,7 @@ import com.example.Trivago.DTO.HotelDTO;
 import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidDestination;
 import com.example.Trivago.Entity.Hotel;
-import com.example.Trivago.Repository.HotelRepositoryImpl;
+import com.example.Trivago.Repository.IHotelRepository;
 import com.example.Trivago.Service.HotelServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 public class HotelServiceTest {
 
     @Mock
-    private HotelRepositoryImpl hotelRepository;
+    private IHotelRepository hotelRepository;
 
     @Mock
     private ModelMapper modelMapper;
@@ -40,7 +40,7 @@ public class HotelServiceTest {
     public void setup() {
         hotels = createHotelList();
         hotelsDTO = createHotelDTOList();
-        when(hotelRepository.getAll()).thenReturn(hotels);
+        when(hotelRepository.findAll()).thenReturn(hotels);
         when(modelMapper.map(hotels.get(0), HotelDTO.class)).thenReturn(hotelsDTO.get(0));
         when(modelMapper.map(hotels.get(1), HotelDTO.class)).thenReturn(hotelsDTO.get(1));
         when(modelMapper.map(hotels.get(2), HotelDTO.class)).thenReturn(hotelsDTO.get(2));
@@ -131,7 +131,7 @@ public class HotelServiceTest {
 
     @Test
     public void testGetAll() {
-        when(hotelRepository.getAll()).thenReturn(hotels);
+        when(hotelRepository.findAll()).thenReturn(hotels);
 
         List<HotelDTO> result = hotelService.getAll();
 

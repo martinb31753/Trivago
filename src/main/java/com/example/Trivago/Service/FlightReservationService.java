@@ -4,23 +4,29 @@ import com.example.Trivago.DTO.Request.FlightReservationRequestDTO;
 import com.example.Trivago.DTO.Response.FlightReservationResponseDTO;
 import com.example.Trivago.DTO.Response.FlightReservationResponseDetailDTO;
 import com.example.Trivago.DTO.Response.ResponseStatusDTO;
+import com.example.Trivago.Entity.FlightBooking;
 import com.example.Trivago.Exception.FlightNotFound;
 import com.example.Trivago.Exception.InvalidBookingHotel;
 import com.example.Trivago.Exception.InvalidDate;
 import com.example.Trivago.Exception.InvalidReservationFlight;
 import com.example.Trivago.Entity.Flight;
+import com.example.Trivago.Repository.IFlightBookingRepository;
 import com.example.Trivago.Repository.IFlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class FlightReservationService implements IFlightReservationService {
 
     @Autowired
     private IFlightRepository flightRepository;
+
+    @Autowired
+    private IFlightBookingRepository flightReservationRepository;
 
     HashMap<String, FlightReservationResponseDTO>  flightReserved = new HashMap<>();
 
@@ -133,5 +139,9 @@ public class FlightReservationService implements IFlightReservationService {
         }
 
         return response;
+    }
+
+    public List<FlightBooking> findAll() {
+        return flightReservationRepository.findAll();
     }
 }

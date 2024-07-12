@@ -22,14 +22,14 @@ public class FlightServiceImpl implements IFlight {
     ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public List<FlightDTO> getAll() {
+    public List<FlightDTO> findAll() {
         return flightRepository.findAll().stream()
                 .map(flight -> modelMapper.map(flight, FlightDTO.class)).toList();
     }
 
     @Override
     public List<FlightDTO> getFlightByDate(LocalDate date_from, LocalDate date_to, String origin, String destination) {
-        flightList = getAll();
+        flightList = findAll();
         if (origin == null && destination == null && date_from == null && date_to == null) {
             return flightList;
         }
@@ -78,7 +78,7 @@ public class FlightServiceImpl implements IFlight {
         }
         modelMapper.map(flightDTO, flight);
 
-        flightRepository.save(flight);
+//        flightRepository.save(flight);
 
         return new RespuestaDTO("El vuelo ha sido creado con éxito");
     }

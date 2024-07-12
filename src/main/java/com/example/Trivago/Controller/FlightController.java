@@ -22,6 +22,12 @@ public class FlightController {
     IFlight flightService;
 
     @GetMapping("/flights")
+    public ResponseEntity<FlightDTO[]> getFlights() {
+        FlightDTO[] flights = flightService.findAll().toArray(new FlightDTO[0]);
+        return ResponseEntity.ok(flights);
+    }
+
+    @GetMapping("/flights-by-date")
     public ResponseEntity<?> getAvailableFlights(
             @RequestParam(value = "date_from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_from,
             @RequestParam(value = "date_to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date_to,

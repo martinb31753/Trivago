@@ -9,7 +9,8 @@ import java.util.List;
 
 public interface IFlight {
 
-    List<FlightDTO> getAll();
+    List<FlightDTO> findAll();
+
     List<FlightDTO> getFlightByDate(LocalDate date_from, LocalDate date_to, String origin, String destination);
 
     FlightDTO getByFlightNumber(String flightCode);

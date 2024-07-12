@@ -42,11 +42,6 @@ public class Flight {
     @Column(name = "is_active")
     private boolean isActive;
 
-    //un vuelo puede estar asociado con muchas reservas de vuelo.
-    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
-    private List<FlightBooking> flightBookings;
-
-
     public String getFlightNumber() {
         return flightNumber;
     }

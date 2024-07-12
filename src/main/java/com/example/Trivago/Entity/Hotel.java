@@ -45,13 +45,8 @@ public class Hotel {
     @Column(name = "is_active")
     private boolean isActive;
 
-    // Relación uno a uno con HotelBooking
-    @OneToOne
-    @JoinColumn(name = "hotel_booking_id")
-    private HotelBooking hotelBooking;
-
-
-
+    public Hotel(String s, String cataratasHotel, String puertoIguazú, String aDouble, String $6300, LocalDate of, LocalDate of1, boolean b) {
+    }
 }
 
 
