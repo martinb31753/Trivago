@@ -24,7 +24,7 @@ public class BookingController {
     @Autowired
     IHotelBookingService hotelService;
 
-    @PostMapping()
+    @PostMapping("/new")
     public ResponseEntity<?> bookHotel(@Valid @RequestBody BookingRequestDTO request){
         BookingResponseDTO hotelBooking = hotelService.bookHotelresponse(request);
         return ResponseEntity.ok(hotelBooking);

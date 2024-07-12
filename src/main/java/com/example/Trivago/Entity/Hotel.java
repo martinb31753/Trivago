@@ -17,6 +17,7 @@ import java.time.LocalDate;
 @Table(name = "hotels")
 public class Hotel {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
@@ -28,7 +29,7 @@ public class Hotel {
     private String destination;
     @Column(name = "room_type")
     private String roomType;
-    @Column(name ="price_per_night")
+    @Column(name = "price_per_night")
     private String pricePerNight;
 
     @Column(name = "date_from")
@@ -39,10 +40,10 @@ public class Hotel {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateTo;
 
-    @Column(name = "is_reserved",columnDefinition = "boolean default false")
+    @Column(name = "is_reserved", columnDefinition = "boolean default false")
     private Boolean isReserved = false;
 
-    @Column(name = "is_active",columnDefinition = "boolean default true")
+    @Column(name = "is_active", columnDefinition = "boolean default true")
     private Boolean isActive = true;
 
     // Relación uno a uno con HotelBooking
@@ -51,11 +52,7 @@ public class Hotel {
     @OneToOne(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private HotelBooking hotelBooking;
 
-
-
 }
-
-
 
 
 

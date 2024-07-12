@@ -31,7 +31,7 @@ public class HotelController {
         return ResponseEntity.ok(filteredHotels);
     }
 
-    @PostMapping("/add-new-hotel")
+    @PostMapping("new")
     public ResponseEntity<?> addNewHotel(@RequestBody HotelDTO newHotel) {
         return new ResponseEntity<>( hotelService.addNewHotel(newHotel),HttpStatus.CREATED);
     }
