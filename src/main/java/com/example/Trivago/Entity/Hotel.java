@@ -19,7 +19,7 @@ public class Hotel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
     @Column(name = "hotel_code")
     private String hotelCode;
     @Column(name = "name")
@@ -50,8 +50,6 @@ public class Hotel {
 
     @OneToOne(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private HotelBooking hotelBooking;
-
-
 
 }
 

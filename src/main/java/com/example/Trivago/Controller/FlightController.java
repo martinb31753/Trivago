@@ -31,11 +31,11 @@ public class FlightController {
         return ResponseEntity.ok(filteredFlights);
     }
 
-    @PostMapping("/add-new-flight")
-    public ResponseEntity<?> addNewFlight(@RequestBody @Valid FlightDTO newFlight) {
+    @PostMapping("/new")
+    public ResponseEntity<?> addNewFlight(@RequestBody FlightDTO newFlight) {
         return new ResponseEntity<>(flightService.addNewFlight(newFlight), HttpStatus.CREATED);
     }
-//permite editar vuelos con codigos unicos, sino arroja un 403
+    //permite editar vuelos con codigos unicos, sino arroja un 403
     @PutMapping("/edit")
     public ResponseEntity<?> updateFlight(@RequestBody FlightDTO updateFlight, @RequestParam String flightNumber) {
         return new ResponseEntity<>(flightService.updateFlight(updateFlight, flightNumber), HttpStatus.OK);

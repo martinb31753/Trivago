@@ -19,8 +19,11 @@ public class Customer {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
+        @Column(name = "booking_quantity")
+        private Integer bookingQuantity;
+
         @Column(name = "user_name")
-        private String UserName;
+        private String userName;
         @Column(name = "password")
         private String password;
 

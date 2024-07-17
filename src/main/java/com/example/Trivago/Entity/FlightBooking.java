@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -23,6 +24,10 @@ public class FlightBooking {
         @Column(name = "seats")
         private int seats;
 
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "customer_id")
+        private Customer customerId;
+
         @Column(name = "is_active",columnDefinition = "boolean default true")
         private Boolean isActive = true;
 
@@ -35,15 +40,27 @@ public class FlightBooking {
         @Column(name = "dues")
         private Integer dues;
 
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "customer_id")
-        private Customer customer;
+
+        @Column(name = "amount")
+        private Double amount;
+
+        @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",  updatable = false)
+        @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+        private LocalDateTime created_at = LocalDateTime.now();
+
+        @PrePersist
+        protected void onCreate() {
+                created_at = LocalDateTime.now();
+        }
 
         @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
         @JoinTable(name = "flight_booking_people",
                 joinColumns = @JoinColumn(name = "flight_booking_id"),
                 inverseJoinColumns = @JoinColumn(name = "people_id"))
         private Set<People> people;
+
+//        @Column(name = "flight_id")
+//        private Long flightId;
 
         @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
         @JoinColumn(name = "flight_id")

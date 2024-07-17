@@ -13,8 +13,8 @@ import java.util.Optional;
 
 public interface IFlightRepository extends JpaRepository<Flight,Long> {
     @Query("SELECT h FROM Flight h " +
-            "WHERE h.dateFrom <= :dateFrom " +
-            "AND h.dateTo >= :dateTo " +
+            "WHERE h.dateFrom BETWEEN :dateFrom " +
+            "AND :dateTo " +
             "AND h.origin = :origin " +
             "AND h.destination = :destination " +
             "AND h.isActive = true")

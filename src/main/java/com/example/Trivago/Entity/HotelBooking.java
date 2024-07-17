@@ -1,12 +1,13 @@
 package com.example.Trivago.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -25,9 +26,9 @@ public class HotelBooking {
     private int peopleAmount;
 
     //cada reserva pertenece a un cliente
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
-    private Customer customer;
+    private Customer customerId;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "hotel_booking_people",
@@ -44,11 +45,24 @@ public class HotelBooking {
     @Column(name = "dues")
     private Integer dues;
 
+    @Column(name = "amount")
+    private Double amount;
+
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false, insertable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime created_at;
+
+    @PrePersist
+    protected void onCreate() {
+        if (created_at == null) {
+            created_at = LocalDateTime.now();
+        }
+    }
+
     // Relación uno a uno con Hotel, mapeado por el campo hotelBooking en Hotel
     @OneToOne
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
-
 
     @Column(name = "is_active",columnDefinition = "boolean default true")
     private Boolean isActive = true;

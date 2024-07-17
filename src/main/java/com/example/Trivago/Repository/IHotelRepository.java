@@ -14,8 +14,8 @@ import java.util.Optional;
 public interface IHotelRepository extends JpaRepository<Hotel,Long> {
 
     @Query("SELECT h FROM Hotel h " +
-            "WHERE h.dateFrom <= :dateFrom " +
-            "AND h.dateTo >= :dateTo " +
+            "WHERE h.dateFrom BETWEEN :dateFrom " +
+            "AND :dateTo " +
             "AND h.destination = :destination " +
             "AND h.isActive = true " +
             "AND h.isReserved = false")

@@ -8,19 +8,14 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookingDTO {
-
-    @JsonProperty("amount")
-    private double amount;
-
-    @JsonProperty("interest")
-    private double interest;
-
-    @JsonProperty("total")
-    private double total;
+public class HotelReservationDTO {
+    @JsonProperty("reservation_id")
+    private Long reservationId;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
     @JsonProperty("date_from")
@@ -36,12 +31,13 @@ public class BookingDTO {
     private String hotelCode;
 
     @JsonProperty("people_amount")
-    private int peopleAmount;
+    private Integer peopleAmount;
 
     @JsonProperty("room_type")
     private String roomType;
-    private List<PersonDTO> people;
+
+    private Set<PersonDTO> people;
 
     @JsonProperty("payment_method")
-    private PaymentMethodDTO paymentMethod;
+    private PaymentMethodDTO paymentMethodDto;
 }

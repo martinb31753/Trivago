@@ -15,7 +15,7 @@ public class PaymentMethodDTO {
 
     @Pattern(regexp = "^(CREDIT|DEBIT)$", message = "El tipo de tarjeta debe ser credito o debito")
     @JsonProperty("type")
-    private String type;
+    private String paymentMethod;
 
     @Pattern(regexp = "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$",
             message = "El número de tarjeta debe tener 16 dígitos y puede contener guiones")
